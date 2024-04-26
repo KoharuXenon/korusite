@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Awsome koru site</title>
     <style>
-        /* Target elements where you want the monospace font */
         pre,
         code {
             font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
@@ -29,8 +28,8 @@
             --prof-border-thickness: 2px;
             --prof-radius: 20px;
             --prof-outline_color: #3100a5;
-            --profile-width: calc(100vw * 0.3);
-            --banner-height: calc(100vh * 0.1);
+            --profile-width: 540px;
+            --banner-height: 150px;
 
             background-color: #131313;
         }
@@ -84,7 +83,7 @@
             star.classList.add('star');
 
             let starspeed = getRandomNumber(2, 5);
-            let starfinalsize = Math.max(2, ((((starspeed-2)/3)-1)*-1)*10);
+            let starfinalsize = Math.max(2, ((((starspeed - 2) / 3) - 1) * -1) * 10);
 
             star.style.width = starfinalsize + "px";
             star.style.height = starfinalsize + "px";
@@ -97,18 +96,19 @@
             document.body.appendChild(star);
             setTimeout(() => {
                 star.remove();
-            }, (starspeed * 2)*1000);
+            }, (starspeed * 2) * 1000);
         }
 
         setInterval(createStar, 1);
     </script>
 
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div
+        style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <div
-            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; width: var(--profile-width); height: var(--banner-height); background-repeat: no-repeat;">
+            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%;">
         </div>
         <div
-            style="width: var(--profile-width); height: 300px; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
+            style="width: 100%; height: 300px; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
             <img src="https://cdn.discordapp.com/avatars/594965168111353896/44be115353d374944466c3ff173cf4f4.webp?size=4096"
                 class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
