@@ -59,6 +59,26 @@
             border-radius: 50%;
         }
 
+        .linkbox {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            border: 2px solid var(--prof-outline_color);
+            border-radius: 12px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .linkimg {
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+        }
+
         @keyframes twinkle {
             0% {
                 transform: translateY(0) translateX(0);
@@ -114,17 +134,19 @@
             style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%;">
         </div>
         <div
-            style="width: 100%; height: 300px; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
+            style="width: 100%; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
             <img src="https://cdn.discordapp.com/avatars/594965168111353896/44be115353d374944466c3ff173cf4f4.webp?size=4096"
                 class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
-            <div>
+            <div style="padding-bottom: 20px;">
                 <pre style="position: absolute; margin-top: -85px;">
   ／l、             
 （ﾟ､ ｡ ７         
   l  ~ヽ       
   じしf_,)ノ
 </pre>
+<img src="https://cdn.discordapp.com/emojis/1024751291504791654.gif"
+    style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
 
                 <pre href="https://discord.com/users/594965168111353896"
                     style="text-align: center; font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: inherit; text-decoration: none; text-shadow: 0 0 5px rgba(0, 0, 255, 0.5);">Koru</a></pre>
@@ -134,8 +156,17 @@
 the koru
 uhhh yeah
 idk what to put here</pre>
-                <img src="https://cdn.discordapp.com/emojis/1024751291504791654.gif"
-                    style="margin-top: calc(var(--prof-border-thickness)*-1);">
+
+                <div style="display: flex;  justify-content: center; margin-top: 20px;">
+                    <a href="https://namemc.com/profile/KoharuXenon.1" class="linkbox">
+                        <img class="linkimg" src="https://s.namemc.com/img/favicon-30.png"></a>
+
+                    <a href="https://www.youtube.com/KoharuXenon" class="linkbox">
+                        <img class="linkimg" src="https://cdn-icons-png.flaticon.com/256/1384/1384060.png"></a>
+
+                    <a href="https://github.com/KoharuXenon/" class="linkbox">
+                        <img class="linkimg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
+                </div>
 
             </div>
         </div>
