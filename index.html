@@ -1,1 +1,138 @@
-<h1>Hello World!</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Awsome koru site</title>
+    <style>
+        /* Target elements where you want the monospace font */
+        pre,
+        code {
+            font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
+        }
+
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+
+            --prof-border-thickness: 2px;
+            --prof-radius: 20px;
+            --prof-outline_color: #3100a5;
+            --profile-width: 500px;
+            --banner-height: 150px;
+
+            background-color: #131313;
+        }
+
+        .bordered-div {
+            border: var(--prof-border-thickness) solid var(--prof-outline_color);
+            border-radius: var(--prof-radius);
+            width: fit-content;
+            text-align: center;
+        }
+
+        .circle-img {
+            border: var(--prof-border-thickness) solid var(--prof-outline_color);
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #FFF;
+            border-radius: 50%;
+        }
+
+        @keyframes twinkle {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+            }
+
+            100% {
+                transform: translateY(-200vh) translateX(200vw) scale(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function createStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            let starspeed = getRandomNumber(2, 5);
+            let starfinalsize = Math.max(2, ((((starspeed-2)/3)-1)*-1)*10);
+
+            star.style.width = starfinalsize + "px";
+            star.style.height = starfinalsize + "px";
+
+            star.style.left = `-10vw`;
+            star.style.top = `${Math.random() * 1000}vh`;
+
+            star.style.animation = 'twinkle ' + starspeed * 2 + 's infinite linear';
+            document.body.appendChild(star);
+            setTimeout(() => {
+                star.remove();
+            }, (starspeed * 2)*1000);
+        }
+
+        setInterval(createStar, 1);
+    </script>
+
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div
+            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; width: var(--profile-width); height: var(--banner-height); background-position-y: -90px;">
+        </div>
+        <div
+            style="width: var(--profile-width); height: 300px; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
+            <img src="https://cdn.discordapp.com/avatars/594965168111353896/44be115353d374944466c3ff173cf4f4.webp?size=4096"
+                class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
+
+            <div>
+                <pre style="position: absolute; margin-top: -85px;">
+  ／l、             
+（ﾟ､ ｡ ７         
+  l  ~ヽ       
+  じしf_,)ノ
+</pre>
+
+                <pre
+                    style="text-align: center; font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;">Koru</pre>
+
+                <pre
+                    style="text-align: center; font-family: 'Lexend', sans-serif; font-size: 16px; color: var(--prof-outline_color);">It's me
+the koru
+uhhh yeah
+idk what to put here</pre>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
