@@ -61,17 +61,22 @@
 
         @keyframes twinkle {
             0% {
-                transform: translateY(0) translateX(0) scale(1);
+                transform: translateY(0) translateX(0);
             }
 
             100% {
-                transform: translateY(-200vh) translateX(200vw) scale(0);
+                transform: translateY(-200vh) translateX(200vw);
             }
         }
     </style>
 </head>
 
 <body>
+
+    <script>NekoType = "white"</script>
+    <h1 id=nl>
+        <script src="https://webneko.net/n20171213.js"></script><a href="https://webneko.net">Neko</a>
+    </h1>
 
     <script>
         function getRandomNumber(min, max) {
@@ -83,13 +88,13 @@
             star.classList.add('star');
 
             let starspeed = getRandomNumber(2, 5);
-            let starfinalsize = Math.max(2, ((((starspeed - 2) / 3) - 1) * -1) * 10);
+            let starfinalsize = Math.floor(Math.max(2, ((((starspeed - 2) / 3) - 1) * -1) * 10));
 
             star.style.width = starfinalsize + "px";
             star.style.height = starfinalsize + "px";
 
             star.style.left = `-10vw`;
-            star.style.top = `${Math.random() * 1000}vh`;
+            star.style.top = `${Math.floor(Math.random() * 1000)}vh`;
 
             star.style.animation = 'twinkle ' + starspeed * 2 + 's infinite linear';
             star.style.zIndex = -1;
@@ -99,8 +104,9 @@
             }, (starspeed * 2) * 1000);
         }
 
-        setInterval(createStar, 1);
+        setInterval(createStar, 100);
     </script>
+
 
     <div
         style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
@@ -120,14 +126,16 @@
   じしf_,)ノ
 </pre>
 
-                <pre
-                    style="text-align: center; font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;">Koru</pre>
+                <pre href="https://discord.com/users/594965168111353896"
+                    style="text-align: center; font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: inherit; text-decoration: none; text-shadow: 0 0 5px rgba(0, 0, 255, 0.5);">Koru</a></pre>
 
                 <pre
                     style="text-align: center; font-family: 'Lexend', sans-serif; font-size: 16px; color: var(--prof-outline_color);">It's me
 the koru
 uhhh yeah
 idk what to put here</pre>
+                <img src="https://cdn.discordapp.com/emojis/1024751291504791654.gif"
+                    style="margin-top: calc(var(--prof-border-thickness)*-1);">
 
             </div>
         </div>
