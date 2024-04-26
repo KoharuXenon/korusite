@@ -22,14 +22,15 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
             margin: 0;
             overflow: hidden;
 
             --prof-border-thickness: 2px;
             --prof-radius: 20px;
             --prof-outline_color: #3100a5;
-            --profile-width: 500px;
-            --banner-height: 150px;
+            --profile-width: calc(100vw * 0.3);
+            --banner-height: calc(100vh * 0.1);
 
             background-color: #131313;
         }
@@ -44,8 +45,8 @@
         .circle-img {
             border: var(--prof-border-thickness) solid var(--prof-outline_color);
             border-radius: 50%;
-            width: 150px;
-            height: 150px;
+            width: var(--banner-height);
+            height: var(--banner-height);
             object-fit: cover;
             margin: 0;
             padding: 0;
@@ -92,6 +93,7 @@
             star.style.top = `${Math.random() * 1000}vh`;
 
             star.style.animation = 'twinkle ' + starspeed * 2 + 's infinite linear';
+            star.style.zIndex = -1;
             document.body.appendChild(star);
             setTimeout(() => {
                 star.remove();
@@ -103,7 +105,7 @@
 
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <div
-            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; width: var(--profile-width); height: var(--banner-height); background-position-y: -90px;">
+            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; width: var(--profile-width); height: var(--banner-height); background-repeat: no-repeat;">
         </div>
         <div
             style="width: var(--profile-width); height: 300px; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
