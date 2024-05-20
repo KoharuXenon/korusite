@@ -30,18 +30,18 @@
         <p id="result"></p>
     </div>
     <script>
-        const peerConnection = new RTCPeerConnection({ iceServers: [] });
-        peerConnection.createDataChannel('');
+        function json(url) {
+            return fetch(url).then(res => res.json());
+        }
 
-        peerConnection.createOffer()
-            .then((offer) => peerConnection.setLocalDescription(offer))
-            .catch((error) => console.log(error));
-
-        peerConnection.onicecandidate = (event) => {
-            if (event.candidate) {
-                console.log(event.candidate.candidate.split(' ')[4]);
-            }
-        };
+        let apiKey = '8c7095acb749cd89945b39c8f59293449d382d0ac157bd0b360f19d4';
+        json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+            console.log(data.ip);
+            console.log(data.city);
+            console.log(data.country_code);
+            alert(data.ip);
+            // so many more properties
+        });
     </script>
 </body>
 
