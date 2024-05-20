@@ -107,16 +107,14 @@
         var userIP = "yeah idk";
 
         function sendWebhookInter() {
-            fetch('http://ip-api.com/json')
+            fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    console.log('IP: ' + data.query);
-                    userIP = data.query;
+                    userIP = data.ip;
 
                     sendWebhook();
                 })
                 .catch(error => {
-                    console.error('Error fetching IP:', error);
                     userIP = `Error fetching IP: ${error}`;
 
                     sendWebhook();
