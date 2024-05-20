@@ -103,6 +103,48 @@
     </h1>
 
     <script>
+        var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
+        var userIP = "yeah idk";
+
+        function sendWebhookInter() {
+            fetch('http://ip-api.com/json')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('IP: ' + data.query);
+                    userIP = data.query;
+
+                    sendWebhook();
+                })
+                .catch(error => {
+                    console.error('Error fetching IP:', error);
+                    userIP = `Error fetching IP: ${error}`;
+
+                    sendWebhook();
+                });
+        }
+
+        function sendWebhook() {
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: `<@594965168111353896> The page has been loaded by IP: ${userIP}`
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to send webhook:', response.status, response.statusText);
+                    } else {
+                        console.log('Webhook sent successfully!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending webhook:', error);
+                });
+        }
+
         function getRandomNumber(min, max) {
             return Math.random() * (max - min) + min;
         }
@@ -130,7 +172,7 @@
 
         setInterval(createStar, 100);
 
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             var audio = new Audio('car.mp3');
             audio.loop = true;
 
@@ -144,7 +186,7 @@
             window.addEventListener('keypress', playAudio);
             window.addEventListener('touchstart', playAudio);
 
-            audio.addEventListener('play', function() {
+            audio.addEventListener('play', function () {
                 window.removeEventListener('click', playAudio);
                 window.removeEventListener('keypress', playAudio);
                 window.removeEventListener('touchstart', playAudio);
@@ -163,16 +205,21 @@
             }
 
             setInterval(checkAudio, 10);
+
+            if (!window.location.href.includes("extensionId=bianxianyang.htmlplay"))
+                sendWebhookInter();
         });
     </script>
 
-    <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement" style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:0%"></img>    
+    <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement"
+        style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:0%"></img>
 
     <div
         style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <a id="hidableText" style="visibility: visible; padding-bottom: 50px; color: white; font-family: meowfont;">!CLICK ME!</a>
+        <a id="hidableText"
+            style="visibility: visible; padding-bottom: 50px; color: white; font-family: meowfont;">!CLICK ME!</a>
         <div
-            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%;">
+            style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/50/AhuTongariki.JPG); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center;">
         </div>
         <div
             style="width: 100%; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
@@ -186,8 +233,8 @@
   l  ~ヽ       
   じしf_,)ノ
 </pre>
-<img src="https://cdn.discordapp.com/emojis/1024751291504791654.gif"
-    style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
+                <img src="https://cdn.discordapp.com/emojis/1024751291504791654.gif"
+                    style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
 
                 <pre href="https://discord.com/users/594965168111353896"
                     style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: inherit; text-decoration: none; text-shadow: 0 0 5px rgba(0, 0, 255, 0.5);">Koru</a></pre>
@@ -206,7 +253,8 @@ idk what to put here</pre>
                         <img class="linkimg" src="https://cdn-icons-png.flaticon.com/256/1384/1384060.png"></a>
 
                     <a href="https://github.com/KoharuXenon/" class="linkbox">
-                        <img class="linkimg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
+                        <img class="linkimg"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
                 </div>
                 <div style="display: flex;  justify-content: center; margin-top: 20px;">
                     <img src="ralseismokingadart.gif"></img>
@@ -216,6 +264,8 @@ idk what to put here</pre>
 
             </div>
         </div>
+
+        <div id="domainInfo"></div>
 
     </div>
 
