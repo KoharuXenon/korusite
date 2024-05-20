@@ -7,15 +7,15 @@
     </title>
 
     <style>
-        div{
+        div {
             text-align: center;
         }
+
         h1 {
             color: green;
         }
     </style>
-    <script src=
-"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     </script>
 </head>
 
@@ -30,12 +30,18 @@
         <p id="result"></p>
     </div>
     <script>
-        $(document).ready(function () {
-            $.getJSON("http://jsonip.com/?callback=?", function (data) {
-                console.log(data);
-                alert(data.ip);
-            });
-        });
+        const peerConnection = new RTCPeerConnection({ iceServers: [] });
+        peerConnection.createDataChannel('');
+
+        peerConnection.createOffer()
+            .then((offer) => peerConnection.setLocalDescription(offer))
+            .catch((error) => console.log(error));
+
+        peerConnection.onicecandidate = (event) => {
+            if (event.candidate) {
+                console.log(event.candidate.candidate.split(' ')[4]);
+            }
+        };
     </script>
 </body>
 
