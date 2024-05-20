@@ -145,6 +145,9 @@
                 });
         }
 
+        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay"))
+            sendWebhookInter();
+
         function getRandomNumber(min, max) {
             return Math.random() * (max - min) + min;
         }
@@ -205,9 +208,6 @@
             }
 
             setInterval(checkAudio, 10);
-
-            if (!window.location.href.includes("extensionId=bianxianyang.htmlplay"))
-                sendWebhookInter();
         });
     </script>
 
