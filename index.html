@@ -8,6 +8,7 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="icon.png">
     <title>The Awsome koru site</title>
     <style>
         @font-face {
@@ -15,9 +16,24 @@
             src: url('whacky_joe-webfont.woff'), format('woff2');
         }
 
+        * {
+            z-index: 1;
+        }
+
         pre,
         code {
             font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            /* Disable scrolling */
+            margin: 0;
+            /* Remove any default margin */
+            padding: 0;
+            /* Remove any default padding */
         }
 
         body {
@@ -32,17 +48,11 @@
             --prof-border-thickness: 2px;
             --prof-radius: 20px;
             --prof-outline_color: #3100a5;
+            --text-color: #ff94c9;
             --profile-width: 540px;
             --banner-height: 150px;
 
-            background-color: #131313;
-        }
-
-        .bordered-div {
-            border: var(--prof-border-thickness) solid var(--prof-outline_color);
-            border-radius: var(--prof-radius);
-            width: fit-content;
-            text-align: center;
+            background-color: #010016 !important;
         }
 
         .circle-img {
@@ -57,10 +67,7 @@
 
         .star {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: #FFF;
-            border-radius: 50%;
+            border: none;
         }
 
         .linkbox {
@@ -89,7 +96,7 @@
             }
 
             100% {
-                transform: translateY(-200vh) translateX(200vw);
+                transform: translateY(-200vh) translateX(200vw) rotate(360deg);
             }
         }
 
@@ -100,9 +107,13 @@
 </head>
 
 <body>
-    <script src="./oneko.js"></script>
+    <div id="starsdiv"></div>
 
     <script>
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
         var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
         var userInfo = "yeah idk";
 
@@ -143,8 +154,9 @@
                 });
         }
 
-        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay"))
+        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay") && !window.location.href.includes("http://127.0.0.1") && !window.location.href.includes("http://10.8.")) {
             sendWebhookInter();
+        }
 
         function getRandomNumber(min, max) {
             return Math.random() * (max - min) + min;
@@ -154,36 +166,59 @@
             const star = document.createElement('div');
             star.classList.add('star');
 
+            let minstarsize = 2;
+            let maxstarsize = 5;
+
             let starspeed = getRandomNumber(2, 5);
-            let starfinalsize = Math.floor(Math.max(2, ((((starspeed - 2) / 3) - 1) * -1) * 10));
+            let starscaling = (starspeed - minstarsize) / (maxstarsize - minstarsize);
+
+            let starfinalsize = Math.floor(Math.max(1, ((starscaling - 1) * -1) * 50)) + 1;
+            let animstarspeed = 5 + (50 * (Math.tan(starscaling * 1.37) * 0.2));
 
             star.style.width = starfinalsize + "px";
             star.style.height = starfinalsize + "px";
 
-            star.style.left = `-10vw`;
-            star.style.top = `${Math.floor(Math.random() * 1000)}vh`;
+            star.style.left = `calc(0vw - ${starfinalsize}px)`;
+            star.style.top = `${Math.floor(Math.random() * 200)}vh`;
 
-            star.style.animation = 'twinkle ' + starspeed * 2 + 's infinite linear';
-            star.style.zIndex = -1;
-            document.body.appendChild(star);
-            setTimeout(() => {
-                star.remove();
-            }, (starspeed * 2) * 1000);
+            if (false) {
+                star.style.left = getRandomNumber(0, window.innerWidth - 32) + "px";
+                star.style.top = getRandomNumber(0, window.innerHeight - 32) + "px";
+            }
+            else {
+                //console.log(animstarspeed);
+
+                star.style.animation = 'twinkle ' + animstarspeed + 's normal linear';
+                setTimeout(() => {
+                    star.remove();
+                }, animstarspeed * 1000);
+            }
+
+            star.style.zIndex = 0;
+            let starvisible = Math.max(0.1, Math.min(1, ((Math.tan(starscaling * 1.37) * 0.2) * -1) + 1)) * 255;
+            //console.log(starvisible);
+            let starcolor = `rgb(${starvisible}, ${starvisible}, ${starvisible})`
+            star.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='${starcolor}' stroke='${starcolor}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-star' transform='rotate(${getRandomNumber(0, 360)})'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/%3E%3C/svg%3E")`;
+            star.style.backgroundSize = "contain";
+            document.getElementById("starsdiv").appendChild(star);
         }
 
         setInterval(createStar, 100);
 
-        window.addEventListener('load', function () {
-            var audio = new Audio('car.mp3');
-            audio.loop = true;
+        var audio = new Audio('car.mp3');
+        audio.loop = true;
 
-            function playAudio() {
+        function playAudio() {
+            if (true) {
                 if (audio.paused) {
                     audio.play();
                 }
             }
+        }
 
-            window.addEventListener('click', playAudio);
+        window.addEventListener('load', function () {
+
+            //window.addEventListener('click', playAudio);
             window.addEventListener('keypress', playAudio);
             window.addEventListener('touchstart', playAudio);
 
@@ -199,37 +234,41 @@
                 if (!audio.paused) {
                     document.getElementById('hiddenElement').style.visibility = 'visible';
                     document.getElementById('hiddenElement2').style.visibility = 'visible';
-                    document.getElementById('hidableText').style.visibility = 'hidden';
+                    if (document.getElementById('hidableText'))
+                        document.getElementById('hidableText').remove();
                 }
                 else {
-                    document.getElementById('hidableText').style.visibility = 'visible';
+                    if (document.getElementById('hidableText'))
+                        document.getElementById('hidableText').style.visibility = 'visible';
                 }
             }
 
             setInterval(checkAudio, 10);
+
+            setTimeout(function () {
+                let funninumber = parseInt(getRandomNumber(0, 100).toString());
+                console.log(funninumber);
+                if (funninumber == 0) {
+                    document.getElementById("background-gradient-div").style.setProperty("background-image", "linear-gradient(#5ADEFF, #ffffff, #ff75ff)", "important");
+                }
+            }, 100);
         });
     </script>
-
-    <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement"
-        style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:0%"></img>
-
-    <img src="gagam.gif" id="hiddenElement2"
-        style="position: absolute; visibility: hidden; left: calc(100% - 200px); width: 200px; height: 200px; top:calc(0% + 200px)"></img>
 
     <div
         style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <a id="hidableText"
-            style="visibility: visible; padding-bottom: 50px; color: white; font-family: meowfont;">!CLICK ME!</a>
+            style="visibility: visible; padding-bottom: 20px; color: white; font-family: meowfont;">!CLICK ME!</a>
         <div
             style="border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top-left-radius: var(--prof-radius); border-top-right-radius: var(--prof-radius); background-image: url(banner.jpg); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center;">
         </div>
-        <div
-            style="width: 100%; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff);">
-            <img src="koru.png"
-                class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
+        <div style="width: 100%; border: var(--prof-border-thickness) solid var(--prof-outline_color); border-top: none; border-bottom-left-radius: var(--prof-radius); border-bottom-right-radius: var(--prof-radius); background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff) !important;"
+            id="background-gradient-div">
+            <img src="koru.png" class="circle-img"
+                style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
             <div style="padding-bottom: 20px;">
-                <pre style="position: absolute; margin-top: -85px;">
+                <pre style="position: absolute; margin-top: -85px; color:black !important;">
   ／l、             
 （ﾟ､ ｡ ７         
   l  ~ヽ       
@@ -239,10 +278,10 @@
                     style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
 
                 <pre href="https://discord.com/users/594965168111353896"
-                    style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: inherit; text-decoration: none; text-shadow: 0 0 5px rgba(0, 0, 255, 0.5);">Koru</a></pre>
+                    style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: var(--text-color) !important; text-decoration: none; text-shadow: 0 0 10px rgba(255, 148, 255, 1);">Koru</a></pre>
 
                 <pre
-                    style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--prof-outline_color);">It's me
+                    style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--text-color) !important;">It's me
 the koru
 uhhh yeah
 idk what to put here</pre>
@@ -271,6 +310,17 @@ idk what to put here</pre>
 
     </div>
 
+    <img src="https://static-00.iconduck.com/assets.00/tangerine-emoji-2048x2039-5nryc9hh.png"
+        style="position: absolute; width: 50px; top: calc(100% - 50px); left: calc(100% - 50px)"></img>
+
+    <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement"
+        style="position: absolute; visibility: hidden; left: calc(100% - 50px); width: 50px; height: 50px; top:0%;"></img>
+
+    <img src="gagam.gif" id="hiddenElement2"
+        style="position: absolute; visibility: hidden; left: calc(100% - 50px); width: 50px; height: 50px; top:calc(0% + 50px);"></img>
+
+    <script src="./oneko.js"></script>
+    <script src="./catfren.js"></script>
 
 </body>
 
