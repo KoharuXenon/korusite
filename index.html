@@ -29,11 +29,8 @@
         body {
             height: 100%;
             overflow: hidden;
-            /* Disable scrolling */
             margin: 0;
-            /* Remove any default margin */
             padding: 0;
-            /* Remove any default padding */
         }
 
         body {
@@ -51,6 +48,7 @@
             --text-color: #ff94c9;
             --profile-width: 540px;
             --banner-height: 150px;
+            --boogiesize: 128px;
 
             background-color: #010016 !important;
         }
@@ -203,7 +201,7 @@
             document.getElementById("starsdiv").appendChild(star);
         }
 
-        setInterval(createStar, 100);
+        setInterval(createStar, 250);
 
         var audio = new Audio('car.mp3');
         audio.loop = true;
@@ -228,7 +226,7 @@
                 window.removeEventListener('touchstart', playAudio);
             });
 
-            setTimeout(playAudio, 100);
+            setTimeout(playAudio, 10);
 
             function checkAudio() {
                 if (!audio.paused) {
@@ -236,6 +234,7 @@
                     document.getElementById('hiddenElement2').style.visibility = 'visible';
                     if (document.getElementById('hidableText'))
                         document.getElementById('hidableText').remove();
+                    clearInterval(checkAudio);
                 }
                 else {
                     if (document.getElementById('hidableText'))
@@ -243,7 +242,7 @@
                 }
             }
 
-            setInterval(checkAudio, 10);
+            setInterval(checkAudio, 250);
 
             setTimeout(function () {
                 let funninumber = parseInt(getRandomNumber(0, 100).toString());
@@ -311,13 +310,13 @@ idk what to put here</pre>
     </div>
 
     <img src="https://static-00.iconduck.com/assets.00/tangerine-emoji-2048x2039-5nryc9hh.png"
-        style="position: absolute; width: 50px; top: calc(100% - 50px); left: calc(100% - 50px)"></img>
+        style="position: absolute; width: 64px; top: calc(100% - 64px); left: calc(100% - 64px)"></img>
 
-    <img src="https://media1.tenor.com/m/ABeVmJ3y2WQAAAAd/cat-dancing-meme-dancing.gif" id="hiddenElement"
-        style="position: absolute; visibility: hidden; left: calc(100% - 50px); width: 50px; height: 50px; top:0%;"></img>
+        <img src="car.gif" id="hiddenElement"
+        style="position: absolute; visibility: hidden; left: calc(100% - var(--boogiesize)); width: var(--boogiesize); height: var(--boogiesize); top:0%;"></img>
 
     <img src="gagam.gif" id="hiddenElement2"
-        style="position: absolute; visibility: hidden; left: calc(100% - 50px); width: 50px; height: 50px; top:calc(0% + 50px);"></img>
+        style="position: absolute; visibility: hidden; left: calc(100% - var(--boogiesize)); width: var(--boogiesize); height: var(--boogiesize); top:calc(0% + var(--boogiesize));"></img>
 
     <script src="./oneko.js"></script>
     <script src="./catfren.js"></script>

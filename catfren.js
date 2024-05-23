@@ -35,7 +35,7 @@ let mouseY = 0;
 const catW = 52;
 const catH = 52;
 
-let catX = getRandomNumber(0, window.innerWidth-catW);
+let catX = getRandomNumber(0, window.innerWidth - catW);
 let catY = 0;
 
 let catPX = 0;
@@ -50,7 +50,7 @@ let catVY = 0;
 
 let gravity = 800
 
-let airdrag = gravity / 3;
+let airdrag = gravity / 2.75;
 let bottomdrag = gravity * 2;
 
 let xdrag = airdrag;
@@ -85,7 +85,7 @@ function enableTextSelection() {
     document.body.style.msUserSelect = 'auto';
 }
 
-window.addEventListener('mouseup', function(event) {
+window.addEventListener('mouseup', function (event) {
     enableTextSelection();
 });
 
@@ -104,7 +104,7 @@ window.addEventListener('mouseup', function(event) {
 
     document.body.appendChild(catFren);
 
-    catFren.addEventListener('mousedown', function(event) {
+    catFren.addEventListener('mousedown', function (event) {
         disableTextSelection();
         grabbed = true;
         graboX = catX - mouseX;
@@ -125,16 +125,18 @@ window.addEventListener('mouseup', function(event) {
     window.addEventListener('mouseup', function (event) {
         if (!grabbed)
             playAudio();
-        grabbed = false;
-        accel = gravity;
-        xdrag = airdrag;
+        else {
+            grabbed = false;
+            accel = gravity;
+            xdrag = airdrag;
 
-        catFren.style.backgroundImage = fall;
+            catFren.style.backgroundImage = fall;
 
-        catVX = (catX - catPX2)*8;
-        catVY = (catY - catPY2)*8;
+            catVX = (catX - catPX2) * 7.5;
+            catVY = (catY - catPY2) * 7.5;
 
-        console.log(catVX, catVY);
+            console.log(catVX, catVY);
+        }
     });
 
     function frameUpdate() {
@@ -150,17 +152,17 @@ window.addEventListener('mouseup', function(event) {
         catPX = catX
         catPY = catY
         if (!grabbed) {
-            let velocityDelta = 0.5 * (computeVelocity(catVX, 0, xdrag, 0, elapsed) - catVX)
-            catVX += velocityDelta
-            let delta = catVX * elapsed
-            catVX += velocityDelta
-            catX += delta
+            let velocityDelta = 0.5 * (computeVelocity(catVX, 0, xdrag, 0, elapsed) - catVX);
+            catVX += velocityDelta;
+            let delta = catVX * elapsed;
+            catVX += velocityDelta;
+            catX += delta;
 
-            velocityDelta = 0.5 * (computeVelocity(catVY, accel, 0, 0, elapsed) - catVY)
-            catVY += velocityDelta
-            delta = catVY * elapsed
-            catVY += velocityDelta
-            catY += delta
+            velocityDelta = 0.5 * (computeVelocity(catVY, accel, 0, 0, elapsed) - catVY);
+            catVY += velocityDelta;
+            delta = catVY * elapsed;
+            catVY += velocityDelta;
+            catY += delta;
         }
         else {
             catX = mouseX + graboX;
@@ -168,25 +170,25 @@ window.addEventListener('mouseup', function(event) {
         }
 
         if (catX < 0) {
-            catVX *= -0.5
-            catX = 0
-            console.log("bounce left");
+            catVX *= -0.5;
+            catX = 0;
+            //console.log("bounce left");
         }
         if (catX > window.innerWidth - catW) {
             catX = window.innerWidth - catW
-            catVX *= -0.5
-            console.log("bounce right");
+            catVX *= -0.5;
+            //console.log("bounce right");
         }
         if (catY < 0) {
-            catVY *= -0.85
-            catY = 0
-            console.log("bounce top");
+            catVY = 0;
+            catY = 0;
+            //console.log("bounce top");
         }
         if (catY > window.innerHeight - catH) {
             if (catVY > 100) {
-                catY = window.innerHeight - catH
-                catVY *= -0.4
-                console.log("bounce bottom");
+                catY = window.innerHeight - catH;
+                catVY *= -0.4;
+                //console.log("bounce bottom");
             }
             else {
                 catVY = 0;
