@@ -111,7 +111,7 @@ window.addEventListener('mouseup', function (event) {
     catFren.style.imageRendering = "pixelated";
     catFren.style.width = `${catW}px`;
     catFren.style.height = `${catH}px`;
-    catFren.style.position = "absolute";
+    catFren.style.position = "fixed";
     catFren.id = "catFren";
 
     catFren.style.left = catX + "px";
