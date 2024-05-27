@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <title>Koru New Tab</title>
+    <link rel="stylesheet" href="http://lengthylyova.pythonanywhere.com/static/gh-contrib-graph/gh.css">
+    <style>
+        html,
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif
+        }
+
+        body {
+            background-size: cover;
+            background-position: center;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1574068468668-a05a11f871da?crop=entropy&cs=srgb&fm=jpg&ixid=M3w2MTY1NjR8MHwxfHNlYXJjaHw3fHxhbmltYWxzfGVufDB8fHx8MTcxNjgyMjQ1NXww&ixlib=rb-4.0.3&q=85");
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            font-weight: 600;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .text1,
+        .text2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #SearchInput {
+            background-color: transparent;
+            border: 0;
+            font-family: inherit;
+            font-size: 25px;
+            outline: none;
+            padding: 0.15em 0;
+            text-align: center;
+            text-shadow: inherit;
+            border-color: white !important;
+            color: rgb(255, 255, 255) !important;
+            margin: 1rem 0;
+            width: 100%;
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+            border-color: white !important;
+        }
+
+        p {
+            padding: none;
+            margin: 0 0 0 0;
+        }
+
+        .centerMiddleDiv {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .centerLeftDiv {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        #weatherIcon {
+            width: 64px;
+            height: 64px;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .ghThumbNail {
+            display: none;
+        }
+
+        .ghCalendarHeader {
+            font-weight: 500;
+            color: rgb(200, 200, 200);
+        }
+
+        #gh a {
+            color: rgb(200, 200, 200);
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function json(url) {
+            return fetch(url).then(res => res.json());
+        }
+
+        function capitalise(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                const [cookieName, cookieValue] = cookie.split('=');
+                if (cookieName === name) {
+                    return decodeURIComponent(cookieValue);
+                }
+            }
+            return null;
+        }
+
+        function setCookie(cookiename, content) {
+            document.cookie = `${cookiename}=${encodeURIComponent(content)}; path=/`;
+        }
+
+        let defBG = getCookie("defBG");
+        if (defBG == null) {
+            setCookie("defBG", prompt("URL for default wallpaper, Leave blank to disable"));
+            defBG = getCookie("defBG");
+        }
+
+        if (defBG) {
+            document.body.style.setProperty("background-image", `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${defBG}')`, "important");
+        }
+
+        if (!getCookie("GitHubUsername")) {
+            let githubname = prompt("Github username to check, leave blank to have none");
+            if (!githubname) {
+                console.log("BLANK GITHUB NAME");
+            }
+            else {
+                setCookie("GitHubUsername", githubname);
+            }
+        }
+    </script>
+
+    <div class="centerMiddleDiv">
+        <div style="color: white; font-size: 80px;" class="centerMiddleDiv">
+            <div class="container">
+                <div class="text1" id="currentTime">Time</div>
+                <div class="text2" id="colonText">:</div>
+            </div>
+
+            <p id="welcomeText" style="font-size: 60px; padding-top: 60px;">Welcome</p>
+
+            <input id="SearchInput" placeholder="Type to search" type="text" value="">
+        </div>
+    </div>
+
+    <div id="gh" data-login="KoharuXenon" style="position: fixed; top: 10px; right: 10px"></div>
+
+    <div style="color: white; font-size: 20px; left: 10px; top: 10px; position: fixed;">
+        <p id="cityName">City Name</p>
+
+        <div class="centerLeftDiv">
+            <div id="weatherIcon"></div>
+            <p id="weatherDesc">Weather Description</p>
+        </div>
+
+        <div class="centerLeftDiv">
+            <p id="weatherTemp">Temperature</p>
+            <p style="font-size: 15px;">Feels like</p>
+            <p id="feelsLike">Feels_like Temperature</p>
+        </div>
+
+        <div class="centerLeftDiv">
+            <p id="humidity">Humidity</p>
+            <p style="font-size: 15px;">Humidity</p>
+        </div>
+    </div>
+
+    <script>
+        var input = document.getElementById("SearchInput");
+
+        input.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                let inputValue = input.value;
+                let searchUrl = "https://search.brave.com/search?q=" + encodeURIComponent(inputValue);
+                window.open(searchUrl, '_blank');
+                //window.location.href = searchUrl;
+                //window.close();
+                input.value = "";
+            }
+        });
+
+        let colontoggle = false
+
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            colontoggle = !colontoggle;
+            //document.getElementById("colonText").style.visibility = colontoggle ? "hidden" : "visible";
+            document.getElementById("welcomeText").textContent = parseInt(hours) > 12 ? "Good evening" : parseInt(hours) == 12 ? "Hello" : "Good morning";
+            document.getElementById('currentTime').textContent = `${hours} ${minutes}`;
+        }
+
+        // Update the time immediately and then every minute
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        function updateWeather(temp = null, wicurl = null, cnam = null, flik = null, wdesc = null, humidity = null) {
+            if (temp != null)
+                setCookie("temperature", temp);
+            else
+                temp = getCookie("temperature");
+
+            if (wicurl != null)
+                setCookie("weathericonurl", wicurl);
+            else
+                wicurl = getCookie("weathericonurl");
+
+            if (cnam != null)
+                setCookie("cityname", cnam);
+            else
+                cnam = getCookie("cityname");
+
+            if (flik != null)
+                setCookie("feelslike", flik);
+            else
+                flik = getCookie("feelslike");
+
+            if (wdesc != null)
+                setCookie("weatherDesc", wdesc);
+            else
+                wdesc = getCookie("weatherDesc");
+
+            if (humidity != null)
+                setCookie("humidity", humidity);
+            else
+                humidity = getCookie("humidity");
+
+            document.getElementById("weatherTemp").textContent = temp ? temp : "No Temp";
+            document.getElementById("weatherIcon").style.backgroundImage = wicurl ? wicurl : "url(icon.png)";
+            document.getElementById("cityName").textContent = cnam ? cnam : "No City";
+            document.getElementById("feelsLike").textContent = flik ? flik : "No Feels Like";
+            document.getElementById("weatherDesc").textContent = wdesc ? wdesc : "No Weather Description";
+            document.getElementById("humidity").textContent = humidity ? humidity : "No Humidity";
+        }
+
+        function doWeather(lat, lon) {
+            let apiKey = getCookie("OWMAPI");
+            if (apiKey == null) {
+                setCookie("OWMAPI", prompt("API key for openweathermap.org, Leave blank to disable"));
+                apiKey = getCookie("OWMAPI");
+            }
+
+            if (apiKey) {
+                json(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`).then(data => {
+                    let temperature = `${parseInt(data.main.temp)}°C`;
+                    let weathericonurl = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png)`;
+                    let cityname = data.name;
+                    let feelslike = `${parseInt(data.main.feels_like)}°C`;
+                    let wdesc = capitalise(data.weather[0].description);
+                    let humidity = `${data.main.humidity}%`;
+
+                    updateWeather(temperature, weathericonurl, cityname, feelslike, wdesc, humidity);
+                    console.log("weather updated");
+                }).catch(error => {
+                    console.log(error)
+                });
+            }
+        }
+
+        function fallbacklocation() {
+            console.log("Geolocation is not supported or was denied, using ip location.");
+            let apiKey = getCookie("ipdataAPIKEY");
+            if (apiKey == null) {
+                setCookie("ipdataAPIKEY", prompt("API key for ipdata.co, Leave blank to disable"));
+                apiKey = getCookie("ipdataAPIKEY");
+            }
+
+            if (apiKey) {
+                json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+                    console.log(data.latitude, data.longitude);
+                    doWeather(data.latitude, data.longitude);
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+        }
+
+        function getLocation() {
+            if (navigator.geolocation && !window.location.href.includes("htmlplay")) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    console.log("Latitude: " + position.coords.latitude +
+                        " Longitude: " + position.coords.longitude);
+
+                    doWeather(position.coords.latitude, position.coords.longitude);
+                }, fallbacklocation);
+            } else {
+                fallbacklocation();
+            }
+        }
+
+        updateWeather();
+        getLocation();
+
+        let githubname = getCookie("GitHubUsername");
+
+        if (!githubname && !window.location.href.includes("htmlplay")) {
+            document.getElementById("gh").remove();
+        }
+        else if (githubname) {
+            document.getElementById("gh").setAttribute('data-login', githubname);
+        }
+
+        window.addEventListener('load', function () {
+            let apiKey = getCookie("unsplashkey");
+            if (apiKey == null) {
+                setCookie("unsplashkey", prompt("API key for unsplash.com, Leave blank to disable"));
+                apiKey = getCookie("unsplashkey");
+            }
+
+            if (true) {
+                json(`https://api.unsplash.com/search/photos/?client_id=${apiKey}&query=animals&orientation=landscape&per_page=100&page=${getRandomNumber(1, 50)}`).then(data => {
+                    let results = data.results;
+                    let randomIndex = Math.floor(Math.random() * results.length);
+                    let randomItem = results[randomIndex];
+                    let randomImage = randomItem.urls.full;
+                    console.log(randomImage);
+                    let img = new Image();
+                    img.onload = function () {
+                        document.body.style.setProperty("background-image", `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${img.src}')`, "important");
+                    };
+                    img.src = randomImage;
+                }).catch(error => {
+                    console.log(error)
+                });
+            }
+        });
+    </script>
+
+    <script src="./oneko.js"></script>
+    <script src="./catfrenimport.js"></script>
+    <script src="http://lengthylyova.pythonanywhere.com/static/gh-contrib-graph/gh.js"></script>
+
+</body>
+
+</html>
