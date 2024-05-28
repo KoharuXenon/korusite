@@ -198,8 +198,8 @@
             if (event.key === "Enter") {
                 let inputValue = input.value;
                 let searchUrl = "https://search.brave.com/search?q=" + encodeURIComponent(inputValue);
-                //window.open(searchUrl, '_blank');
-                window.location.href = searchUrl;
+                window.open(searchUrl, '_blank');
+                //window.location.href = searchUrl;
                 //window.close();
                 input.value = "";
             }
