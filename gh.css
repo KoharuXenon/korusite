@@ -6,18 +6,20 @@
     --gh-base-size-16: 1rem;
     --gh-base-size-32: 2rem;
     --gh-cell-level0-color: #21262d;
-    --gh-cell-level1-color: #0e4429;
-    --gh-cell-level2-color: #006d32;
-    --gh-cell-level3-color: #26a641;
-    --gh-cell-level4-color: #39d353;
+
+    --gh-cell-level1-color: #440044;
+    --gh-cell-level2-color: #6d006d;
+    --gh-cell-level3-color: #a600a6;
+    --gh-cell-level4-color: #d300d3;
+
     --gh-cell-info-bg-color: #6e7681;
-    --gh-cell-outline-color: #ffffff0d;
+    --gh-cell-outline-color: rgba(255, 255, 255, 0.03);
     --gh-cell-border-color: rgba(255, 255, 255, 0.03);
     --gh-border-card-color: #30363d;
     --gh-border-card-width: max(1px, 0.0625rem);
     --gh-text-default-color: #e6edf3;
-    --gh-text-inactive-color: #848D97;
-    --gh-link-hover-color: #2f81f7;
+    --gh-text-inactive-color: rgb(200, 200, 200);
+    --gh-link-hover-color: rgb(200, 200, 200);
     --gh-font-default-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
 }
 
@@ -54,8 +56,8 @@
 .ghCalendarDayCell {
     width: 10px;
     border-radius: 2px;
-    border: 1px solid var(--gh-cell-border-color);
-    outline: 1px solid var(--gh-cell-outline-color);
+    /*border: 2px solid var(--gh-cell-border-color);*/
+    outline: 2px solid var(--gh-cell-outline-color);
     outline-offset: -2px;
 }
 .ghCalendarDayCell[data-level="NONE"] {
@@ -114,8 +116,7 @@
     padding: var(--gh-base-size-16);
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-radius: 6px;
     border: var(--gh-border-card-width, 1px) solid var(--gh-border-card-color);
 }
 .ghCalendarCanvas {
@@ -132,6 +133,8 @@
 .ghCalendarHeader {
     margin-bottom: var(--gh-base-size-4);
     height: 20px;
+    font-weight: 500;
+    color: rgb(200, 200, 200);
 }
 .ghCalendarHeader span {
     float: left;

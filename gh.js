@@ -25,6 +25,9 @@ function init_table() {
 };
 
 function addMonths(thead, months) {
+    let firstMonth = months.shift();
+    months.push(firstMonth);
+
     for (let i = 0; i < months.length - 1; i++) {
         const total_weeks = months[i]["totalWeeks"];
         if (total_weeks => 2) {
@@ -102,22 +105,6 @@ function init_header(total_contribs, ghLogin, avatarUrl) {
     return header
 }
 
-function init_thumbnail() {
-    const thumbnail = document.createElement("div");
-    const thumbNailLink = document.createElement("a");
-    const thumbnailImage = document.createElement("img");
-
-    thumbnail.className = "ghThumbNail";
-    thumbNailLink.href = "https://github.com/lengthylyova/gh-contrib-graph";
-    thumbnailImage.src = "http://lengthylyova.pythonanywhere.com/static/gh-contrib-graph/thumbnail.png";
-    thumbnailImage.style.width = "150px";
-    thumbnailImage.style.marginTop = "10px";
-    thumbnailImage.alt = "GitHub Contribution Graph";
-    thumbNailLink.appendChild(thumbnailImage);
-    thumbnail.appendChild(thumbNailLink);
-    return thumbnail
-}
-
 async function main() {
     const container = document.getElementById("gh");
     const ghLogin = container.dataset.login;
@@ -128,7 +115,6 @@ async function main() {
     const canvas = init_canvas();
     const header = init_header(calendar["totalContributions"], ghLogin, data["avatarUrl"]);
     const footer = init_card_footer();
-    const thumbnail = init_thumbnail();
 
     addWeeks(tbody, calendar["weeks"], calendar["colors"]);
     addMonths(thead, calendar["months"]);
@@ -137,7 +123,6 @@ async function main() {
     card.appendChild(canvas);
     container.appendChild(header);
     container.appendChild(card);
-    container.appendChild(thumbnail);
 }
 
 main()
