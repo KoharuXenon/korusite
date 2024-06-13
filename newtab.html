@@ -255,6 +255,8 @@
             }
 
             if (apiKey) {
+                setCookie("latitude", lat);
+                setCookie("longitude", lon);
                 json(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`).then(data => {
                     let temperature = `${parseInt(data.main.temp)}°C`;
                     let weathericonurl = `url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png)`;
@@ -304,6 +306,10 @@
 
         updateWeather();
         getLocation();
+        let firstlat = getCookie("latitude");
+        let firstlon = getCookie("longitude");
+        if (firstlat != null && firstlon != null)
+            doWeather(firstlat, firstlon);
 
         let githubname = getCookie("GitHubUsername");
 
@@ -313,31 +319,29 @@
         else if (githubname) {
             document.getElementById("gh").setAttribute('data-login', githubname);
         }
+        
+        let apiKey = getCookie("unsplashkey");
+        if (apiKey == null) {
+            setCookie("unsplashkey", prompt("API key for unsplash.com, Leave blank to disable"));
+            apiKey = getCookie("unsplashkey");
+        }
 
-        window.addEventListener('load', function () {
-            let apiKey = getCookie("unsplashkey");
-            if (apiKey == null) {
-                setCookie("unsplashkey", prompt("API key for unsplash.com, Leave blank to disable"));
-                apiKey = getCookie("unsplashkey");
-            }
-
-            if (true) {
-                json(`https://api.unsplash.com/search/photos/?client_id=${apiKey}&query=animals&orientation=landscape&per_page=100&page=${getRandomNumber(1, 50)}`).then(data => {
-                    let results = data.results;
-                    let randomIndex = Math.floor(Math.random() * results.length);
-                    let randomItem = results[randomIndex];
-                    let randomImage = randomItem.urls.full;
-                    console.log(randomImage);
-                    let img = new Image();
-                    img.onload = function () {
-                        document.body.style.setProperty("background-image", `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${img.src}')`, "important");
-                    };
-                    img.src = randomImage;
-                }).catch(error => {
-                    console.log(error)
-                });
-            }
-        });
+        if (true) {
+            json(`https://api.unsplash.com/search/photos/?client_id=${apiKey}&query=animals&orientation=landscape&per_page=100&page=${getRandomNumber(1, 50)}`).then(data => {
+                let results = data.results;
+                let randomIndex = Math.floor(Math.random() * results.length);
+                let randomItem = results[randomIndex];
+                let randomImage = randomItem.urls.raw + "&w=1920";
+                console.log(randomImage);
+                let img = new Image();
+                img.onload = function () {
+                    document.body.style.setProperty("background-image", `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${img.src}')`, "important");
+                };
+                img.src = randomImage;
+            }).catch(error => {
+                console.log(error)
+            });
+        }
     </script>
 
     <script src="./oneko.js"></script>
