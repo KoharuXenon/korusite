@@ -98,6 +98,7 @@ window.addEventListener('mouseup', function (event) {
     catFren.style.height = `${catH}px`;
     catFren.style.position = "absolute";
     catFren.id = "catFren";
+    catFren.style.zIndex = "9999999999";
 
     catFren.style.left = catX + "px";
     catFren.style.top = catY + "px";
@@ -151,7 +152,7 @@ window.addEventListener('mouseup', function (event) {
 
         catPX = catX
         catPY = catY
-        if (!grabSpritebed) {
+        if (!grabbed) {
             let velocityDelta = 0.5 * (computeVelocity(catVX, 0, xdrag, 0, elapsed) - catVX);
             catVX += velocityDelta;
             let delta = catVX * elapsed;
@@ -164,11 +165,11 @@ window.addEventListener('mouseup', function (event) {
             catVY += velocityDelta;
             catY += delta;
 
-            catFren.style.backgroundImage = fallSprite;
+            catFren.style.backgroundImage = fall;
         }
         else {
-            catX = mouseX + grabSpriteoX;
-            catY = mouseY + grabSpriteoY;
+            catX = mouseX + graboX;
+            catY = mouseY + graboY;
         }
 
         if (catX < 0) {
@@ -197,8 +198,8 @@ window.addEventListener('mouseup', function (event) {
                 //accel = 0;
                 catY = window.innerHeight - catH;
                 xdrag = bottomdrag;
-                if (!grabSpritebed)
-                    catFren.style.backgroundImage = standSprite;
+                if (!grabbed)
+                    catFren.style.backgroundImage = stand;
                 //console.log("land");
             }
         }
