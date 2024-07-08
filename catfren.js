@@ -124,20 +124,16 @@ window.addEventListener('mouseup', function (event) {
     });
 
     window.addEventListener('mouseup', function (event) {
-        if (!grabbed)
-            playAudio();
-        else {
-            grabbed = false;
-            accel = gravity;
-            xdrag = airdrag;
+        grabbed = false;
+        accel = gravity;
+        xdrag = airdrag;
 
-            catFren.style.backgroundImage = fall;
+        catFren.style.backgroundImage = fall;
 
-            catVX = (catX - catPX2) * 7.5;
-            catVY = (catY - catPY2) * 7.5;
+        catVX = (catX - catPX2) * 7.5;
+        catVY = (catY - catPY2) * 7.5;
 
-            console.log(catVX, catVY);
-        }
+        console.log(catVX, catVY);
     });
 
     function frameUpdate() {
