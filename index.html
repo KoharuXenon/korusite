@@ -370,9 +370,11 @@
             document.getElementById("win95conTitle").textContent = document.title;
 
             function doHeight(computedStyle, desiredscale) {
-                let compHeight = (parseInt(computedStyle.height) + 170) * desiredscale;
+                let compHeight = (parseInt(computedStyle.height) * desiredscale) + 170;
+                console.log("Height", compHeight, window.innerHeight)
                 if (compHeight > window.innerHeight) {
-                    let desiredscale = window.innerHeight / compHeight;
+                    desiredscale = desiredscale * (window.innerHeight / compHeight);
+                    console.log("New Height:", compHeight*desiredscale, "scale:", desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
                 }
             }
@@ -381,15 +383,17 @@
             let computedStyle = window.getComputedStyle(scalablebio);
             setTimeout(() => {
                 let compWidth = parseInt(computedStyle.width) + 50;
+                console.log("Width", compWidth, window.innerWidth)
+                let desiredscale = 1
                 if (compWidth > window.innerWidth) {
-                    let desiredscale = window.innerWidth / compWidth;
+                    desiredscale = window.innerWidth / compWidth;
+                    console.log("New width:", compWidth*desiredscale, "scale:", desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
-                    doHeight(computedStyle, desiredscale)
                 }
+                setTimeout(() => {
+                    doHeight(computedStyle, desiredscale)
+                }, 10);
             }, 0);
-            setTimeout(function () {
-                doHeight(computedStyle, 1)
-            }, 10)
         });
     </script>
 
@@ -525,10 +529,12 @@ idk what to put here</pre>
             location.href = 'epicgame/index.html';
         }
         function explodePage() {
+            var audio = new Audio('explode.mp3');
+            audio.play();
             document.getElementById("explodeIMG").style.display = "block"
             setTimeout(function () {
                 document.body.remove();
-            }, 600);
+            }, 550);
         }
     </script>
 
