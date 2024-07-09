@@ -35,7 +35,10 @@ let mouseY = 0;
 const catW = 52;
 const catH = 52;
 
-let catX = getRandomNumber(0, window.innerWidth - catW);
+const realWidth = window.visualViewport.width;
+const realHeight = window.visualViewport.height;
+
+let catX = getRandomNumber(0, realWidth - catW);
 let catY = 0;
 
 let catPX = 0;
@@ -173,8 +176,8 @@ window.addEventListener('mouseup', function (event) {
             catX = 0;
             //console.log("bounce left");
         }
-        if (catX > window.innerWidth - catW) {
-            catX = window.innerWidth - catW
+        if (catX > realWidth - catW) {
+            catX = realWidth - catW
             catVX *= -0.5;
             //console.log("bounce right");
         }
@@ -183,16 +186,16 @@ window.addEventListener('mouseup', function (event) {
             catY = 0;
             //console.log("bounce top");
         }
-        if (catY > window.innerHeight - catH) {
+        if (catY > realHeight - catH) {
             if (catVY > 100) {
-                catY = window.innerHeight - catH;
+                catY = realHeight - catH;
                 catVY *= -0.4;
                 //console.log("bounce bottom");
             }
             else {
                 catVY = 0;
                 //accel = 0;
-                catY = window.innerHeight - catH;
+                catY = realHeight - catH;
                 xdrag = bottomdrag;
                 if (!grabbed)
                     catFren.style.backgroundImage = stand;

@@ -76,12 +76,16 @@
             font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
         }
 
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #010016;
         }
 
         body {
@@ -249,6 +253,9 @@
             return Math.random() * (max - min) + min;
         }
 
+        const actualWidth = window.visualViewport.width;
+        const actualHeight = window.visualViewport.height;
+
         var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
         var userInfo = "yeah idk";
 
@@ -325,7 +332,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    content: `<@594965168111353896> The page has been loaded\n${userInfo}`
+                    content: `<@594965168111353896> The page has been loaded\n\n${userInfo}`
                 })
             })
                 .then(response => {
@@ -366,8 +373,8 @@
             star.style.top = `${Math.floor(Math.random() * 200)}vh`;
 
             if (false) {
-                star.style.left = getRandomNumber(0, window.innerWidth - 32) + "px";
-                star.style.top = getRandomNumber(0, window.innerHeight - 32) + "px";
+                star.style.left = getRandomNumber(0, actualWidth - 32) + "px";
+                star.style.top = getRandomNumber(0, actualHeight - 32) + "px";
             }
             else {
                 //console.log(animstarspeed);
@@ -438,11 +445,11 @@
             document.getElementById("win95conTitle").textContent = document.title;
 
             function doHeight(computedStyle, desiredscale) {
-                let compHeight = (parseInt(computedStyle.height) * desiredscale) + 170;
-                console.log("Height", compHeight, window.innerHeight)
-                if (compHeight > window.innerHeight) {
-                    desiredscale = desiredscale * (window.innerHeight / compHeight);
-                    console.log("New Height:", compHeight * desiredscale, "scale:", desiredscale);
+                let compHeight = ((parseInt(computedStyle.height) + (61*2)) * desiredscale);
+                console.log("Height" + ", " + compHeight + ", " + actualHeight)
+                if (compHeight > actualHeight) {
+                    desiredscale = desiredscale * (actualHeight / compHeight);
+                    console.log("New Height:" + ", " + compHeight * desiredscale + ", " + "scale:" + ", " + desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
                 }
             }
@@ -450,12 +457,12 @@
             let scalablebio = document.getElementById("win95con");
             let computedStyle = window.getComputedStyle(scalablebio);
             setTimeout(() => {
-                let compWidth = parseInt(computedStyle.width) + 50;
-                console.log("Width", compWidth, window.innerWidth)
+                let compWidth = parseInt(computedStyle.width) + 256;
+                console.log("Width" + ", " + compWidth + ", " + actualWidth)
                 let desiredscale = 1
-                if (compWidth > window.innerWidth) {
-                    desiredscale = window.innerWidth / compWidth;
-                    console.log("New width:", compWidth * desiredscale, "scale:", desiredscale);
+                if (compWidth > actualWidth) {
+                    desiredscale = actualWidth / compWidth;
+                    console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
                 }
                 setTimeout(() => {
@@ -526,7 +533,7 @@ idk what to put here</pre>
                                 <a href="https://www.cavestory.org/" style="height: 31px;">
                                     <img backup="https://leojrthetanooki.github.io/webgraphics/buttons/cave-story-button4.gif"
                                         src="cave-story-button4.gif" id="shiggy">
-                                    
+
                                 </a>
                             </div>
                             <div style="display: flex;  justify-content: center;">
@@ -545,26 +552,23 @@ idk what to put here</pre>
                 </div>
             </div>
 
-            <div id="domainInfo"></div>
-
-        </div>
-    </div>
-
-    <div class="win95con" style="left: 0px !important; transform: translate(0%, 50px);">
-        <div>
-            <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
-                style="padding: 1px;" />
-            <p id="win95conTitle">Playlist</p>
-            <button>X</button>
-            <button>?</button>
-        </div>
-        <div id="win95containerreal">
-            <div id="playListDiv">
-                <div id="playListEqualizer">
-                    <p id="progressTime">00:00/00:00</p>
-                    <progress id="progressBar" max="100" value="0"></progress>
+            <div class="win95con" style="top: 330px; left: -130px; transform: translate(0%, 0%);">
+                <div>
+                    <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
+                        style="padding: 1px;" />
+                    <p id="win95conTitle">Playlist</p>
+                    <button>X</button>
+                    <button>?</button>
                 </div>
-                <div id="musicItems"></div>
+                <div id="win95containerreal">
+                    <div id="playListDiv">
+                        <div id="playListEqualizer">
+                            <p id="progressTime">00:00/00:00</p>
+                            <progress id="progressBar" max="100" value="0"></progress>
+                        </div>
+                        <div id="musicItems"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -698,7 +702,7 @@ idk what to put here</pre>
             playListDiv.appendChild(playMusic);
         });
 
-        document.getElementById("tangerine").addEventListener("click", function(event) {
+        document.getElementById("tangerine").addEventListener("click", function (event) {
             alert(`#include <iostream>
 
 int main() {
