@@ -13,7 +13,7 @@
     <style id="font-face-style">
         @font-face {
             font-family: meowfont;
-            src: url('whacky_joe-webfont.woff') format('woff2');
+            src: url('font/whacky_joe-webfont.woff') format('woff2');
         }
     </style>
     <style>
@@ -403,7 +403,7 @@
 
         setInterval(createStar, 250);
 
-        var audio = new Audio('car.mp3');
+        var audio = new Audio('music/car.mp3');
         audio.loop = true;
 
         function playAudio() {
@@ -485,6 +485,7 @@
                 <button>?</button>
                 <button id="epicButton" onclick="openEpicGame()">Epic Game</button>
                 <button id="epicButton" onclick="openEpicSite()">Epic Site</button>
+                <button id="epicButton" onclick="openPman()">CHECK THESE GUYS</button>
             </div>
             <div id="win95containerreal">
                 <div
@@ -716,6 +717,9 @@ int main() {
     <script src="./catfren.js"></script>
 
     <script>
+        function openPman() {
+            location.href = 'https://pmandudeguylol.github.io/pmans-epic-site/';
+        }
         function openEpicSite() {
             location.href = 'website/index.html';
         }
