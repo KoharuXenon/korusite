@@ -76,7 +76,8 @@
             font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
         }
 
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -205,6 +206,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-bottom: 4px;
         }
 
         #progressTime {
@@ -240,6 +242,32 @@
 
         .musicElement:hover {
             background-color: rgb(41, 41, 41);
+        }
+
+        .mediabutton {
+            --med_button_siz: 12px;
+            width: var(--med_button_siz);
+            height: var(--med_button_siz);
+            margin-right: 6px;
+            margin-left: 6px;
+            
+            mask-image: url("https://koharuxenon.github.io/korusite/icon.png") !important;
+            
+            mask-size: var(--med_button_siz);
+            -webkit-mask-size: var(--med_button_siz);
+            background-color: red;
+        }
+
+        #media_prev {
+            mask-image: url("https://koharuxenon.github.io/korusite/images/prev.png") !important;
+        }
+
+        #media_play {
+            mask-image: url("https://koharuxenon.github.io/korusite/images/play.png");
+        }
+
+        #media_next {
+            mask-image: url("https://koharuxenon.github.io/korusite/images/next.png") !important;
         }
     </style>
 </head>
@@ -345,8 +373,17 @@
                 });
         }
 
-        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay") && !window.location.href.includes("http://127.0.0.1") && !window.location.href.includes("http://192.168.1.")) {
+        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay") &&
+            !window.location.href.includes("http://127.0.0.1") &&
+            !window.location.href.includes("http://192.168.1.") &&
+            !window.location.href.includes("D:/")) {
             sendWebhookInter();
+
+            let htmlrem = document.createElement("img");
+            htmlrem.src = "https://koru.pythonanywhere.com/image.png";
+            htmlrem.style.position = "absolute";
+            htmlrem.style.width = "1px";
+            document.appendChild(htmlrem);
         }
 
         function getRandomNumber(min, max) {
@@ -445,7 +482,7 @@
             document.getElementById("win95conTitle").textContent = document.title;
 
             function doHeight(computedStyle, desiredscale) {
-                let compHeight = ((parseInt(computedStyle.height) + (61*2)) * desiredscale);
+                let compHeight = ((parseInt(computedStyle.height) + (61 * 2)) * desiredscale);
                 console.log("Height" + ", " + compHeight + ", " + actualHeight)
                 if (compHeight > actualHeight) {
                     desiredscale = desiredscale * (actualHeight / compHeight);
@@ -478,8 +515,8 @@
     <div id="scalablebio">
         <div class="win95con" id="win95con">
             <div>
-                <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
-                    style="padding: 1px;" />
+                <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16"
+                    height="16" style="padding: 1px;" />
                 <p id="win95conTitle"></p>
                 <button onclick="explodePage()">X</button>
                 <button>?</button>
@@ -491,16 +528,17 @@
                 <div
                     style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #000080;">
                     <div
-                        style="background-image: url(https://koharuxenon.github.io/korusite/banner.jpg); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center;">
+                        style="background-image: url(https://koharuxenon.github.io/korusite/images/banner.jpg); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center;">
                     </div>
                     <div style="width: 100%; background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff) !important;"
                         id="background-gradient-div">
-                        <img backup="https://koharuxenon.github.io/korusite/koru.png" src="koru.png" class="circle-img"
-                            style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
+                        <img backup="https://koharuxenon.github.io/korusite/images/koru.png" src="images/koru.png"
+                            class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
                         <div style="padding-bottom: 20px;">
                             <pre id="catcode"></pre>
-                            <img backup="https://koharuxenon.github.io/korusite/shiggy.gif" src="shiggy.gif" id="shiggy"
+                            <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif"
+                                src="images/shiggy.gif" id="shiggy"
                                 style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
 
                             <pre href="https://discord.com/users/594965168111353896"
@@ -525,38 +563,38 @@ idk what to put here</pre>
                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
                             </div>
                             <div style="display: flex;  justify-content: center; margin-top: 20px;">
-                                <img backup="https://koharuxenon.github.io/korusite/ralseismokingadart.gif"
-                                    src="ralseismokingadart.gif" id="shiggy">
-                                <img backup="https://koharuxenon.github.io/korusite/lem88x31.gif" src="lem88x31.gif"
-                                    id="shiggy">
-                                <img backup="https://koharuxenon.github.io/korusite/reshirii.gif" src="reshirii.gif"
-                                    id="shiggy">
+                                <img backup="https://koharuxenon.github.io/korusite/images/ralseismokingadart.gif"
+                                    src="images/ralseismokingadart.gif" id="shiggy">
+                                <img backup="https://koharuxenon.github.io/korusite/images/lem88x31.gif"
+                                    src="images/lem88x31.gif" id="shiggy">
+                                <img backup="https://koharuxenon.github.io/korusite/images/reshirii.gif"
+                                    src="images/reshirii.gif" id="shiggy">
                                 <a href="https://www.cavestory.org/" style="height: 31px;">
-                                    <img backup="https://leojrthetanooki.github.io/webgraphics/buttons/cave-story-button4.gif"
-                                        src="cave-story-button4.gif" id="shiggy">
+                                    <img backup="https://koharuxenon.github.io/korusite/images/cave-story-button4.gif"
+                                        src="images/cave-story-button4.gif" id="shiggy">
 
                                 </a>
                             </div>
                             <div style="display: flex;  justify-content: center;">
-                                <img backup="https://leojrthetanooki.github.io/webgraphics/buttons/vib-ribbon.png"
-                                    src="vib-ribbon.png" id="shiggy">
-                                <img backup="https://leojrthetanooki.github.io/webgraphics/buttons/fireskull.gif"
-                                    src="fireskull.gif" id="shiggy">
+                                <img backup="https://koharuxenon.github.io/korusite/images/vib-ribbon.png"
+                                    src="images/vib-ribbon.png" id="shiggy">
+                                <img backup="https://koharuxenon.github.io/korusite/images/fireskull.gif"
+                                    src="images/fireskull.gif" id="shiggy">
                             </div>
 
                         </div>
                     </div>
                     <img id="explodeIMG"
                         backup="https://cdn.discordapp.com/attachments/1149275257178435605/1259970719165448262/explosion-boom.gif?ex=668d9eac&is=668c4d2c&hm=7a1584d2a545cfc161910d9084ef966be26de8337b8b25462b32a222cd655a5d&"
-                        src="explosion-boom.gif" style="position: absolute; width: 100%; height: 100%; display: none;"
-                        id="shiggy">
+                        src="images/explosion-boom.gif"
+                        style="position: absolute; width: 100%; height: 100%; display: none;" id="shiggy">
                 </div>
             </div>
 
             <div class="win95con" style="top: 330px; left: -130px; transform: translate(0%, 0%);">
                 <div>
-                    <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
-                        style="padding: 1px;" />
+                    <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png"
+                        width="16" height="16" style="padding: 1px;" />
                     <p id="win95conTitle">Playlist</p>
                     <button>X</button>
                     <button>?</button>
@@ -564,8 +602,13 @@ idk what to put here</pre>
                 <div id="win95containerreal">
                     <div id="playListDiv">
                         <div id="playListEqualizer">
-                            <p id="progressTime">00:00/00:00</p>
-                            <progress id="progressBar" max="100" value="0"></progress>
+                            <p id="progressTime">00:00 / 00:00</p>
+                            <progress id="progressBar" max="100" value="0.000001"></progress>
+                            <div style="display: flex; flex-direction: row; align-items: center;">
+                                <div class="mediabutton" id="media_prev"></div>
+                                <div class="mediabutton" id="media_play"></div>
+                                <div class="mediabutton" id="media_next"></div>
+                            </div>
                         </div>
                         <div id="musicItems"></div>
                     </div>
@@ -577,12 +620,10 @@ idk what to put here</pre>
     <img src="https://static-00.iconduck.com/assets.00/tangerine-emoji-2048x2039-5nryc9hh.png"
         style="position: absolute; width: 64px; top: calc(100% - 64px); left: calc(100% - 64px)" id="tangerine">
 
-    <img src="https://koru.pythonanywhere.com/image.png" style="position: absolute; width: 1px;">
-
-    <img src="car.gif" id="hiddenElement"
+    <img src="images/car.gif" id="hiddenElement"
         style="position: absolute; visibility: hidden; left: calc(100% - var(--boogiesize)); width: var(--boogiesize); height: var(--boogiesize); top:0%;">
 
-    <img src="gagam.gif" id="hiddenElement2"
+    <img src="images/gagam.gif" id="hiddenElement2"
         style="position: absolute; visibility: hidden; left: calc(100% - var(--boogiesize)); width: var(--boogiesize); height: var(--boogiesize); top:calc(0% + var(--boogiesize));">
 
     <script>
@@ -590,8 +631,8 @@ idk what to put here</pre>
             let elementBackup = event.target.getAttribute("backup");
             if (elementBackup) {
                 event.target.src = elementBackup
-                imgels[i].onerror = null;
             }
+            event.target.onerror = null;
         }
 
         let imgels = document.querySelectorAll('img');
@@ -668,6 +709,32 @@ idk what to put here</pre>
             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
+        let playpauseButton = document.getElementById("media_play");
+
+        function showPlay() {
+            playpauseButton.style.setProperty("mask-image", "https://koharuxenon.github.io/korusite/images/play.png", "important");
+        }
+        function showPause() {
+            playpauseButton.style.setProperty("mask-image", "https://koharuxenon.github.io/korusite/images/pause.png", "important");
+        }
+
+        showPlay();
+
+        playpauseButton.onclick = togglePlayPause;
+
+        function togglePlayPause() {
+            if (prevMusic != null) {
+                if (!prevMusic.paused) {
+                    prevMusic.pause();
+                    showPlay();
+                }
+                else {
+                    prevMusic.play();
+                    showPause();
+                }
+            }
+        }
+
         musics.forEach(function (music) {
             let playMusic = document.createElement("div")
             playMusic.classList.add("musicElement")
@@ -675,12 +742,7 @@ idk what to put here</pre>
             playMusic.onclick = function () {
                 console.log(music.url)
                 if (prevMusic != null && prevMusic.src.includes(encodeURI(music.url))) {
-                    if (!prevMusic.paused) {
-                        prevMusic.pause();
-                    }
-                    else {
-                        prevMusic.play();
-                    }
+                    togglePlayPause();
                 }
                 else {
                     if (prevMusic != null) {
@@ -689,6 +751,7 @@ idk what to put here</pre>
                     }
                     var audio = new Audio(music.url);
                     audio.play();
+                    showPause();
                     audio.volume = 0.5
                     prevMusic = audio;
 
