@@ -657,7 +657,7 @@
                 star.style.backgroundImage = "url(\"https://koharuxenon.github.io/korusite/images/shiggy.gif\")"
             }
             if (parseInt(getRandomNumber(0, 20)) == 0) {
-                star.style.backgroundImage = "url(\"030.gif\")"
+                star.style.backgroundImage = "url(\"https://koharuxenon.github.io/korusite/images/030.gif\")"
             }
             star.style.backgroundSize = "contain";
             star.style.backgroundRepeat = "no-repeat";
@@ -742,6 +742,7 @@
                 playListContainer.style.visibility = "hidden"
                 musicButton.style.setProperty("visibility", "visible", "important")
                 ismobile = true
+                console.log("Is mobile:", navigator.userAgent)
             }
 
             function togglePlayListVisibility(event) {
