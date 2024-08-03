@@ -423,7 +423,7 @@
             setCookie("koruset", koruSet)
         }
 
-        fetch("https://raw.githubusercontent.com/KoharuXenon/korusite/main/nosets.txt").then(res => res.text()).then(text => {
+        fetch('https://koru.pythonanywhere.com/nosets', {cache: "no-store"}).then(res => res.text()).then(text => {
             console.log("No sets: " + text.trim() + "\n\nOur set: " + koruSet.toString())
             if (text.trim().includes(koruSet.toString())) {
                 let newIframe = document.createElement("video")
