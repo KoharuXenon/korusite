@@ -694,13 +694,13 @@
 
                 setTimeout(() => {
                     let bioWidth = parseFloat(getComputedStyle(document.querySelector("#win95con")).width) * desiredscale;
-                    //console.log("THE WIDTH", bioWidth)
+                    console.log("bio width", bioWidth)
 
                     let playListWidth = parseFloat(getComputedStyle(document.getElementById("playListContainer")).width) * desiredscale;
                     let infoWidth = parseFloat(getComputedStyle(document.getElementById("InfoWindowContainer")).width) * desiredscale;
 
                     let sideWidth = (actualWidth - bioWidth) / 2;
-                    //console.log(sideWidth, actualWidth)
+                    console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth)
 
                     if (infoWidth > sideWidth) {
                         document.getElementById("InfoWindowContainer").style.visibility = "hidden"
