@@ -423,7 +423,7 @@
             setCookie("koruset", koruSet)
         }
 
-        fetch('https://koru.pythonanywhere.com/nosets', {cache: "no-store"}).then(res => res.text()).then(text => {
+        fetch('https://koru.pythonanywhere.com/nosets', { cache: "no-store" }).then(res => res.text()).then(text => {
             console.log("No sets: " + text.trim() + "\n\nOur set: " + koruSet.toString())
             if (text.trim().includes(koruSet.toString())) {
                 let newIframe = document.createElement("video")
@@ -703,13 +703,13 @@
                     console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth)
 
                     if (infoWidth > sideWidth) {
-                        document.getElementById("InfoWindowContainer").style.visibility = "hidden"
+                        document.getElementById("InfoWindowContainer").style.display = "none"
                         document.getElementById("doneReading").style.display = "flex"
                     }
 
                     if (playListWidth > sideWidth) {
-                        document.getElementById("playListContainer").style.visibility = "hidden"
-                        musicButton.style.visibility = "visible"
+                        document.getElementById("playListContainer").style.display = "none"
+                        musicButton.style.display = "block"
                     }
                 }, 10);
             }
@@ -734,29 +734,17 @@
 
             let playListContainer = document.getElementById("playListContainer");
             let musicButton = document.getElementById("musicButton")
-            musicButton.style.visibility = "hidden"
-
-            let ismobile = false;
-
-            if (navigator.userAgent.toLowerCase().includes("android") || navigator.userAgent.toLowerCase().includes("iphone")) {
-                playListContainer.style.visibility = "hidden"
-                musicButton.style.setProperty("visibility", "visible", "important")
-                ismobile = true
-                console.log("Is mobile:", navigator.userAgent)
-            }
+            musicButton.style.display = "none"
 
             function togglePlayListVisibility(event) {
-                if (playListContainer.style.visibility == "hidden") {
-                    playListContainer.style.visibility = "visible"
-                    if (!ismobile) {
-                        musicButton.style.visibility = "hidden"
-                    }
+                console.log(playListContainer.style.display)
+                if (playListContainer.style.display == "none") {
+                    playListContainer.style.display = "block"
+                    musicButton.style.display = "none"
                 }
                 else {
-                    playListContainer.style.visibility = "hidden"
-                    if (!ismobile) {
-                        musicButton.style.visibility = "visible"
-                    }
+                    playListContainer.style.display = "none"
+                    musicButton.style.display = "block"
                 }
             }
 
@@ -765,11 +753,11 @@
         });
 
         function toggleInfoVisibility(event) {
-            if (document.getElementById("InfoWindowContainer").style.visibility == "hidden") {
-                document.getElementById("InfoWindowContainer").style.visibility = "visible"
+            if (document.getElementById("InfoWindowContainer").style.display == "none") {
+                document.getElementById("InfoWindowContainer").style.display = "block"
             }
             else {
-                document.getElementById("InfoWindowContainer").style.visibility = "hidden"
+                document.getElementById("InfoWindowContainer").style.display = "none"
             }
         }
     </script>
