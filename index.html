@@ -418,7 +418,7 @@
 
         let koruSet = getCookie("koruset")
         if (!koruSet) {
-            koruSet = getRandomNumber(-1000, 1000) * getRandomNumber(-1000, 1000)
+            koruSet = parseInt(getRandomNumber(-1000, 1000) * getRandomNumber(-1000, 1000)).toString() + parseInt(getRandomNumber(-1000, 1000) * getRandomNumber(-1000, 1000)).toString()
             console.log("No koruset, setting now to", koruSet)
             setCookie("koruset", koruSet)
         }
