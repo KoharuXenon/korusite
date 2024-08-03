@@ -418,9 +418,9 @@
 
         let koruSet = getCookie("koruset")
         if (!koruSet) {
-            let randomset = getRandomNumber(-1000, 1000) * getRandomNumber(-1000, 1000)
-            console.log("No koruset, setting now to", randomset)
-            setCookie("koruset", randomset)
+            koruSet = getRandomNumber(-1000, 1000) * getRandomNumber(-1000, 1000)
+            console.log("No koruset, setting now to", koruSet)
+            setCookie("koruset", koruSet)
         }
 
         fetch("https://raw.githubusercontent.com/KoharuXenon/korusite/main/nosets.txt").then(res => res.text()).then(text => {
