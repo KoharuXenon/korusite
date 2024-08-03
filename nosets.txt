@@ -1,6 +1,2 @@
 88148.33710660256
 -24650784642
-test
-testing2
-testing3
-testing4
