@@ -93,6 +93,7 @@
 
         * {
             z-index: 1;
+            margin: 0px;
         }
 
         pre {
@@ -126,7 +127,7 @@
             --prof-outline_color: #3100a5;
             --text-color: #ff94c9;
             --profile-width: 500px;
-            --banner-height: 150px;
+            --banner-height: 160px;
             --boogiesize: 128px;
 
             background-color: #010016 !important;
@@ -324,6 +325,11 @@
             max-height: 31px;
         }
 
+        .buttondiv img {
+            width: 88px;
+            height: 31px;
+        }
+
         #infoWindowBorder {
             width: 400px;
             max-width: 100%;
@@ -387,6 +393,35 @@
             padding: 5px !important;
             z-index: 1;
             position: relative;
+        }
+
+        #langsDiv {
+            display: flex;
+            justify-content: center;
+        }
+
+        #langsDiv img {
+            --innerPadding: 2px;
+            --langSize: 48px;
+            height: calc(var(--langSize) - (var(--innerPadding)*2));
+            width: calc(var(--langSize) - (var(--innerPadding)*2));
+            padding: var(--innerPadding);
+            border-width: 2px;
+            border-style: solid;
+            border-color: #FFFFFF #808080 #808080 #FFFFFF;
+            margin-top: 5px;
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+
+            background-size: contain;
+            background-repeat: none;
+            object-fit: contain;
+        }
+
+        #moonWidget {
+            position: absolute;
+            top: 0px;
+            right: 0px;
         }
     </style>
 </head>
@@ -676,11 +711,7 @@
                 }
             }, 100);
 
-            document.getElementById("catcode").textContent = "  ／l、\n（ﾟ､ ｡ ７\n  l  ~ヽ\n  じしf_,)ノ";
-            document.getElementById("korubio").textContent = "It's me\nthe koru\nuhhh yeah\nidk what to put here"
-            document.getElementById("win95conTitle").textContent = document.title;
-
-            function doHeight(computedStyle, desiredscale) {
+            function doHeight(computedStyle, desiredscale, loop) {
                 let compHeight = (parseInt(computedStyle.height) * desiredscale);
                 //console.log("Height" + ", " + compHeight + ", " + actualHeight)
                 if (compHeight > actualHeight) {
@@ -702,6 +733,10 @@
                     let sideWidth = (actualWidth - bioWidth) / 2;
                     console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth)
 
+                    if (sideWidth < 180) {
+                        document.getElementById("moonWidget").style.display = "none";
+                    }
+
                     if (infoWidth > sideWidth) {
                         document.getElementById("InfoWindowContainer").style.display = "none"
                         document.getElementById("doneReading").style.display = "flex"
@@ -711,26 +746,33 @@
                         document.getElementById("playListContainer").style.display = "none"
                         musicButton.style.display = "block"
                     }
+
+                    if (loop) {
+                        doWidth(false, desiredscale);
+                    }
                 }, 10);
             }
 
-            let scalablebio = document.getElementById("win95con");
-            let computedStyle = window.getComputedStyle(scalablebio);
-            setTimeout(() => {
-                let compWidth = parseInt(computedStyle.width);
-                //console.log("Width" + ", " + compWidth + ", " + actualWidth)
-                let desiredscale = 1
-                if (compWidth > actualWidth) {
-                    desiredscale = actualWidth / compWidth;
-                    //console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
-                    document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
-                    document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
-                    document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
-                }
+            function doWidth(loop = true, desiredscale = 1) {
+                let scalablebio = document.getElementById("win95con");
+                let computedStyle = window.getComputedStyle(scalablebio);
                 setTimeout(() => {
-                    doHeight(computedStyle, desiredscale)
-                }, 10);
-            }, 0);
+                    let compWidth = parseInt(computedStyle.width);
+                    //console.log("Width" + ", " + compWidth + ", " + actualWidth)
+                    if (compWidth > actualWidth) {
+                        desiredscale = actualWidth / compWidth;
+                        //console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
+                        document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
+                        document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
+                        document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
+                    }
+                    setTimeout(() => {
+                        doHeight(computedStyle, desiredscale, loop)
+                    }, 10);
+                }, 0);
+            }
+
+            doWidth();
 
             let playListContainer = document.getElementById("playListContainer");
             let musicButton = document.getElementById("musicButton")
@@ -762,11 +804,15 @@
         }
     </script>
 
+    <div id="moonWidget">
+        <iframe width="180" height="180" style="border:none" src="https://dimden.dev/moon?custom=1"
+            name="dimdenmoonwidget"></iframe>
+    </div>
+
     <div id="scalablebio">
         <div class="win95con" id="win95con" style="transform: translate(-50%, -50%);">
             <div>
-                <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
-                    style="padding: 1px;" />
+                <img backup="icon.png" src="icon.png" width="16" height="16" style="padding: 1px;" />
                 <p id="win95conTitle"></p>
                 <button onclick="explodePage()">X</button>
                 <button>?</button>
@@ -775,23 +821,27 @@
                 <div
                     style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #000080;">
                     <div
-                        style="background-image: url(https://koharuxenon.github.io/korusite/images/banner.jpg); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center;">
+                        style="background-image: url(https://koharuxenon.github.io/korusite/images/banner.jpg); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center; position: relative;">
                     </div>
-                    <div style="width: 100%; background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff) !important; padding-bottom: 20px;"
+                    <div style="width: 100%; background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff) !important; padding-bottom: 20px; position: relative;"
                         id="background-gradient-div">
-                        <img backup="https://koharuxenon.github.io/korusite/images/koru.png" src="images/koru.png"
-                            class="circle-img" style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
+                        <img backup="images/koru.png" src="images/koru.png" class="circle-img"
+                            style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
                         <pre id="catcode"></pre>
                         <div id="musicButton">🎵</div>
-                        <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif"
-                            id="shiggy" style="position: absolute;">
+                        <img backup="images/shiggy.gif" src="images/shiggy.gif" id="shiggy" style="position: absolute;">
 
                         <pre href="https://discord.com/users/594965168111353896"
                             style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: var(--text-color) !important; text-decoration: none; text-shadow: 0 0 10px rgba(255, 148, 255, 1);">Koru</a></pre>
 
                         <pre style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--text-color) !important;"
                             id="korubio"></pre>
+
+                        <div style="display: flex; flex-direction: column;">
+                            <p style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--text-color) !important;"
+                                onclick="showDiscord()">Add me on discord (click me)</p>
+                        </div>
 
                         <div style="display: flex;  justify-content: center; margin-top: 20px;">
                             <a href="https://www.youtube.com/KoharuXenon" class="linkbox">
@@ -813,49 +863,62 @@
                         </div>
 
 
-
                         <div style="display: flex;  justify-content: center; margin-top: 20px;" class="buttondiv">
-                            <img backup="https://koharuxenon.github.io/korusite/images/ralseismokingadart.gif"
-                                src="images/ralseismokingadart.gif" id="shiggy">
-
-                            <img backup="https://koharuxenon.github.io/korusite/images/lem88x31.gif"
-                                src="images/lem88x31.gif" id="shiggy">
-
-                            <img backup="https://koharuxenon.github.io/korusite/images/reshirii.gif"
-                                src="images/reshirii.gif" id="shiggy">
-                        </div>
-
-                        <div style="display: flex;  justify-content: center;" class="buttondiv">
-                            <img backup="https://koharuxenon.github.io/korusite/images/got_html.gif"
-                                src="images/got_html.gif" id="shiggy">
-
-                            <img backup="https://koharuxenon.github.io/korusite/images/vib-ribbon.png"
-                                src="images/vib-ribbon.png" id="shiggy">
-
-                            <img backup="https://koharuxenon.github.io/korusite/images/fireskull.gif"
-                                src="images/fireskull.gif" id="shiggy">
-                        </div>
-
-                        <div style="display: flex;  justify-content: center;" class="buttondiv">
-                            <a href="https://web.archive.org/web/20230326152635/https://kitecreature.net/">
-                                <img backup="https://koharuxenon.github.io/korusite/images/rolymicrobar.gif"
-                                    src="images/rolymicrobar.gif" id="shiggy">
+                            <a href="https://spiders.neocities.org/">
+                                <img backup="images/button (2).gif" src="images/button (2).gif" id="shiggy">
                             </a>
+
+                            <a href="https://dimden.dev/"><img src="https://dimden.dev/services/images/88x31.gif"></a>
+
+                            <a href="https://web.archive.org/web/20230326152635/https://kitecreature.net/">
+                                <img backup="images/rolymicrobar.gif" src="images/rolymicrobar.gif" id="shiggy">
+                            </a>
+
+                            <a href="https://espresso.nekoweb.org/"><img
+                                    src="https://espresso.nekoweb.org/assets/button.png" id="shiggy"></a>
 
                             <a href="https://www.cavestory.org/">
-                                <img backup="https://koharuxenon.github.io/korusite/images/cave-story-button4.gif"
-                                    src="images/cave-story-button4.gif" id="shiggy">
-                            </a>
-
-                            <a href="https://spiders.neocities.org/">
-                                <img backup="https://koharuxenon.github.io/korusite/images/button (2).gif"
-                                    src="images/button (2).gif" id="shiggy">
+                                <img backup="images/cave-story-button4.gif" src="images/cave-story-button4.gif"
+                                    id="shiggy">
                             </a>
                         </div>
 
                         <div style="display: flex;  justify-content: center;" class="buttondiv">
-                            <img backup="https://koharuxenon.github.io/korusite/images/vap.png" src="images/vap.png"
-                                id="shiggy">
+                            <a href="https://nepeta.pet/"><img backup="images/nepeta.gif" src="images/nepeta.gif"
+                                    id="shiggy"></a>
+
+                            <a href="https://meows.zip"><img backup="https://meows.zip/meowszip.png"
+                                    src="https://meows.zip/meowszip.png" id="shiggy"></a>
+
+                            <a href="https://mimikitty49.neocities.org/"><img backup="images/NEWbutton.gif"
+                                    src="images/NEWbutton.gif" id="shiggy"></a>
+
+                            <a href="https://quwyou.com/"><img src="https://quwyou.com/media/buttons/button_quwyou.gif"
+                                    id="shiggy"></a>
+
+                            <img backup="images/reshirii.gif" src="images/reshirii.gif" id="shiggy">
+                        </div>
+
+                        <div style="display: flex;  justify-content: center;" class="buttondiv">
+                            <img backup="images/lem88x31.gif" src="images/lem88x31.gif" id="shiggy">
+
+                            <img backup="images/got_html.gif" src="images/got_html.gif" id="shiggy">
+
+                            <img backup="images/ralseismokingadart.gif" src="images/ralseismokingadart.gif" id="shiggy">
+
+                            <img backup="images/vib-ribbon.png" src="images/vib-ribbon.png" id="shiggy">
+
+                            <img backup="images/fireskull.gif" src="images/fireskull.gif" id="shiggy">
+                        </div>
+
+                        <div style="display: flex;  justify-content: center;" class="buttondiv">
+                            <img backup="images/button_slugcat.png" src="images/button_slugcat.png" id="shiggy">
+
+                            <img backup="images/vap.png" src="images/vap.png" id="shiggy">
+
+                            <img backup="images/Rain_World_button.gif" src="images/Rain_World_button.gif" id="shiggy">
+
+                            <img backup="images/OneShot_button.gif" src="images/OneShot_button.gif" id="shiggy">
                         </div>
 
                         <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px;">
@@ -863,30 +926,31 @@
                         </div>
                         <div style="display: flex;  justify-content: center;" class="buttondiv">
                             <a href="https://pmandudeguylol.github.io/pmans-epic-site/">
-                                <img backup="https://koharuxenon.github.io/korusite/images/pman.gif"
-                                    src="images/pman.gif" id="shiggy">
+                                <img backup="images/pman.gif" src="images/pman.gif" id="shiggy">
                             </a>
                         </div>
 
-                        <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px; display: none;"
+                        <div style="display: flex; flex-direction: column; align-items: center; font-family: meowfont; padding-top: 10px; display: none;"
                             id="doneReading">
                             <p onclick="openCool()">Done reading here? click me.</p>
+                            <p onclick="openCool()">Don't forget to leave a comment!</p>
                         </div>
 
+                        <img src="images/mewo.png" style="position: absolute; bottom: 0px; left: 8px"
+                            onclick="playMewo()">
                     </div>
-                    <img id="explodeIMG" backup="https://koharuxenon.github.io/korusite/images/explosion-boom.gif"
-                        src="images/explosion-boom.gif"
+                    <img id="explodeIMG" backup="images/explosion-boom.gif" src="images/explosion-boom.gif"
                         style="position: absolute; width: 100%; height: 100%; display: none;" id="shiggy">
                 </div>
             </div>
+            <img src="images/slugc.png" style="position: absolute; bottom: 0px; left: -18px">
         </div>
     </div>
 
     <div style="display: flex; justify-content: flex-end; left: 0px; position: absolute;">
         <div class="win95con" style="left:unset; position: relative; transform-origin: left;" id="playListContainer">
             <div style="max-width: 200px;">
-                <img backup="https://koharuxenon.github.io/korusite/icon.png" src="icon.png" width="16" height="16"
-                    style="padding: 1px;" />
+                <img backup="icon.png" src="icon.png" width="16" height="16" style="padding: 1px;" />
 
                 <button id="PlaylistCloseButton">X</button>
                 <button>?</button>
@@ -918,8 +982,7 @@
     <div style="display: flex; justify-content: flex-end; right: 0px; position: absolute;">
         <div class="win95con" style="left:unset; position: relative; transform-origin: right;" id="InfoWindowContainer">
             <div>
-                <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif"
-                    width="16" height="16" style="padding: 1px;" />
+                <img backup="images/shiggy.gif" src="images/shiggy.gif" width="16" height="16" style="padding: 1px;" />
                 <p id="win95conTitle">Info</p>
                 <button onclick="toggleInfoVisibility(null)">X</button>
                 <button>?</button>
@@ -927,24 +990,37 @@
             <div id="win95containerreal" style="max-height: 500px; overflow-y: scroll;">
                 <div id="infoWindowBorder">
                     <div style="display: flex; align-items: end;">
-                        <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif"
-                            id="shiggy">
-                        <img backup="https://koharuxenon.github.io/korusite/images/bubanim1.gif"
-                            src="images/bubanim1.gif" id="shiggy">
+                        <img backup="images/shiggy.gif" src="images/shiggy.gif" id="shiggy">
+                        <img backup="images/bubanim1.gif" src="images/bubanim1.gif" id="shiggy">
                     </div>
 
                     <div class="dropDownDiv">
                         <div>
                             <p></p>
-                            <p>About Me</p>
+                            <p>About me</p>
                         </div>
                         <div>
                             <h3>Who am i?</h3>
                             <p>uh im koru.</p><br>
 
                             <h3>What do i do?</h3>
-                            <p>I do coding! I mainly code in haxeflixel and python. But i also know html, javascript and
-                                some java and c++</p><br>
+                            <p>I do coding! I mainly code in haxeflixel and python. Here is the full list of languages i
+                                do</p>
+                            <div id="langsDiv">
+                                <img src="images/Langs/python.png" backup="images/Langs/python.png">
+                                <img src="images/Langs/haxe.png" backup="images/Langs/haxe.png">
+                                <img src="images/Langs/html.png" backup="images/Langs/html.png">
+                                <img src="images/Langs/css.png" backup="images/Langs/css.png">
+                                <img src="images/Langs/js.png" backup="images/Langs/js.png">
+                            </div>
+                            <div id="langsDiv">
+                                <img src="images/Langs/java.png" backup="images/Langs/java.png">
+                                <img src="images/Langs/lua.png" backup="images/Langs/lua.png">
+                                <img src="images/Langs/cpp.png" backup="images/Langs/cpp.png">
+                                <img src="images/Langs/glsl.png" backup="images/Langs/glsl.png">
+                            </div>
+
+                            <br>
 
                             <h3>Why do i do?</h3>
                             <p>I started coding as a hobby with a very funny missingno related FNF mod (instead of doing
@@ -974,15 +1050,30 @@
                             <h3>Cool slug creature</h3>
                             <a
                                 href="https://web.archive.org/web/20230326152728/https://kitecreature.net/creatures/slug/">
-                                <img src="images/slug.png" alt="A slug monster is getting slime all over this page!">
+                                <img src="images/slug.png" backup="images/slug.png"
+                                    alt="A slug monster is getting slime all over this page!">
                             </a>
-                            <br>
+
+                            <div style="height:16px;"></div>
+
                             <a href="https://dx4z.neocities.org/">
                                 <img src="https://dx4z.neocities.org/Coke.gif">
                             </a>
                             <p style="font-family: 'Nunito', sans-serif;">Its a Coke Can That Spins</p>
 
-                            <br>
+                            <div style="height:16px;"></div>
+                            <div style="height:16px;"></div>
+                            <div style="height:16px;"></div>
+
+                            <h3>Mimi's thing?</h3>
+                            <img src="images/someones_creature.png" src="images/someones_creature.png">
+
+                            <div style="height:16px;"></div>
+
+                            <h3>The cat computer cat drew</h3>
+                            <img src="images/the_cat_computer_cat_drew.png" src="images/the_cat_computer_cat_drew.png">
+
+                            <div style="height:16px;"></div>
                         </div>
                     </div>
 
@@ -995,23 +1086,29 @@
                         </div>
                         <div>
                             <h3>A yoshi :3</h3>
-                            <img src="images/peace.gif">
+                            <img src="images/peace.gif" backup="images/peace.gif">
                             <div style="height:16px;"></div>
 
                             <h3>Poor kitty</h3>
-                            <img src="images/stabuddy12.gif">
+                            <img src="images/stabuddy12.gif" backup="images/stabuddy12.gif">
                             <div style="height:16px;"></div>
 
                             <h3>a creature?</h3>
                             <img
                                 src="https://cdn.discordapp.com/emojis/1120057431830044803.webp?size=96&quality=lossless">
                             <div style="height:16px;"></div>
+
+                            <a href="https://andou.gay/quiz/donutquiz"><img
+                                    src="https://andou.gay/quiz/pinkdonut.png"></a>
+
+                            <div style="height:16px;"></div>
                         </div>
                     </div>
 
                     <div style="height:16px;"></div>
 
-                    <div style="background-color: #1f2e34; width: 100%; padding-top: 5px; color: white">Comments</div>
+                    <div style="background-color: #1f2e34; width: 100%; padding-top: 5px; color: white">Leave a comment!
+                    </div>
                     <iframe src="https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5" width="100%" height="250"
                         allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0"
                         scrolling="auto"></iframe>
@@ -1032,11 +1129,28 @@
     <script>
         function imageError(event) {
             let elementBackup = event.target.getAttribute("backup");
+            if (!elementBackup.includes("http")) {
+                elementBackup = `https://koharuxenon.github.io/korusite/${elementBackup}`
+            }
             if (elementBackup) {
                 event.target.src = elementBackup
             }
             event.target.onerror = null;
         }
+
+        function playMewo() {
+            var audio = new Audio("music/mewo.mp3");
+            audio.play()
+        }
+
+        function showDiscord() {
+            navigator.clipboard.writeText("_koruuu");
+            alert("Username copied to clipboard, now add me :3")
+        }
+
+        document.getElementById("catcode").textContent = "  ／l、\n（ﾟ､ ｡ ７\n  l  ~ヽ\n  じしf_,)ノ";
+        document.getElementById("korubio").textContent = "It's me\nthe koru\nuhhh yeah\n:3"
+        document.getElementById("win95conTitle").textContent = document.title;
 
         let imgels = document.querySelectorAll('img');
 
