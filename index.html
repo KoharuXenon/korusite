@@ -541,8 +541,8 @@
             }
         });
 
-        const actualWidth = window.visualViewport.width;
-        const actualHeight = window.visualViewport.height;
+        const actualWidth = window.visualViewport.width - 10;
+        const actualHeight = window.visualViewport.height - 10;
 
         var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
         var userInfo = "yeah idk";
@@ -737,9 +737,11 @@
                         document.getElementById("moonWidget").style.display = "none";
                     }
 
-                    if (infoWidth > sideWidth) {
-                        document.getElementById("InfoWindowContainer").style.display = "none"
-                        document.getElementById("doneReading").style.display = "flex"
+                    if (true) {
+                        if (infoWidth > sideWidth) {
+                            document.getElementById("InfoWindowContainer").style.display = "none"
+                            document.getElementById("doneReading").style.display = "flex"
+                        }
                     }
 
                     if (playListWidth > sideWidth) {
@@ -936,14 +938,14 @@
                             <p onclick="openCool()">Don't forget to leave a comment!</p>
                         </div>
 
-                        <img src="images/mewo.png" style="position: absolute; bottom: 0px; left: 8px"
+                        <img src="images/mewo.png" backup="images/mewo.png" style="position: absolute; bottom: 0px; left: 8px"
                             onclick="playMewo()">
                     </div>
                     <img id="explodeIMG" backup="images/explosion-boom.gif" src="images/explosion-boom.gif"
                         style="position: absolute; width: 100%; height: 100%; display: none;" id="shiggy">
                 </div>
             </div>
-            <img src="images/slugc.png" style="position: absolute; bottom: 0px; left: -18px">
+            <img src="images/slugc.png" backup="images/slugc.png" style="position: absolute; bottom: 0px; left: -18px">
         </div>
     </div>
 
@@ -1066,12 +1068,12 @@
                             <div style="height:16px;"></div>
 
                             <h3>Mimi's thing?</h3>
-                            <img src="images/someones_creature.png" src="images/someones_creature.png">
+                            <img src="images/someones_creature.png" backup="images/someones_creature.png">
 
                             <div style="height:16px;"></div>
 
                             <h3>The cat computer cat drew</h3>
-                            <img src="images/the_cat_computer_cat_drew.png" src="images/the_cat_computer_cat_drew.png">
+                            <img src="images/the_cat_computer_cat_drew.png" backup="images/the_cat_computer_cat_drew.png">
 
                             <div style="height:16px;"></div>
                         </div>
@@ -1107,11 +1109,18 @@
 
                     <div style="height:16px;"></div>
 
-                    <div style="background-color: #1f2e34; width: 100%; padding-top: 5px; color: white">Leave a comment!
+                    <div style="width: calc(100% - 4px); border-width: 2px; border-style: solid; border-color: #FFFFFF #808080 #808080 #FFFFFF; display: flex; flex-direction: column;">
+                        <div style="background-color: #1f2e34; width: 100%; padding-top: 5px; color: white">Leave a
+                            comment!
+                        </div>
+                        <iframe src="https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5" width="100%" height="250"
+                            allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0"
+                            scrolling="auto" id="commentBox"></iframe>
+
+                        <a href="https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5"
+                            style="background-color: #1f2e34; width: 100%; padding-top: 15px; display: none;"
+                            id="backupCommentBox">https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5</a>
                     </div>
-                    <iframe src="https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5" width="100%" height="250"
-                        allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0"
-                        scrolling="auto"></iframe>
                 </div>
             </div>
         </div>
@@ -1137,6 +1146,29 @@
             }
             event.target.onerror = null;
         }
+
+        let commentBox = document.getElementById("commentBox");
+        let backupBox = document.getElementById("backupCommentBox");
+
+        commentBox.onerror = function () {
+            console.log("Iframe fail")
+            backupBox.style.display = "block";
+            commentBox.style.display = "none";
+        }
+
+        commentBox.onload = function () {
+            console.log('Iframe loaded successfully');
+            backupBox.style.display = "none";
+            commentBox.style.display = "block";
+        };
+
+        setTimeout(function () {
+            if (!commentBox.contentWindow || commentBox.contentWindow.location.href === 'about:blank') {
+                console.log('Iframe appears to have failed to load');
+                commentBox.style.display = "none";
+                backupBox.style.display = "block";
+            }
+        }, 1000);
 
         function playMewo() {
             var audio = new Audio("music/mewo.mp3");
