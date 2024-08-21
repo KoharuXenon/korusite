@@ -8,9 +8,9 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="Koru's Website"/>
-    <meta property="og:description" content="The website created by koru"/>
-    <meta property="og:image" content="https://korumeow.dev/icon.png"/>
+    <meta property="og:title" content="Koru's Website" />
+    <meta property="og:description" content="The website created by koru" />
+    <meta property="og:image" content="https://korumeow.dev/icon.png" />
     <link rel="icon" type="image/x-icon" href="icon.png">
     <title>The Awsome koru site</title>
     <style id="font-face-style">
@@ -584,31 +584,60 @@
                 const cyclesPerRun = 2;
                 const speed = (runs / ms / 1000000) * cyclesPerRun;
 
-                userInfo = `IP: ${data.ip}, Count: ${data.count}
+                let deviceType = "windows";
+                ["Android", "Iphone", "linux"].forEach(function (devtype) {
+                    if (navigator.userAgent.toLowerCase().includes(devtype.toLowerCase())) {
+                        deviceType = devtype;
+                    }
+                })
+
+                userInfo = `
+                IP: ${data.ip}, Count: ${data.count}
                 ID: ${koruSet}
                 ASN: ${data.asn.name}, Type: ${data.asn.type}
                 Region: ${data.region}, ${data.country_name}: ${data.emoji_flag}
                 [Maps Link](https://www.google.co.uk/maps/place/${data.latitude},${data.longitude})
-                url: <${window.location.toString()}>
-                Referer: ${document.referrer || "None"}
+                url: <${window.location.toString()}>, Referer: ${document.referrer || "None"}
                 Agent: ${navigator.userAgent}
-                Dims: ${screen.width}x${screen.height}
+                Device type: ${deviceType}
+                Dims: ${parseInt(screen.width * window.devicePixelRatio)}x${parseInt(screen.height * window.devicePixelRatio)}
                 Mem: ${navigator.deviceMemory || 'Unknown'}
-                CPUS: ${navigator.hardwareConcurrency || 'Unknown'}
-                Est GHz: ${Math.round(speed * 10) / 10}
-                \nWebGL Info:\n`;
+                CPU: ${navigator.hardwareConcurrency || 'Unknown'} Cores, ${Math.round(speed * 10) / 10} GHz`;
 
-                userInfo += "RENDERER: " + gl.getParameter(gl.RENDERER) + "\n";
-                userInfo += "VENDOR: " + gl.getParameter(gl.VENDOR) + "\n";
-                userInfo += "vendor: " + getUnmaskedInfo(gl).vendor + "\n";
-                userInfo += "renderer: " + getUnmaskedInfo(gl).renderer + "\n";
+                let anyThreat = false;
+
+                for (i in data.threat) {
+                    thisThreat = data.threat[i]
+                    if (i.toString() != "blocklists") {
+                        if (thisThreat) {
+                            if (!anyThreat) {
+                                userInfo += "\n\n**THREATS**:"
+                            }
+                            userInfo += `\n${i}`
+                            if (i.toString() == "is_datacenter") {
+                                return;
+                            }
+                            anyThreat = true;
+                        }
+                    }
+                }
+
+                if (gl) {
+                    userInfo += `\n\nWebGL Info:\n`;
+
+                    userInfo += "vendor: " + getUnmaskedInfo(gl).vendor + "\n";
+                    userInfo += "renderer: " + getUnmaskedInfo(gl).renderer + "\n";
+                }
+                else {
+                    userInfo += "\nNo webgl";
+                }
 
                 let userInfoLines = []
                 userInfo.split("\n").forEach(function (value) {
                     userInfoLines.push(value.trim())
                 })
 
-                userInfo = userInfoLines.join("\n")
+                userInfo = userInfoLines.join("\n").trim()
 
                 sendWebhook();
             }).catch(error => {
@@ -638,8 +667,9 @@
         }
 
         if (!window.location.href.includes("extensionId=bianxianyang.htmlplay") &&
-            !window.location.href.includes("//127.0.0.1") &&
-            !window.location.href.includes("//192.168.1.") &&
+            !window.location.href.includes("//127") &&
+            !window.location.href.includes("//192") &&
+            !window.location.href.includes("Z:/") &&
             !window.location.href.includes("D:/")) {
             sendWebhookInter();
 
@@ -713,71 +743,6 @@
                     document.getElementById("background-gradient-div").style.setProperty("background-image", "linear-gradient(#5ADEFF, #ffffff, #ff75ff)", "important");
                 }
             }, 100);
-
-            function doHeight(computedStyle, desiredscale, loop) {
-                let compHeight = (parseInt(computedStyle.height) * desiredscale);
-                //console.log("Height" + ", " + compHeight + ", " + actualHeight)
-                if (compHeight > actualHeight) {
-                    desiredscale = desiredscale * (actualHeight / compHeight);
-                    //console.log("New Height:" + ", " + compHeight * desiredscale + ", " + "scale:" + ", " + desiredscale);
-                    document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
-                    document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
-                    document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
-                }
-
-
-                setTimeout(() => {
-                    let bioWidth = parseFloat(getComputedStyle(document.querySelector("#win95con")).width) * desiredscale;
-                    console.log("bio width", bioWidth)
-
-                    let playListWidth = parseFloat(getComputedStyle(document.getElementById("playListContainer")).width) * desiredscale;
-                    let infoWidth = parseFloat(getComputedStyle(document.getElementById("InfoWindowContainer")).width) * desiredscale;
-
-                    let sideWidth = (actualWidth - bioWidth) / 2;
-                    console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth)
-
-                    if (sideWidth < 180) {
-                        document.getElementById("moonWidget").style.display = "none";
-                    }
-
-                    if (true) {
-                        if (infoWidth > sideWidth) {
-                            document.getElementById("InfoWindowContainer").style.display = "none"
-                            document.getElementById("doneReading").style.display = "flex"
-                        }
-                    }
-
-                    if (playListWidth > sideWidth) {
-                        document.getElementById("playListContainer").style.display = "none"
-                        musicButton.style.display = "block"
-                    }
-
-                    if (loop) {
-                        doWidth(false, desiredscale);
-                    }
-                }, 10);
-            }
-
-            function doWidth(loop = true, desiredscale = 1) {
-                let scalablebio = document.getElementById("win95con");
-                let computedStyle = window.getComputedStyle(scalablebio);
-                setTimeout(() => {
-                    let compWidth = parseInt(computedStyle.width);
-                    //console.log("Width" + ", " + compWidth + ", " + actualWidth)
-                    if (compWidth > actualWidth) {
-                        desiredscale = actualWidth / compWidth;
-                        //console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
-                        document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
-                        document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
-                        document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
-                    }
-                    setTimeout(() => {
-                        doHeight(computedStyle, desiredscale, loop)
-                    }, 10);
-                }, 0);
-            }
-
-            doWidth();
 
             let playListContainer = document.getElementById("playListContainer");
             let musicButton = document.getElementById("musicButton")
@@ -941,8 +906,8 @@
                             <p onclick="openCool()">Don't forget to leave a comment!</p>
                         </div>
 
-                        <img src="images/mewo.png" backup="images/mewo.png" style="position: absolute; bottom: 0px; left: 8px"
-                            onclick="playMewo()">
+                        <img src="images/mewo.png" backup="images/mewo.png"
+                            style="position: absolute; bottom: 0px; left: 8px" onclick="playMewo()">
                     </div>
                     <img id="explodeIMG" backup="images/explosion-boom.gif" src="images/explosion-boom.gif"
                         style="position: absolute; width: 100%; height: 100%; display: none;" id="shiggy">
@@ -1076,7 +1041,8 @@
                             <div style="height:16px;"></div>
 
                             <h3>The cat computer cat drew</h3>
-                            <img src="images/the_cat_computer_cat_drew.png" backup="images/the_cat_computer_cat_drew.png">
+                            <img src="images/the_cat_computer_cat_drew.png"
+                                backup="images/the_cat_computer_cat_drew.png">
 
                             <div style="height:16px;"></div>
                         </div>
@@ -1112,7 +1078,8 @@
 
                     <div style="height:16px;"></div>
 
-                    <div style="width: calc(100% - 4px); border-width: 2px; border-style: solid; border-color: #FFFFFF #808080 #808080 #FFFFFF; display: flex; flex-direction: column;">
+                    <div
+                        style="width: calc(100% - 4px); border-width: 2px; border-style: solid; border-color: #FFFFFF #808080 #808080 #FFFFFF; display: flex; flex-direction: column;">
                         <div style="background-color: #1f2e34; width: 100%; padding-top: 5px; color: white">Leave a
                             comment!
                         </div>
@@ -1149,6 +1116,71 @@
             }
             event.target.onerror = null;
         }
+
+        function doHeight(computedStyle, desiredscale, loop) {
+            let compHeight = (parseInt(computedStyle.height) * desiredscale);
+            //console.log("Height" + ", " + compHeight + ", " + actualHeight)
+            if (compHeight > actualHeight) {
+                desiredscale = desiredscale * (actualHeight / compHeight);
+                //console.log("New Height:" + ", " + compHeight * desiredscale + ", " + "scale:" + ", " + desiredscale);
+                document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
+                document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
+                document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
+            }
+
+
+            setTimeout(() => {
+                let bioWidth = parseFloat(getComputedStyle(document.querySelector("#win95con")).width) * desiredscale;
+                //console.log("bio width", bioWidth)
+
+                let playListWidth = parseFloat(getComputedStyle(document.getElementById("playListContainer")).width) * desiredscale;
+                let infoWidth = parseFloat(getComputedStyle(document.getElementById("InfoWindowContainer")).width) * desiredscale;
+
+                let sideWidth = (actualWidth - bioWidth) / 2;
+                //console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth)
+
+                if (sideWidth < 180) {
+                    document.getElementById("moonWidget").style.display = "none";
+                }
+
+                if (true) {
+                    if (infoWidth > sideWidth) {
+                        document.getElementById("InfoWindowContainer").style.display = "none"
+                        document.getElementById("doneReading").style.display = "flex"
+                    }
+                }
+
+                if (playListWidth > sideWidth) {
+                    document.getElementById("playListContainer").style.display = "none"
+                    musicButton.style.display = "block"
+                }
+
+                if (loop) {
+                    doWidth(false, desiredscale);
+                }
+            }, 10);
+        }
+
+        function doWidth(loop = true, desiredscale = 1) {
+            setTimeout(() => {
+                let scalablebio = document.getElementById("win95con");
+                let computedStyle = window.getComputedStyle(scalablebio);
+                let compWidth = parseInt(computedStyle.width);
+                //console.log("Width" + ", " + compWidth + ", " + actualWidth)
+                if (compWidth > actualWidth) {
+                    desiredscale = actualWidth / compWidth;
+                    //console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
+                    document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
+                    document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
+                    document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
+                }
+                setTimeout(() => {
+                    doHeight(computedStyle, desiredscale, loop)
+                }, 10);
+            }, 0);
+        }
+
+        doWidth();
 
         let commentBox = document.getElementById("commentBox");
         let backupBox = document.getElementById("backupCommentBox");
