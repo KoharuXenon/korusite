@@ -547,7 +547,7 @@
         const actualWidth = window.visualViewport.width - 10;
         const actualHeight = window.visualViewport.height - 10;
 
-        var webhookURL = "https://discord.com/api/webhooks/1143172539183534132/YRbyGP-3XZBkPveCPozw3lXUc81NPXtjjeAIqNKf-p9g9Slfl1JmJAd_QUwSttDoahoE";
+        var webhookURL = `https://${window.location.hostname}/bior/`;
         var userInfo = "yeah idk";
 
         function json(url) {
@@ -571,113 +571,6 @@
             }
 
             return unMaskedInfo;
-        }
-
-        function sendWebhookInter() {
-            let apiKey = '8c7095acb749cd89945b39c8f59293449d382d0ac157bd0b360f19d4';
-            json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-                const runs = 150000000;
-                const start = performance.now(); // in ms, usually with 100us resolution
-                for (let i = runs; i > 0; i--) { }
-                const end = performance.now();
-                const ms = end - start;
-                const cyclesPerRun = 2;
-                const speed = (runs / ms / 1000000) * cyclesPerRun;
-
-                let deviceType = "windows";
-                ["Android", "Iphone", "linux"].forEach(function (devtype) {
-                    if (navigator.userAgent.toLowerCase().includes(devtype.toLowerCase())) {
-                        deviceType = devtype;
-                    }
-                })
-
-                userInfo = `
-                IP: ${data.ip}, Count: ${data.count}
-                ID: ${koruSet}
-                ASN: ${data.asn.name}, Type: ${data.asn.type}
-                Region: ${data.region}, ${data.country_name}: ${data.emoji_flag}
-                [Maps Link](https://www.google.co.uk/maps/place/${data.latitude},${data.longitude})
-                url: <${window.location.toString()}>, Referer: ${document.referrer || "None"}
-                Agent: ${navigator.userAgent}
-                Device type: ${deviceType}
-                Dims: ${parseInt(screen.width * window.devicePixelRatio)}x${parseInt(screen.height * window.devicePixelRatio)}
-                Mem: ${navigator.deviceMemory || 'Unknown'}
-                CPU: ${navigator.hardwareConcurrency || 'Unknown'} Cores, ${Math.round(speed * 10) / 10} GHz`;
-
-                let anyThreat = false;
-
-                for (i in data.threat) {
-                    thisThreat = data.threat[i]
-                    if (i.toString() != "blocklists") {
-                        if (thisThreat) {
-                            if (!anyThreat) {
-                                userInfo += "\n\n**THREATS**:"
-                            }
-                            userInfo += `\n${i}`
-                            if (i.toString() == "is_datacenter") {
-                                return;
-                            }
-                            anyThreat = true;
-                        }
-                    }
-                }
-
-                if (gl) {
-                    userInfo += `\n\nWebGL Info:\n`;
-
-                    userInfo += "vendor: " + getUnmaskedInfo(gl).vendor + "\n";
-                    userInfo += "renderer: " + getUnmaskedInfo(gl).renderer + "\n";
-                }
-                else {
-                    userInfo += "\nNo webgl";
-                }
-
-                let userInfoLines = []
-                userInfo.split("\n").forEach(function (value) {
-                    userInfoLines.push(value.trim())
-                })
-
-                userInfo = userInfoLines.join("\n").trim()
-
-                sendWebhook();
-            }).catch(error => {
-                userInfo = `Error: ${error}`;
-                sendWebhook();
-            });
-        }
-
-        function sendWebhook() {
-            fetch(webhookURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    content: `<@594965168111353896> The page has been loaded\n\n${userInfo}`
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        console.error('Failed to send webhook:', response.status, response.statusText);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error sending webhook:', error);
-                });
-        }
-
-        if (!window.location.href.includes("extensionId=bianxianyang.htmlplay") &&
-            !window.location.href.includes("//127") &&
-            !window.location.href.includes("//192") &&
-            !window.location.href.includes("Z:/") &&
-            !window.location.href.includes("D:/")) {
-            sendWebhookInter();
-
-            let htmlrem = document.createElement("img");
-            htmlrem.src = "https://koru.pythonanywhere.com/image.png";
-            htmlrem.style.position = "absolute";
-            htmlrem.style.width = "1px";
-            document.body.appendChild(htmlrem);
         }
 
         function getRandomNumber(min, max) {
@@ -732,7 +625,7 @@
             document.getElementById("starsdiv").appendChild(star);
         }
 
-        setInterval(createStar, 250);
+        setInterval(createStar, 600);
 
         window.addEventListener('load', function () {
 
@@ -1550,6 +1443,7 @@ int main() {
 
     <script src="./oneko.js"></script>
     <script src="./catfren.js"></script>
+    <script src="./bior.js"></script>
 
     <script>
         function openCool() {

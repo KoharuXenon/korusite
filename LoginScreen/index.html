@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in to CoffeeBox</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            color: rgb(212, 190, 152) !important;
+            background-color: #282828 !important;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        div {
+            text-align: center;
+        }
+
+        * {
+            font-family: "Comic Sans MS" !important;
+            margin: 0;
+        }
+
+        #username,
+        #password,
+        #loginButton,
+        #signupButton,
+        .ssoLogin {
+            background-color: #151718;
+            padding: 10px;
+            border: 2px solid #6d6455;
+            border-radius: 10px;
+            color: rgb(212, 190, 152) !important;
+            transition: background-color linear 0.1s;
+            cursor: pointer;
+            display: inline-block;
+            max-width: calc(100vw - 64px);
+            min-width: 300px;
+        }
+
+        #loginButton,
+        #signupButton,
+        .ssoLogin {
+            background-color: #2b2726;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .ssoLogin .ssoIcon {
+            position: absolute;
+            top: 25%;
+            left: 10px;
+        }
+
+        .desktopLogin {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .companyLogo {
+            margin-left: 100px;
+        }
+
+        .companyLogo img {
+            width: 400px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="background-color: #151718; width: 100vw; height: 40px; position: absolute; top: 0px; left: 0px;">
+        <img src="./tangerine.png" style="position: absolute; height: 30px; left: 5px; top: 5px">
+        <div style="position: absolute; height: 30px; left: 45px; top: 5px; font-size: 20px;">CoffeeBox</div>
+    </div>
+    <div id="loginUIContainer">
+        <div
+            style="display: flex; align-items: center; justify-content: center; flex-direction: column; padding-top: 10px;">
+            <div style="margin-bottom: 20px;" id="mobileCompanyText">
+                <h3>Welcome to CoffeeBox</h3>
+                <h3>Free temporary file storage</h3>
+            </div>
+    
+            <form style="display: flex; flex-direction: column;">
+                <label for="username">Username/e-mail</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username / E-mail address">
+    
+                <div style="height: 16px;"></div>
+    
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+    
+                <input type="submit" value="Log in" id="loginButton">
+                <input type="submit" value="No account? Sign up" id="signupButton">
+            </form>
+    
+            <div style="margin-top: 50px; display: flex; flex-direction: column;">
+                <div class="ssoLogin">
+                    <img src="https://static-00.iconduck.com/assets.00/google-icon-2048x2048-pks9lbdv.png" class="ssoIcon"
+                        style="height: 50%;">
+                    Login with Google
+                </div>
+                <div class="ssoLogin">
+                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="ssoIcon" style="height: 50%;">
+                    Login with GitHub
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function isMobile() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            // Check for common mobile device identifiers
+            return /android|iphone|ipad|ipod|windows phone/i.test(userAgent);
+        }
+
+        if (!isMobile()) {
+            document.getElementById("mobileCompanyText").remove()
+            document.getElementById("loginUIContainer").classList.add("desktopLogin")
+
+            let companyLogo = document.createElement("div")
+            companyLogo.classList.add("companyLogo")
+
+            let companyLogoImage = document.createElement("img")
+            companyLogoImage.src = "./wideLogo.png"
+            companyLogo.appendChild(companyLogoImage)
+
+            let companyText = document.createElement("div")
+            companyText.innerHTML = "Welcome to CoffeeBox<br>Free temporary file storage"
+            companyLogo.appendChild(companyText)
+
+            document.getElementById("loginUIContainer").appendChild(companyLogo)
+        }
+    </script>
+</body>
+
+</html>
