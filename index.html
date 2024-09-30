@@ -2,10 +2,6 @@
 <html lang="en">
 
 <head>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
-    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="Koru's Website" />
@@ -13,6 +9,7 @@
     <meta property="og:image" content="https://korumeow.dev/icon.png" />
     <link rel="icon" type="image/x-icon" href="icon.png">
     <title>The Awsome koru site</title>
+
     <style id="font-face-style">
         @font-face {
             font-family: meowfont;
@@ -31,14 +28,24 @@
             }
         }
     </style>
-
-    <style id="scrollPaste">
-    </style>
+    <style id="scrollPaste"></style>
 
     <style>
         @font-face {
             font-family: Nunito;
             src: url('https://sadhost.neocities.org/fonts/FreePixel.ttf');
+        }
+
+        @keyframes scrollButtons {
+            0% {
+                transform: translateX(400px);
+                /* Start from the right */
+            }
+
+            100% {
+                transform: translateX(-968px);
+                /* Scroll all the way to the left */
+            }
         }
 
         .win95con {
@@ -279,7 +286,7 @@
 
             width: calc(100% - (14px + var(--playingWidth)));
             padding-left: var(--playingWidth);
-            background-image: url("https://koharuxenon.github.io/korusite/images/shiggy.gif");
+            background-image: url("images/shiggy.gif");
             background-size: contain;
             background-repeat: no-repeat;
         }
@@ -302,11 +309,11 @@
         }
 
         #media_prev {
-            mask-image: url("https://koharuxenon.github.io/korusite/images/prev.png") !important;
+            mask-image: url("images/prev.png") !important;
         }
 
         #media_next {
-            mask-image: url("https://koharuxenon.github.io/korusite/images/next.png") !important;
+            mask-image: url("images/next.png") !important;
         }
 
         .scrollable-container {
@@ -328,9 +335,15 @@
             max-height: 31px;
         }
 
+        .buttondiv {
+            font-size: 0;
+            /* Removes the space between inline elements */
+        }
+
         .buttondiv img {
             width: 88px;
             height: 31px;
+            image-rendering: pixelated;
         }
 
         #infoWindowBorder {
@@ -396,6 +409,11 @@
             padding: 5px !important;
             z-index: 1;
             position: relative;
+        }
+
+        .dropDownDiv> :nth-child(1) p {
+            user-select: none;
+            cursor: pointer;
         }
 
         #langsDiv {
@@ -590,6 +608,8 @@
             let starfinalsize = Math.floor(Math.max(1, ((starscaling - 1) * -1) * 50)) + 1;
             let animstarspeed = 5 + (50 * (Math.tan(starscaling * 1.37) * 0.2));
 
+            starfinalsize *= 2;
+
             star.style.width = starfinalsize + "px";
             star.style.height = starfinalsize + "px";
 
@@ -615,17 +635,20 @@
             let starcolor = `rgb(${starvisible}, ${starvisible}, ${starvisible})`
             star.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='${starcolor}' stroke='${starcolor}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-star' transform='rotate(${getRandomNumber(0, 360)})'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/%3E%3C/svg%3E")`;
             if (parseInt(getRandomNumber(0, 20)) == 0) {
-                star.style.backgroundImage = "url(\"https://koharuxenon.github.io/korusite/images/shiggy.gif\")"
+                star.style.backgroundImage = "url(\"images/shiggy.gif\")"
             }
             if (parseInt(getRandomNumber(0, 20)) == 0) {
-                star.style.backgroundImage = "url(\"https://koharuxenon.github.io/korusite/images/030.gif\")"
+                star.style.backgroundImage = "url(\"images/030.gif\")"
+            }
+            if (parseInt(getRandomNumber(0, 20)) == 0) {
+                star.style.backgroundImage = "url(\"images/smileyspin.gif\")"
             }
             star.style.backgroundSize = "contain";
             star.style.backgroundRepeat = "no-repeat";
             document.getElementById("starsdiv").appendChild(star);
         }
 
-        setInterval(createStar, 600);
+        setInterval(createStar, 800);
 
         window.addEventListener('load', function () {
 
@@ -639,17 +662,18 @@
 
             let playListContainer = document.getElementById("playListContainer");
             let musicButton = document.getElementById("musicButton")
-            musicButton.style.display = "none"
 
             function togglePlayListVisibility(event) {
                 console.log(playListContainer.style.display)
                 if (playListContainer.style.display == "none") {
                     playListContainer.style.display = "block"
                     musicButton.style.display = "none"
+                    console.log("HIDING MUSIC BUTTON")
                 }
                 else {
                     playListContainer.style.display = "none"
                     musicButton.style.display = "block"
+                    console.log("SHOWING MUSIC BUTTON")
                 }
             }
 
@@ -675,25 +699,34 @@
     <div id="scalablebio">
         <div class="win95con" id="win95con" style="transform: translate(-50%, -50%);">
             <div>
-                <img backup="icon.png" src="icon.png" width="16" height="16" style="padding: 1px;" />
+                <img src="icon.png" width="16" height="16" style="padding: 1px;" />
                 <p id="win95conTitle"></p>
                 <button onclick="explodePage()">X</button>
                 <button>?</button>
             </div>
             <div id="win95containerreal">
                 <div
-                    style="width: var(--profile-width); max-width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #000080;">
-                    <div
-                        style="background-image: url(https://koharuxenon.github.io/korusite/images/banner.jpg); background-size: cover; height: var(--banner-height); background-repeat: no-repeat; width: 100%; background-position: center; position: relative;">
-                    </div>
+                    style="width: var(--profile-width); display: flex; flex-direction: column; justify-content: center; border: 2px solid #000080;">
+                    <img src="images/banner.jpg" style="object-fit: cover; height: var(--banner-height); width: auto;">
+
                     <div style="width: 100%; background-image: linear-gradient(#5aff5a, #ffffff, #ff75ff) !important; padding-bottom: 20px; position: relative;"
                         id="background-gradient-div">
-                        <img backup="images/koru.png" src="images/koru.png" class="circle-img"
+                        <img src="images/koru.png" class="circle-img"
                             style="position: absolute; left: 50%; transform: translate(-50%, -50%);">
 
                         <pre id="catcode"></pre>
                         <div id="musicButton">🎵</div>
-                        <img backup="images/shiggy.gif" src="images/shiggy.gif" id="shiggy" style="position: absolute;">
+
+                        <div style="position: absolute;">
+                            <img src="images/shiggy.gif" id="shiggy">
+                            <a href="https://wobble.town/visit/2215"><img
+                                    src="https://wobble.town/visit/2215/wobble.gif"></a>
+                        </div>
+
+                        <div style="position: absolute; right: 0px; display: flex; flex-direction: column;">
+                            <img src="images/1210cat.png" width="99" height="56" id="shiggy">
+                            <img src="images/parrot.gif" width="50" style="position: absolute; right:0px; top: 66px;">
+                        </div>
 
                         <pre href="https://discord.com/users/594965168111353896"
                             style="text-align: center; font-family: meowfont; font-weight: 600; font-size: 28px; color: var(--prof-outline_color); margin-top: 90px;"><a href="https://discord.com/users/594965168111353896" style="color: var(--text-color) !important; text-decoration: none; text-shadow: 0 0 10px rgba(255, 148, 255, 1);">Koru</a></pre>
@@ -708,80 +741,56 @@
 
                         <div style="display: flex;  justify-content: center; margin-top: 20px;">
                             <a href="https://www.youtube.com/KoharuXenon" class="linkbox">
-                                <img class="linkimg" backup="https://cdn-icons-png.flaticon.com/256/1384/1384060.png"
-                                    src="images/youtube.png"></a>
+                                <img class="linkimg" src="images/youtube.png"></a>
 
                             <a href="https://twitter.com/KoharuXenon" class="linkbox">
-                                <img class="linkimg"
-                                    backup="https://abs.twimg.com/responsive-web/client-web/icon-ios.77d25eba.png"
-                                    src="images/twitter.png"></a>
+                                <img class="linkimg" src="images/twitter.png"></a>
 
                             <a href="https://github.com/KoharuXenon/" class="linkbox">
                                 <img class="linkimg"
                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/640px-GitHub_Invertocat_Logo.svg.png"></a>
 
                             <a href="https://namemc.com/profile/KoharuXenon.1" class="linkbox">
-                                <img class="linkimg" backup="https://s.namemc.com/img/favicon-30.png"
-                                    src="images/namemc.png"></a>
+                                <img class="linkimg" src="images/namemc.png"></a>
                         </div>
 
-
-                        <div style="display: flex;  justify-content: center; margin-top: 20px;" class="buttondiv">
-                            <a href="https://spiders.neocities.org/">
-                                <img backup="images/button (2).gif" src="images/button (2).gif" id="shiggy">
-                            </a>
-
-                            <a href="https://dimden.dev/"><img src="https://dimden.dev/services/images/88x31.gif"></a>
-
-                            <a href="https://web.archive.org/web/20230326152635/https://kitecreature.net/">
-                                <img backup="images/rolymicrobar.gif" src="images/rolymicrobar.gif" id="shiggy">
-                            </a>
-
-                            <a href="https://espresso.nekoweb.org/"><img
-                                    src="https://espresso.nekoweb.org/assets/button.png" id="shiggy"></a>
-
-                            <a href="https://www.cavestory.org/">
-                                <img backup="images/cave-story-button4.gif" src="images/cave-story-button4.gif"
-                                    id="shiggy">
-                            </a>
+                        <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px;">
+                            Websites that inspired mine
                         </div>
 
-                        <div style="display: flex;  justify-content: center;" class="buttondiv">
-                            <a href="https://nepeta.pet/"><img backup="images/nepeta.gif" src="images/nepeta.gif"
-                                    id="shiggy"></a>
+                        <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px;">
+                            <div style="max-width: 400px; overflow: hidden;">
+                                <div style="margin-top: 20px; animation: scrollButtons 20s linear infinite; white-space: nowrap;"
+                                    class="buttondiv">
+                                    <a href="https://spiders.neocities.org/"><img
+                                            src="images/buttons/button (2).gif"></a>
 
-                            <a href="https://meows.zip"><img backup="https://meows.zip/meowszip.png"
-                                    src="https://meows.zip/meowszip.png" id="shiggy"></a>
+                                    <a href="https://dimden.dev/"><img src="images/buttons/dimden.gif"></a>
 
-                            <a href="https://mimikitty49.neocities.org/"><img backup="images/NEWbutton.gif"
-                                    src="images/NEWbutton.gif" id="shiggy"></a>
+                                    <a href="https://web.archive.org/web/20230326152635/https://kitecreature.net/"><img
+                                            src="images/buttons/rolymicrobar.png"></a>
 
-                            <a href="https://quwyou.com/"><img src="https://quwyou.com/media/buttons/button_quwyou.gif"
-                                    id="shiggy"></a>
+                                    <a href="https://espresso.nekoweb.org/"><img src="images/buttons/espressso.png"></a>
 
-                            <img backup="images/reshirii.gif" src="images/reshirii.gif" id="shiggy">
-                        </div>
+                                    <a href="https://www.cavestory.org/"><img
+                                            src="images/buttons/cave-story-button4.gif"></a>
 
-                        <div style="display: flex;  justify-content: center;" class="buttondiv">
-                            <img backup="images/lem88x31.gif" src="images/lem88x31.gif" id="shiggy">
+                                    <a href="https://nepeta.pet/"><img src="images/buttons/nepeta.gif"></a>
 
-                            <img backup="images/got_html.gif" src="images/got_html.gif" id="shiggy">
+                                    <a href="https://meows.zip"><img src="images/buttons/meowszip.png"></a>
 
-                            <img backup="images/ralseismokingadart.gif" src="images/ralseismokingadart.gif" id="shiggy">
+                                    <a href="https://mimikitty49.neocities.org/"><img
+                                            src="images/buttons/NEWbutton.gif"></a>
 
-                            <img backup="images/vib-ribbon.png" src="images/vib-ribbon.png" id="shiggy">
+                                    <a href="https://quwyou.com/"><img src="images/buttons/button_quwyou.gif"></a>
 
-                            <img backup="images/fireskull.gif" src="images/fireskull.gif" id="shiggy">
-                        </div>
+                                    <a href="https://leizy8499.neocities.org/"><img
+                                            src="images/buttons/LEIZY8499.png"></a>
 
-                        <div style="display: flex;  justify-content: center;" class="buttondiv">
-                            <img backup="images/button_slugcat.png" src="images/button_slugcat.png" id="shiggy">
-
-                            <img backup="images/vap.png" src="images/vap.png" id="shiggy">
-
-                            <img backup="images/Rain_World_button.gif" src="images/Rain_World_button.gif" id="shiggy">
-
-                            <img backup="images/OneShot_button.gif" src="images/OneShot_button.gif" id="shiggy">
+                                    <a href="https://neonaut.neocities.org/"><img
+                                            src="images/buttons/neonaut-banner.png"></a>
+                                </div>
+                            </div>
                         </div>
 
                         <div style="display: flex;  justify-content: center; font-family: meowfont; padding-top: 10px;">
@@ -789,7 +798,11 @@
                         </div>
                         <div style="display: flex;  justify-content: center;" class="buttondiv">
                             <a href="https://pmandudeguylol.github.io/pmans-epic-site/">
-                                <img backup="images/pman.gif" src="images/pman.gif" id="shiggy">
+                                <img src="images/buttons/pman.gif">
+                            </a>
+
+                            <a href="https://youtu.be/dQw4w9WgXcQ">
+                                <img src="images/buttons/gerg.png">
                             </a>
                         </div>
 
@@ -799,21 +812,21 @@
                             <p onclick="openCool()">Don't forget to leave a comment!</p>
                         </div>
 
-                        <img src="images/mewo.png" backup="images/mewo.png"
-                            style="position: absolute; bottom: 0px; left: 8px" onclick="playMewo()">
+                        <img src="images/mewo.png" style="position: absolute; bottom: 0px; left: 8px"
+                            onclick="playMewo()">
                     </div>
-                    <img id="explodeIMG" backup="images/explosion-boom.gif" src="images/explosion-boom.gif"
+                    <img id="explodeIMG" src="images/explosion-boom.gif"
                         style="position: absolute; width: 100%; height: 100%; display: none;" id="shiggy">
                 </div>
             </div>
-            <img src="images/slugc.png" backup="images/slugc.png" style="position: absolute; bottom: 0px; left: -18px">
+            <img src="images/slugc.png" style="position: absolute; bottom: 0px; left: -18px">
         </div>
     </div>
 
     <div style="display: flex; justify-content: flex-end; left: 0px; position: absolute;">
         <div class="win95con" style="left:unset; position: relative; transform-origin: left;" id="playListContainer">
             <div style="max-width: 200px;">
-                <img backup="icon.png" src="icon.png" width="16" height="16" style="padding: 1px;" />
+                <img src="icon.png" width="16" height="16" style="padding: 1px;" />
 
                 <button id="PlaylistCloseButton">X</button>
                 <button>?</button>
@@ -845,16 +858,16 @@
     <div style="display: flex; justify-content: flex-end; right: 0px; position: absolute;">
         <div class="win95con" style="left:unset; position: relative; transform-origin: right;" id="InfoWindowContainer">
             <div>
-                <img backup="images/shiggy.gif" src="images/shiggy.gif" width="16" height="16" style="padding: 1px;" />
+                <img src="images/shiggy.gif" width="16" height="16" style="padding: 1px;" />
                 <p id="win95conTitle">Info</p>
                 <button onclick="toggleInfoVisibility(null)">X</button>
                 <button>?</button>
             </div>
-            <div id="win95containerreal" style="max-height: 500px; overflow-y: scroll;">
+            <div id="win95containerreal" style="max-height: 620px; overflow-y: scroll;">
                 <div id="infoWindowBorder">
                     <div style="display: flex; align-items: end;">
-                        <img backup="images/shiggy.gif" src="images/shiggy.gif" id="shiggy">
-                        <img backup="images/bubanim1.gif" src="images/bubanim1.gif" id="shiggy">
+                        <img src="images/shiggy.gif" id="shiggy">
+                        <img src="images/bubanim1.gif" id="shiggy">
                     </div>
 
                     <div class="dropDownDiv">
@@ -870,17 +883,17 @@
                             <p>I do coding! I mainly code in haxeflixel and python. Here is the full list of languages i
                                 do</p>
                             <div id="langsDiv">
-                                <img src="images/Langs/python.png" backup="images/Langs/python.png">
-                                <img src="images/Langs/haxe.png" backup="images/Langs/haxe.png">
-                                <img src="images/Langs/html.png" backup="images/Langs/html.png">
-                                <img src="images/Langs/css.png" backup="images/Langs/css.png">
-                                <img src="images/Langs/js.png" backup="images/Langs/js.png">
+                                <img src="images/Langs/python.png">
+                                <img src="images/Langs/haxe.png">
+                                <img src="images/Langs/html.png">
+                                <img src="images/Langs/css.png">
+                                <img src="images/Langs/js.png">
                             </div>
                             <div id="langsDiv">
-                                <img src="images/Langs/java.png" backup="images/Langs/java.png">
-                                <img src="images/Langs/lua.png" backup="images/Langs/lua.png">
-                                <img src="images/Langs/cpp.png" backup="images/Langs/cpp.png">
-                                <img src="images/Langs/glsl.png" backup="images/Langs/glsl.png">
+                                <img src="images/Langs/java.png">
+                                <img src="images/Langs/lua.png">
+                                <img src="images/Langs/cpp.png">
+                                <img src="images/Langs/glsl.png">
                             </div>
 
                             <br>
@@ -907,14 +920,13 @@
                     <div class="dropDownDiv">
                         <div>
                             <p></p>
-                            <p>Cool things</p>
+                            <p>Cool things from the interwebz</p>
                         </div>
                         <div>
                             <h3>Cool slug creature</h3>
                             <a
                                 href="https://web.archive.org/web/20230326152728/https://kitecreature.net/creatures/slug/">
-                                <img src="images/slug.png" backup="images/slug.png"
-                                    alt="A slug monster is getting slime all over this page!">
+                                <img src="images/slug.png" alt="A slug monster is getting slime all over this page!">
                             </a>
 
                             <div style="height:16px;"></div>
@@ -929,15 +941,28 @@
                             <div style="height:16px;"></div>
 
                             <h3>Mimi's thing?</h3>
-                            <img src="images/someones_creature.png" backup="images/someones_creature.png">
+                            <img src="images/someones_creature.png">
 
                             <div style="height:16px;"></div>
 
                             <h3>The cat computer cat drew</h3>
-                            <img src="images/the_cat_computer_cat_drew.png"
-                                backup="images/the_cat_computer_cat_drew.png">
+                            <img src="images/the_cat_computer_cat_drew.png">
 
                             <div style="height:16px;"></div>
+
+                            <div
+                                style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                                <img src="images/sonic.png" width="99">
+                                <div style="padding-left: 16px;">
+                                    <h3>Poor kitty</h3>
+                                    <img src="images/stabuddy12.gif">
+                                    <div style="height:16px;"></div>
+                                </div>
+                            </div>
+
+                            <div style="height:16px;"></div>
+
+                            <img src="images/mascot-face.png" width="128">
                         </div>
                     </div>
 
@@ -950,11 +975,7 @@
                         </div>
                         <div>
                             <h3>A yoshi :3</h3>
-                            <img src="images/peace.gif" backup="images/peace.gif">
-                            <div style="height:16px;"></div>
-
-                            <h3>Poor kitty</h3>
-                            <img src="images/stabuddy12.gif" backup="images/stabuddy12.gif">
+                            <img src="images/peace.png">
                             <div style="height:16px;"></div>
 
                             <h3>a creature?</h3>
@@ -984,12 +1005,40 @@
                             style="background-color: #1f2e34; width: 100%; padding-top: 15px; display: none;"
                             id="backupCommentBox">https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5</a>
                     </div>
+
+                    <div style="height: 31px;"></div>
+
+                    <div style="display: flex;  justify-content: center;" class="buttondiv">
+                        <img src="images/buttons/lem88x31.png">
+
+                        <img src="images/buttons/got_html.png">
+
+                        <img src="images/buttons/ralseismokingadart.gif">
+
+                        <img src="images/buttons/vib-ribbon.png">
+                    </div>
+
+                    <div style="display: flex;  justify-content: center;" class="buttondiv">
+                        <img src="images/buttons/fireskull.gif">
+
+                        <img src="images/buttons/reshirii.gif">
+
+                        <img src="images/buttons/button_slugcat.png">
+
+                        <img src="images/buttons/vap.png">
+                    </div>
+
+                    <div style="display: flex;  justify-content: center;" class="buttondiv">
+                        <img src="images/buttons/Rain_World_button.gif">
+
+                        <img src="images/buttons/OneShot_button.gif">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <img src="images/tangerine.png" backup="images/tangerine.png"
+    <img src="images/tangerine.png"
         style="position: absolute; width: 64px; top: calc(100% - 64px); left: calc(100% - 64px)" id="tangerine">
 
     <img src="images/car.gif" id="hiddenElement"
@@ -1000,7 +1049,7 @@
 
     <script>
         function imageError(event) {
-            let elementBackup = event.target.getAttribute("backup");
+            let elementBackup = event.target.getAttribute("src");
             if (!elementBackup.includes("http")) {
                 elementBackup = `https://koharuxenon.github.io/korusite/${elementBackup}`
             }
@@ -1023,29 +1072,34 @@
 
 
             setTimeout(() => {
-                let bioWidth = parseFloat(getComputedStyle(document.querySelector("#win95con")).width) * desiredscale;
+                let bioWidth = parseFloat(document.querySelector("#win95con").getBoundingClientRect().width) * desiredscale;
                 //console.log("bio width", bioWidth)
 
-                let playListWidth = parseFloat(getComputedStyle(document.getElementById("playListContainer")).width) * desiredscale;
-                let infoWidth = parseFloat(getComputedStyle(document.getElementById("InfoWindowContainer")).width) * desiredscale;
+                let playListWidth = parseFloat(document.getElementById("playListContainer").getBoundingClientRect().width) * desiredscale;
+                let infoWidth = parseFloat(document.getElementById("InfoWindowContainer").getBoundingClientRect().width) * desiredscale;
 
                 let sideWidth = (actualWidth - bioWidth) / 2;
-                //console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth)
+                console.log("side width: " + sideWidth + ", window width: " + actualWidth + "\ninfo width: " + infoWidth + "\nplaylist width: " + playListWidth + "\nScale: " + desiredscale.toString())
 
                 if (sideWidth < 180) {
                     document.getElementById("moonWidget").style.display = "none";
                 }
 
                 if (true) {
-                    if (infoWidth > sideWidth) {
+                    if (infoWidth > sideWidth || infoWidth == 0) {
                         document.getElementById("InfoWindowContainer").style.display = "none"
                         document.getElementById("doneReading").style.display = "flex"
                     }
                 }
 
-                if (playListWidth > sideWidth) {
+                if (playListWidth > sideWidth || playListWidth == 0) {
                     document.getElementById("playListContainer").style.display = "none"
                     musicButton.style.display = "block"
+                    console.log("SHOWING MUSIC BUTTON")
+                }
+                else {
+                    musicButton.style.display = "none"
+                    console.log("HIDING MUSIC BUTTON")
                 }
 
                 if (loop) {
@@ -1059,10 +1113,10 @@
                 let scalablebio = document.getElementById("win95con");
                 let computedStyle = window.getComputedStyle(scalablebio);
                 let compWidth = parseInt(computedStyle.width);
-                //console.log("Width" + ", " + compWidth + ", " + actualWidth)
+                console.log("Width" + ", " + compWidth + ", " + actualWidth)
                 if (compWidth > actualWidth) {
                     desiredscale = actualWidth / compWidth;
-                    //console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
+                    console.log("New width:" + ", " + compWidth * desiredscale + ", " + "scale:" + ", " + desiredscale);
                     document.getElementById("scalablebio").style.transform = `scale(${desiredscale})`;
                     document.getElementById("InfoWindowContainer").style.transform = `scale(${desiredscale})`;
                     document.getElementById("playListContainer").style.transform = `scale(${desiredscale})`;
@@ -1072,8 +1126,6 @@
                 }, 10);
             }, 0);
         }
-
-        doWidth();
 
         let commentBox = document.getElementById("commentBox");
         let backupBox = document.getElementById("backupCommentBox");
@@ -1204,11 +1256,11 @@
 
         function showPlay() {
             //console.log("Showing play")
-            playpauseButton.style.setProperty("mask-image", "url(https://koharuxenon.github.io/korusite/images/play.png)", "important")
+            playpauseButton.style.setProperty("mask-image", "url(images/play.png)", "important")
         }
         function showPause() {
             //console.log("Showing pause")
-            playpauseButton.style.setProperty("mask-image", "url(https://koharuxenon.github.io/korusite/images/pause.png)", "important");
+            playpauseButton.style.setProperty("mask-image", "url(images/pause.png)", "important");
         }
 
         showPlay();
@@ -1439,13 +1491,11 @@ int main() {
                 showingEl = !showingEl;
             });
         });
-    </script>
 
-    <script src="./oneko.js"></script>
-    <script src="./catfren.js"></script>
-    <script src="./bior.js"></script>
+        playMusicFunc(musics[0])
+        togglePlayPause()
+        showPlay()
 
-    <script>
         function openCool() {
             toggleInfoVisibility(null)
         }
@@ -1457,7 +1507,13 @@ int main() {
                 document.body.remove();
             }, 550);
         }
+
+        doWidth();
     </script>
+
+    <script src="oneko.js"></script>
+    <script src="catfren.js"></script>
+    <script src="bior.js"></script>
 
 </body>
 
