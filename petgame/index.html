@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Mouse with Circle</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            text-align: center;
+            --iris-size: 80px;
+            font-family: "Segoe WPC", "Segoe UI", sans-serif;
+        }
+
+        * {
+            z-index: 9999;
+            user-select: none;
+        }
+
+        #circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        #circle2 {
+            position: absolute;
+            width: var(--iris-size);
+            height: var(--iris-size);
+            background-color: black;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        #indicatorTest {
+            top: calc(50% - (var(--iris-size) + 70px));
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            position: absolute;
+            padding: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid white;
+            font-size: 24px;
+        }
+
+        #clickMeContainer,
+        #minigameLocker2,
+        #yippeeImage {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            top: 50%;
+        }
+
+        #redBar {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            top: calc(50% + var(--iris-size));
+            height: 16px;
+            background-color: red;
+            transition: linear background-color 0.1s;
+        }
+
+        #redBar:hover {
+            background-color: white;
+        }
+
+
+        #minigameLocker,
+        .minigameLocker {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            object-fit: cover;
+        }
+
+        .minigameLocker {
+            object-fit: contain !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;">
+        <img src="./minigame lockers.jpg" id="minigameLocker" style="visibility: hidden; z-index: 0; opacity: 0.3;">
+
+        <div id="circlesContainer" style="visibility: hidden;">
+            <div id="circle2"></div>
+            <div id="circle"></div>
+            <div id="indicatorTest">
+                Keep the circle in the middle
+            </div>
+            <div id="redBar"></div>
+        </div>
+
+        <div id="clickMeContainer">
+            <p>Click me to start the Game!</p>
+        </div>
+
+        <img class="minigameLocker" id="minigameLocker2" src="./minigame.jpg" style="visibility: hidden;">
+
+        <img class="minigameLocker" id="yippeeImage" src="https://media1.tenor.com/m/FKtdcMXKBhsAAAAC/yippee-happy.gif"
+            style="visibility: hidden;">
+    </div>
+
+    <script>
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function computeVelocity(Velocity, Acceleration, Drag, Max, Elapsed) {
+            if (Acceleration != 0) {
+                Velocity += Acceleration * Elapsed;
+            }
+            else if (Drag != 0) {
+                var drag = Drag * Elapsed;
+                if (Velocity - drag > 0) {
+                    Velocity -= drag;
+                }
+                else if (Velocity + drag < 0) {
+                    Velocity += drag;
+                }
+                else {
+                    Velocity = 0;
+                }
+            }
+            if ((Velocity != 0) && (Max != 0)) {
+                if (Velocity > Max) {
+                    Velocity = Max;
+                }
+                else if (Velocity < -Max) {
+                    Velocity = -Max;
+                }
+            }
+            return Velocity;
+        }
+
+        const circle = document.getElementById('circle');
+        let centerX = window.innerWidth / 2;
+        let centerY = window.innerHeight / 2;
+
+        let maxX = 40;
+        let maxY = 40;
+
+        let shakeMax = 3;
+
+        let startValueX = 0;
+        let startValueY = 0;
+        let endValueX = getRandomNumber(maxX * -1, maxX);
+        let endValueY = getRandomNumber(maxY * -1, maxY);
+        let minTime = 350;
+        let maxTime = 500;
+        let durationX = getRandomNumber(minTime, maxTime);
+        let durationY = getRandomNumber(minTime, maxTime);
+        let circleXOffset = 0;
+        let circleYOffset = 0;
+
+        let circleShakeXOffset = 0;
+        let circleShakeYOffset = 0;
+        let startShakeValueX = 0;
+        let startShakeValueY = 0;
+        let endShakeValueX = getRandomNumber(shakeMax * -1, shakeMax);
+        let endShakeValueY = getRandomNumber(shakeMax * -1, shakeMax);
+
+        let startValueMINIGAMEX = 0;
+        let startValueMINIGAMEY = 0;
+        let endValueMINIGAMEX = getRandomNumber(shakeMax * -1, shakeMax);
+        let endValueMINIGAMEY = getRandomNumber(shakeMax * -1, shakeMax);
+        let MINIGAMExOffset = 0;
+        let MINIGAMEyOffset = 0;
+        let minMinigameTime = 1000;
+        let maxMinigameTime = 2000;
+        let MINIGAMEshakeOffset = 0;
+        let genericMINIGAMErotOffset = 0;
+        let genericMINIGAMExOffset = 0;
+        let genericMINIGAMEyOffset = 0;
+
+        let audio = new Audio('./minigame.mp3');
+        let intentionalLost = false;
+
+        function tween(config) {
+            let startTime = null;
+            const { duration, startValue, endValue, easeFunction, onUpdate, onComplete } = config;
+
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                let progress = Math.min((timestamp - startTime) / duration, 1);
+                let easedProgress = easeFunction(progress);
+
+                let currentValue = startValue + (endValue - startValue) * easedProgress;
+
+                onUpdate(currentValue);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else if (onComplete) {
+                    onComplete();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        function spawnTween(duration, start, end, onUpdate, onComplete) {
+            const config = {
+                duration: duration,
+                startValue: start,
+                endValue: end,
+                easeFunction: (t) => {
+                    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+                },
+                onUpdate: (values) => {
+                    onUpdate(values)
+                },
+                onComplete: () => {
+                    onComplete()
+                }
+            };
+
+            tween(config);
+        }
+
+        function spawnShakeXTween() {
+            startShakeValueX = endShakeValueX;
+            endShakeValueX = getRandomNumber(shakeMax * -1, shakeMax);
+
+            spawnTween(getRandomNumber(1 / 60, 2 / 60) * 1000, startShakeValueX, endShakeValueX, function (value) {
+                circleShakeXOffset = value;
+            }, spawnShakeXTween)
+        }
+
+        function spawnShakeYTween() {
+            startShakeValueY = endShakeValueY;
+            endShakeValueY = getRandomNumber(shakeMax * -1, shakeMax);
+
+            spawnTween(getRandomNumber(1 / 60, 2 / 60) * 1000, startShakeValueY, endShakeValueY, function (value) {
+                circleShakeYOffset = value;
+            }, spawnShakeYTween)
+        }
+
+        function spawnXTween() {
+            startValueX = endValueX;
+            endValueX = getRandomNumber(maxX * -1, maxX);
+            durationX = getRandomNumber(minTime, maxTime);
+
+            spawnTween(durationX, startValueX, endValueX, function (value) {
+                circleXOffset = value;
+            }, spawnXTween)
+        }
+
+        function spawnYTween() {
+            startValueY = endValueY;
+            endValueY = getRandomNumber(maxY * -1, maxY);
+            durationY = getRandomNumber(minTime, maxTime);
+
+            spawnTween(durationY, startValueY, endValueY, function (value) {
+                circleYOffset = value;
+            }, spawnYTween)
+        }
+
+        function spawnXMINIGAMETween() {
+            startValueMINIGAMEX = endValueMINIGAMEX;
+            endValueMINIGAMEX = getRandomNumber(maxX * -2, maxX * 2);
+            durationMINIGAMEX = getRandomNumber(minMinigameTime, maxMinigameTime);
+
+            spawnTween(durationMINIGAMEX, startValueMINIGAMEX, endValueMINIGAMEX, function (value) {
+                MINIGAMExOffset = value;
+            }, spawnXMINIGAMETween)
+        }
+
+        function spawnYMINIGAMETween() {
+            startValueMINIGAMEY = endValueMINIGAMEY;
+            endValueMINIGAMEY = getRandomNumber(maxY * -2, maxY * 2);
+            durationMINIGAMEY = getRandomNumber(minMinigameTime, maxMinigameTime);
+
+            spawnTween(durationMINIGAMEY, startValueMINIGAMEY, endValueMINIGAMEY, function (value) {
+                MINIGAMEyOffset = value;
+            }, spawnYMINIGAMETween)
+        }
+
+        function spawnMINIGAMEShakeXTween() {
+            startShakeValueX = endShakeValueX;
+            endShakeValueX = getRandomNumber(-2, 2);
+
+            spawnTween(getRandomNumber(2 / 60, 5 / 60) * 1000, startShakeValueX, endShakeValueX, function (value) {
+                MINIGAMEshakeOffset = value;
+            }, spawnMINIGAMEShakeXTween)
+        }
+
+        spawnMINIGAMEShakeXTween();
+        spawnXMINIGAMETween();
+        spawnYMINIGAMETween();
+        spawnXTween();
+        spawnYTween();
+        spawnShakeXTween();
+        spawnShakeYTween();
+
+        circle.style.left = `${centerX - 25}px`;
+        circle.style.top = `${centerY - 25}px`;
+
+        function calculateDistanceFromCenter(x, y) {
+            const dx = x - (window.innerWidth / 2);
+            const dy = y - (window.innerHeight / 2);
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        let circle2Width = document.getElementById("circle2").getBoundingClientRect().width;
+
+        function lockPointer() {
+            if (document.pointerLockElement !== document.body) {
+                document.body.requestPointerLock();
+            }
+        }
+
+        function gTime() {
+            return Date.now() / 1000;
+        }
+
+        let catVX = 0;
+        let catVY = 0;
+
+        let catMouseVX = 0;
+        let catMouseVY = 0;
+
+        let baseScale = 198;
+        let ourScale = (window.innerWidth / 2) / baseScale;
+
+        let xdrag = 1500 * ourScale;
+
+        let mouseDrag = 3000 * ourScale;
+
+        let startTime = gTime();
+        let prevtime = startTime - (1 / 60);
+
+        let slamStartTime = Date.now();
+
+        let timeStampList = [6361, 8620, 10169, 12368, 14676, 16691,
+            20228, 21983, 23179, 25480, 27761, 28273,
+            29725, 31634, 33243, 35329, 37524, 39515];
+
+        function doSlamRepeat() {
+            let elapsedSincePlay = Date.now() - slamStartTime;
+            //console.log(elapsedSincePlay);
+
+            timeStampList.forEach(function (i) {
+                if (elapsedSincePlay >= i) {
+                    const index = timeStampList.indexOf(i);
+                    if (index > -1) {
+                        timeStampList.splice(index, 1);
+                    }
+                    doSlam()
+                }
+            })
+            requestAnimationFrame(doSlamRepeat);
+        }
+
+        function doSlam() {
+            const randomDegree = Math.random() * 360;
+            const radians = randomDegree * (Math.PI / 180);
+            const velocityX = Math.cos(radians);
+            const velocityY = Math.sin(radians);
+            //alert(ourScale)
+
+            let velSpeed = getRandomNumber(1500, 1900) * ourScale;
+
+            let slamVel = velocityX
+            catVX = slamVel * velSpeed;
+
+            slamVel = velocityY
+            catVY = slamVel * velSpeed;
+
+            spawnTween(getRandomNumber(700, 1000), getRandomNumber(-5, 5), 0, function (value) {
+                genericMINIGAMErotOffset = value;
+            }, function () { })
+            spawnTween(getRandomNumber(700, 1000), getRandomNumber(-100, 100), 0, function (value) {
+                genericMINIGAMExOffset = value;
+            }, function () { })
+            spawnTween(getRandomNumber(700, 1000), getRandomNumber(-100, 100), 0, function (value) {
+                genericMINIGAMEyOffset = value;
+            }, function () { })
+        }
+
+        let health = 230;
+        let MINIGAMES = document.getElementById("minigameLocker")
+
+        function frameLoop() {
+            startTime = gTime();
+            let elapsed = startTime - prevtime;
+
+            let velocityDelta = 0.5 * (computeVelocity(catVX, 0, xdrag, 0, elapsed) - catVX);
+            catVX += velocityDelta;
+            let delta = catVX * elapsed;
+            catVX += velocityDelta;
+
+            centerX += delta;
+
+            velocityDelta = 0.5 * (computeVelocity(catVY, 0, xdrag, 0, elapsed) - catVY);
+            catVY += velocityDelta;
+            delta = catVY * elapsed;
+            catVY += velocityDelta;
+
+            centerY += delta;
+
+            velocityDelta = 0.5 * (computeVelocity(catMouseVX, 0, mouseDrag, 0, elapsed) - catMouseVX);
+            catMouseVX += velocityDelta;
+            delta = catMouseVX * elapsed;
+            catMouseVX += velocityDelta;
+
+            centerX += delta;
+
+            velocityDelta = 0.5 * (computeVelocity(catMouseVY, 0, mouseDrag, 0, elapsed) - catMouseVY);
+            catMouseVY += velocityDelta;
+            delta = catMouseVY * elapsed;
+            catMouseVY += velocityDelta;
+
+            centerY += delta;
+
+            //console.log(catVX, catVY)
+
+            centerX = Math.max(-25, Math.min(window.innerWidth - 25, centerX));
+            centerY = Math.max(-25, Math.min(window.innerHeight - 25, centerY));
+
+            let toMoveCircleX = centerX - 25;
+            let toMoveCircleY = centerY - 25;
+
+            if (true) {
+                toMoveCircleX = Math.max(-15, Math.min(window.innerWidth - 15, toMoveCircleX)) + circleXOffset;
+                toMoveCircleY = Math.max(-15, Math.min(window.innerHeight - 15, toMoveCircleY)) + circleYOffset;
+            }
+
+            let centerDistance = calculateDistanceFromCenter(toMoveCircleX + 25, toMoveCircleY + 25)
+            if (centerDistance > 40) {
+                document.getElementById("redBar").style.backgroundColor = "red"
+                health -= 1
+            }
+            else {
+                document.getElementById("redBar").style.backgroundColor = "white"
+                health += 6
+            }
+            if (health <= 0) {
+                audio.pause();
+                document.getElementById("minigameLocker2").style.visibility = "visible";
+                document.getElementById("minigameLocker").style.visibility = "hidden";
+                document.getElementById("circlesContainer").style.visibility = "hidden";
+                cancelAnimationFrame(animationId)
+                intentionalLost = true
+                document.exitPointerLock();
+            }
+            health = Math.max(0, Math.min(230, health))
+            document.getElementById("redBar").style.width = `${health}px`
+
+            //console.log(catMouseVX, catMouseVY)
+
+            if (true) {
+                circle.style.left = `${toMoveCircleX + circleShakeXOffset}px`;
+                circle.style.top = `${toMoveCircleY + circleShakeYOffset}px`;
+            }
+            else {
+                circle.style.left = `${toMoveCircleX}px`;
+                circle.style.top = `${toMoveCircleY}px`;
+            }
+
+            let MINIGAMEoffsetMult = 0.1 + (Math.abs(genericMINIGAMErotOffset) * 0.001);
+
+            let miniGameMouseCalcedX = ((window.innerWidth / 2) - (toMoveCircleX + 25)) * MINIGAMEoffsetMult;
+            let miniGameMouseCalcedY = ((window.innerHeight / 2) - (toMoveCircleY + 25)) * MINIGAMEoffsetMult;
+
+            MINIGAMES.style.left = `${MINIGAMExOffset + miniGameMouseCalcedX + genericMINIGAMExOffset}px`;
+            MINIGAMES.style.top = `${MINIGAMEyOffset + miniGameMouseCalcedY + genericMINIGAMEyOffset}px`;
+            MINIGAMES.style.transform = `rotate(${MINIGAMEshakeOffset + genericMINIGAMErotOffset}deg)`;
+
+            document.getElementById("circle2").style.left = `${(window.innerWidth / 2) - (circle2Width / 2)}px`;
+            document.getElementById("circle2").style.top = `${(window.innerHeight / 2) - (circle2Width / 2)}px`;
+
+            prevtime = gTime();
+            requestAnimationFrame(frameLoop);
+        }
+
+        let animationId = requestAnimationFrame(frameLoop);
+
+        let movementMult = 40;
+        let epicMovement = 1.2;
+
+        const velocityThreshold = 10;
+
+        document.addEventListener('mousemove', (e) => {
+            if (document.pointerLockElement == document.body) {
+                const movementX = e.movementX;
+                const movementY = e.movementY;
+
+                let mouseVelX = (movementX * movementMult);
+                if (Math.abs(mouseVelX) > Math.abs(catMouseVX)) {
+                    catMouseVX = mouseVelX;
+                }
+
+                let mouseVelY = (movementY * movementMult);
+                if (Math.abs(mouseVelY) > Math.abs(catMouseVY)) {
+                    catMouseVY = mouseVelY;
+                }
+
+                if (catVX >= 1 || catVX <= -1) {
+                    catVX += (movementX * epicMovement);
+                }
+                if (catVY >= 1 || catVY <= -1) {
+                    catVY += (movementY * epicMovement);
+                }
+            }
+        });
+
+        let lastTouch = { x: 0, y: 0 };
+
+        document.addEventListener('touchstart', (e) => {
+            lastTouch.x = e.touches[0].clientX;
+            lastTouch.y = e.touches[0].clientY;
+            if (audio.paused) {
+                audio.play();
+            }
+            document.documentElement.requestFullscreen();
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const movementX = e.touches[0].clientX - lastTouch.x;
+            const movementY = e.touches[0].clientY - lastTouch.y;
+
+            let mouseVelX = (movementX * movementMult);
+            if (Math.abs(mouseVelX) > Math.abs(catMouseVX)) {
+                catMouseVX = mouseVelX;
+            }
+
+            let mouseVelY = (movementY * movementMult);
+            if (Math.abs(mouseVelY) > Math.abs(catMouseVY)) {
+                catMouseVY = mouseVelY;
+            }
+
+            if (catVX >= 1 || catVX <= -1) {
+                catVX += (movementX * epicMovement);
+            }
+            if (catVY >= 1 || catVY <= -1) {
+                catVY += (movementY * epicMovement);
+            }
+
+            lastTouch.x = e.touches[0].clientX;
+            lastTouch.y = e.touches[0].clientY;
+        });
+
+        document.addEventListener('click', function () {
+            lockPointer()
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+
+        function startMINIGAME() {
+            console.log("hello bro")
+            document.getElementById("circlesContainer").style.visibility = "visible"
+            document.getElementById("clickMeContainer").style.display = "none"
+            document.getElementById("minigameLocker").style.visibility = "visible"
+            slamStartTime = Date.now()
+            requestAnimationFrame(doSlamRepeat);
+        }
+
+        window.addEventListener('load', () => {
+            audio.addEventListener('play', () => {
+                startMINIGAME();
+            });
+            audio.addEventListener("ended", () => {
+                console.log("YAYYYYYYY")
+                document.getElementById("yippeeImage").style.visibility = "visible";
+                cancelAnimationFrame(animationId)
+                intentionalLost = true
+                document.exitPointerLock();
+            })
+        });
+
+        document.addEventListener('pointerlockchange', () => {
+            if (document.pointerLockElement !== document.body && !intentionalLost) {
+                console.log('Pointer lock lost');
+                lockPointer()
+            }
+        });
+
+        document.addEventListener('pointerlockerror', () => {
+            console.log('Pointer lock error');
+        });
+    </script>
+</body>
+
+</html>

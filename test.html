@@ -11,35 +11,51 @@
         }
     </style>
 
-    <style id="scrollAnim">
-        @keyframes scrollAnim {
-            0% {
-                left: startpix;
-            }
-
-            100% {
-                left: endpix;
-            }
-        }
-    </style>
-
-    <style id="scrollPaste">
-    </style>
-
     <style>
         @font-face {
             font-family: Nunito;
             src: url('https://sadhost.neocities.org/fonts/FreePixel.ttf');
         }
 
+        @keyframes showIMG {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                top: 100%;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                top: 50%;
+            }
+        }
+
+        @keyframes hideIMG {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                top: 50%;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                top: 100%;
+            }
+        }
+
+        * {
+            margin: 0;
+        }
+
+        p {
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+
         .win95con {
             background: #C0C0C0;
-            border: 2px solid greenyellow;
+            border: 2px solid #808080;
             border-color: #FFFFFF #808080 #808080 #FFFFFF;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
 
         .win95con> :first-child {
@@ -86,299 +102,120 @@
             padding: 2px;
         }
 
-        * {
-            z-index: 1;
-        }
-
-        pre {
-            font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
-        }
-
         html {
             overflow: hidden;
-            overflow-y: scroll;
         }
 
         html,
         body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            width: 100%;
+            height: 100vh;
+            width: 100vw;
             background-color: #010016;
         }
 
         body {
             width: 100vw;
-            margin: 0;
-
-            --prof-border-thickness: 2px;
-            --prof-radius: 20px;
-            --prof-outline_color: #3100a5;
-            --text-color: #ff94c9;
-            --profile-width: 500px;
-            --banner-height: 150px;
-            --boogiesize: 128px;
-
-            background-color: #010016 !important;
-        }
-
-        .circle-img {
-            border: var(--prof-border-thickness) solid var(--prof-outline_color);
-            border-radius: 50%;
-            width: var(--banner-height);
-            height: var(--banner-height);
-            object-fit: cover;
-            margin: 0;
-            padding: 0;
-        }
-
-        .star {
-            position: absolute;
-            border: none;
-        }
-
-        .linkbox {
-            width: 40px;
-            height: 40px;
-            margin: 5px;
-            border: 2px solid var(--prof-outline_color);
-            border-radius: 12px;
-
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-        }
-
-        .linkimg {
-            width: 30px;
-            height: 30px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            position: absolute;
-        }
-
-        @keyframes twinkle {
-            0% {
-                transform: translateY(0) translateX(0);
-            }
-
-            100% {
-                transform: translateY(-200vh) translateX(200vw) rotate(360deg);
-            }
-        }
-
-        #shiggy {
-            image-rendering: pixelated;
-        }
-
-        #hidableText {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 10%;
-            z-index: 9999;
-            visibility: visible;
-            padding-bottom: 20px;
-            color: white;
-            font-family: meowfont;
-        }
-
-        #catcode {
-            position: absolute;
-            margin-top: 68px;
-            color: black !important
-        }
-
-        #epicButton {
-            width: unset;
-            padding-left: 2px;
-            padding-right: 2px;
-        }
-
-        #playListDiv {
-            max-width: 200px;
-            min-width: 200px;
-            min-height: 20px;
-            max-height: 300px;
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            padding-bottom: 4px;
-        }
-
-        #musicItems {
-            overflow-y: scroll;
-        }
-
-        #playListEqualizer {
-            background-color: black;
-            margin: 4px;
-            position: relative;
-            font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
-            color: yellowgreen;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 4px;
-        }
-
-        #progressTime {
-            font-size: 16px;
-            padding-top: 8px;
-            line-height: 16px;
-            margin: 0px;
-        }
-
-        #progressBar {
-            width: 90%;
-        }
-
-        .musicElement {
-            width: calc(100% - 16px);
-            margin-left: 4px;
-            margin-right: 4px;
-            margin-top: 4px;
-            border: 2px solid black;
-            padding: 2px;
-            background-color: black;
-            color: greenyellow;
-            font-size: 12px;
-            font-family: "Noto Sans Mono", Menlo, Monaco, Consolas, monospace;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .musicElement:hover {
-            background-color: rgb(41, 41, 41);
-        }
-
-        .musicElementSelected {
-            --playingWidth: 21px;
-
-            width: calc(100% - (14px + var(--playingWidth)));
-            padding-left: var(--playingWidth);
-            background-image: url("https://koharuxenon.github.io/korusite/images/shiggy.gif");
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-
-        .mediabutton {
-            --med_button_siz: 12px;
-            width: var(--med_button_siz);
-            height: var(--med_button_siz);
-            margin: 6px;
-            margin-bottom: 3px;
-
-            mask-size: var(--med_button_siz);
-            -webkit-mask-size: var(--med_button_siz);
-            background-color: white;
-            transition: background-color 0.1s;
-        }
-
-        .mediabutton:hover {
-            background-color: gray;
-        }
-
-        #media_prev {
-            mask-image: url("https://koharuxenon.github.io/korusite/images/prev.png") !important;
-        }
-
-        #media_next {
-            mask-image: url("https://koharuxenon.github.io/korusite/images/next.png") !important;
-        }
-
-        .scrollable-container {
-            max-width: 140px;
-            height: 18px;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            left: 4px;
-        }
-
-        #win95conTitle2 {
-            position: absolute;
-            padding-left: 0px;
-            color: white;
-        }
-
-        .buttondiv>a {
-            max-height: 31px;
         }
 
         #infoWindowBorder {
-            width: 400px;
-            max-width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             border: 2px solid #000080;
             background-color: #dddddd;
+            width: 530px;
+            max-width: calc(100vw - 70px);
         }
 
-        #infoWindowBorder:first-child {
+        #outerPhotoCont {
             padding: 10px;
+            max-height: 500px;
+            overflow-y: scroll;
+            width: calc(100% - 20px);
         }
 
-        #infoWindowBorder * {
-            margin: 0px;
-            font-family: meowfont;
+        .photoThumb {
+            --thumbsise: 128px;
+            object-fit: contain;
+            height: var(--thumbsise);
+            width: var(--thumbsise);
+        }
+
+        .photoDesc {
+            padding: 5px;
             text-align: center;
+            color: black;
+            font-family: Nunito;
+            padding-top: 15px;
+            user-select: none;
         }
 
-        .dropDownDiv {
-            overflow: hidden;
-            height: 23px;
-            transition: height 0.5s;
-            padding: 0px;
-            border-bottom: 2px solid #808080;
-            width: 400px;
-        }
-
-        .dropDownDiv > :nth-child(1) {
-            border-width: 2px;
-            border-style: solid;
-            border-color: #FFFFFF #808080 #808080 #FFFFFF;
-            font-size: 21px;
-            line-height: 21px;
-            text-align: left !important;
-            z-index: 2;
-            position: relative;
+        .thumbContainer {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
         }
 
-        .dropDownDiv > div:nth-child(1) > p:nth-child(1) {
-            width: 21px;
-            height: 21px;
-            border-right: 2px solid #808080;
-            display: block !important;
+        .thumbContainer:hover {
+            outline: 1px dashed #000080;
         }
 
-        .dropDownDiv > div:nth-child(1) > p:nth-child(2) {
-            display: inline-block;
-            font-size: 16px;
-            padding-left: 5px;
+        .photoContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
         }
 
-        .dropDownDiv > :nth-child(2) {
-            border-width: 2px;
-            border-style: solid;
-            border-color: #FFFFFF #808080 #80808000 #FFFFFF;
-            margin-top: -2px !important;
-            padding: 5px !important;
-            z-index: 1;
-            position: relative;
+        .monthIndicator {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bolder;
         }
 
-        .home-desc {
-            display: none;
+        #shownIMG {
+            --thumbsise: 512px;
+            object-fit: contain;
+            height: var(--thumbsise);
+            width: auto;
+            max-width: calc(100vw - 90px);
+            max-height: calc(100vh - 90px);
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        #shownImagePreview {
+            text-align: center;
+            max-width: calc(100vw - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #IMGprevText,
+        #IMGDate {
+            color: black;
+            font-family: Nunito;
+            padding-top: 15px;
+            white-space: pre-wrap;
+        }
+
+        #shownImageWindow {
+            transform: translate(-50%, -50%);
+            transform-origin: center;
+            top: 50%;
+            left: 50%;
         }
     </style>
 </head>
@@ -386,171 +223,210 @@
 <body>
     <div class="win95con" id="win95con">
         <div>
-            <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif" width="16"
-                height="16" style="padding: 1px;" />
-            <p id="win95conTitle">Info</p>
-            <button>X</button>
-            <button>?</button>
+            <img src="images/shiggy.gif" width="16" height="16" style="padding: 1px;" />
+            <p id="win95conTitle">Gallery</p>
         </div>
-        <div id="win95containerreal" style="max-height: 500px; overflow-y: scroll;">
+        <div id="win95containerreal">
             <div id="infoWindowBorder">
-                <div style="display: flex; align-items: end;">
-                    <img backup="https://koharuxenon.github.io/korusite/images/shiggy.gif" src="images/shiggy.gif" id="shiggy">
-                    <img backup="https://koharuxenon.github.io/korusite/images/bubanim1.gif" src="images/bubanim1.gif" id="shiggy">
-                </div>
+                <div id="outerPhotoCont"></div>
+            </div>
+        </div>
+    </div>
 
-                <div class="dropDownDiv">
-                    <div>
-                        <p></p>
-                        <p>About Me</p>
-                    </div>
-                    <div>
-                        <h3>Who am i?</h3>
-                        <p>uh im koru.</p><br>
-    
-                        <h3>What do i do?</h3>
-                        <p>I do coding! I mainly code in haxeflixel and python. But i also know html, javascript and some java and c++</p><br>
-    
-                        <h3>Why do i do?</h3>
-                        <p>I started coding as a hobby with a very funny missingno related FNF mod (instead of doing my animation coursework for college, oopsies) and now coding/programming whatever you wanna call it is now my main pursuit</p><br>
-    
-                        <h3>Help me im trapped inside this website</h3>
-                        <p>uh im koru.</p><br>
-    
-                        <h3>Fun fact.</h3>
-                        <p>im koru</p><br>
-    
-                        <h3>One thing not many people know</h3>
-                        <p>uh im koru.</p>
-                    </div>
-                </div>
-
-                <div style="height: 16px;"></div>
-
-                <div class="dropDownDiv" expand="true">
-                    <div>
-                        <p></p>
-                        <p>Cool things</p>
-                    </div>
-                    <div>
-                        <h3>Cool slug creature</h3>
-                        <a href="https://web.archive.org/web/20230326152728/https://kitecreature.net/creatures/slug/">
-                            <img src="images/slug.png" alt="A slug monster is getting slime all over this page!">
-                        </a>
-                        <br>
-                        <a href="https://dx4z.neocities.org/">
-                            <img src="https://dx4z.neocities.org/Coke.gif">
-                        </a>
-                        <p style="font-family: 'Nunito', sans-serif;">Its a Coke Can That Spins</p>
-
-                        <br>
-                    </div>
-                </div>
-
-                <div style="height:16px;"></div>
-
-                <div class="dropDownDiv">
-                    <div>
-                        <p></p>
-                        <p>Media</p>
-                    </div>
-                    <div>
-                        <h3>A yoshi :3</h3>
-                        <img src="images/peace.gif">
-                        <div style="height:16px;"></div>
-
-                        <h3>Poor kitty</h3>
-                        <img src="images/stabuddy12.gif">
-                        <div style="height:16px;"></div>
-
-                        <h3>a creature?</h3>
-                        <img src="https://cdn.discordapp.com/emojis/1120057431830044803.webp?size=96&quality=lossless">
-                        <div style="height:16px;"></div>
-                    </div>
-                </div>
-
-                <div style="height:16px;"></div>
-
-                <div class="dropDownDiv">
-                    <div>
-                        <p></p>
-                        <p>Links</p>
-                    </div>
-                    <div>
-                        <a href="https://github.com/KoharuXenon">Github</a><br><br>
-                        <a href="https://youtube.com/KoharuXenon">YouTube</a><br><br>
-                        <a href="https://x.com/KoharuXenon">Twitter</a>
-                    </div>
-                </div>
-
-                <div style="height:16px;"></div>
-
-                <div style="width: 400px; border-width: 2px; border-style: solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;">
-                    <div style="padding: 10px;">
-                        <div id="HCB_comment_box">
-                            <a href="http://www.htmlcommentbox.com">Comment Box</a>is loading comments...
-                        </div>
-                        
-                        <link rel="stylesheet" type="text/css" href="https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0"/>
-                        
-                        <script type="text/javascript" id="hcb">
-                            if (!window.hcb_user) {
-                                hcb_user = {};
-                            } (function () {
-                                var s = document.createElement("script"), l = hcb_user.PAGE || ("" + window.location).replace(/'/g, "%27"), h = "https://www.htmlcommentbox.com";
-                                s.setAttribute("type", "text/javascript");
-                                s.setAttribute("src", h + "/jread?page=" + encodeURIComponent(l).replace("+", "%2B") + "&mod=%241%24wq1rdBcg%24O9bhMLLijhLJjNftbQrGm0" + "&opts=16798&num=10&ts=1721096728291");
-                                if (typeof s != "undefined") document.getElementsByTagName("head")[0].appendChild(s);
-                        
-                            })();
-                        </script>
-                    </div>
-                </div>
+    <div class="win95con" id="shownImageWindow" style="display: none;">
+        <div>
+            <img src="images/shiggy.gif" width="16" height="16" style="padding: 1px;" />
+            <p id="win95conTitle2">Image</p>
+            <button onclick="closeIMG()">X</button>
+        </div>
+        <div id="win95containerreal">
+            <div id="shownImagePreview">
+                <div id="IMGDate">July 19 2024 13:31</div>
+                <img src="images/mascot-face.png" id="shownIMG">
+                <div id="IMGprevText">This is the description of this lovely image that i like</div>
             </div>
         </div>
     </div>
 
     <script>
-        window.addEventListener('load', function () {
-            document.body.querySelectorAll(".dropDownDiv").forEach(function (element) {
-                let dropDownMax = element.querySelector('div:nth-child(2)');
-                let dropDownIndicator = element.querySelector(':first-child').querySelector(':first-child');
-                let dropDownClickable = element.querySelector(':first-child');
+        function closeIMG() {
+            document.getElementById("shownImageWindow").style.animation = "hideIMG 0.1s linear"
+            setTimeout(function () {
+                document.getElementById("shownImageWindow").style.display = "none"
+            }, 100)
+        }
 
-                let elementMaxHeight = 0;
-                let showingEl = false;
-                dropDownIndicator.textContent = "v";
+        let cameraPhotos = [
+            {
+                "name": "2024_09_30-12.10.42.jpg",
+                "description": "This is cool birb i saw at college"
+            },
+            {
+                "name": "2024_07_19-13.44.14.jpg",
+                "description": `My (now deceased) pet gerbil Bolt :( R.I.P little man
+he loved running
+lil shampoo advert lad
+Thanks sam for the image edit.`
+            },
+            {
+                "name": "2024_07_19-13.31.22.jpg",
+                "description": `My (now deceased) pet gerbil Barbeque :(
+I named him, he was such a little guy, we loved himb
+friendly little fella, so happy
+Thanks sam for the image edit.`
+            },
+            {
+                "name": "2024_06_19-13.42.57.jpg",
+                "description": "yello flower? undertal."
+            },
+            {
+                "name": "2024_03_30-13.51.50.jpg",
+                "description": "white flowor, uh id any media references for white flower smh"
+            },
+            {
+                "name": "2023_11_23-12.34.13.jpg",
+                "description": "hello little ladybug\nwhere you goin"
+            },
+            {
+                "name": "2023_06_24-13.49.41.jpg",
+                "description": "dis a cool daisy from my garden"
+            },
+            {
+                "name": "2023_02_13-22.22.23.jpg",
+                "description": "cool photo of the orion nebula taken through my telescope\ngetting any photos through that thing is a pain"
+            },
+            {
+                "name": "2022_11_22-18.05.45.jpg",
+                "description": "A photo of jupiter with 3 of its moons visible :D"
+            },
+            {
+                "name": "2022_11_22-18.04.20.jpg",
+                "description": "jupiter, big planet mmm"
+            },
+            {
+                "name": "2022_11_22-17.56.09.jpg",
+                "description": "i wonder what jupiter would taste like"
+            },
+            {
+                "name": "2022_11_22-17.51.33.jpg",
+                "description": "dat is saturn, (not to be confused with the sega console)\nnice rings"
+            },
+            {
+                "name": "2022_11_22-17.50.42.jpg",
+                "description": "hello again saturn\na very special certain someone should have a ring on them instead of saturn"
+            },
+            {
+                "name": "2022_11_20-21.36.24.jpg",
+                "description": "cool photo of the Pleiades star cluster"
+            },
+            {
+                "name": "2022_11_11-21.30.58.jpg",
+                "description": "da moooooon (but close, such detail, much wow)"
+            },
+            {
+                "name": "2022_11_09-20.34.20.jpg",
+                "description": "mmmmmm, cheese 🧀"
+            },
+            {
+                "name": "2022_10_08-15.52.41.jpg",
+                "description": "cool pattern that the peephole on my door made against another door\none of my old friends used it as a cover for one of their songs at one point"
+            },
+            {
+                "name": "2022_04_12-12.51.07.jpg",
+                "description": "beetle? beetle. cool beetle i found at thorpe park\nmmm\nbug\nbuge\nbbugg 🪲"
+            },
+            {
+                "name": "2021_09_15-12.29.42.jpg",
+                "description": "among us chip."
+            },
+        ]
 
-                //console.log(element.getAttribute("expand"))
+        let outerphotoCont = document.getElementById("outerPhotoCont")
+        let photoContainer = null
 
-                if (element.getAttribute("expand") == "true") {
-                    showingEl = true;
-                    elementMaxHeight = parseInt(getComputedStyle(dropDownMax).height) + 35 +"px";
-                    console.log(elementMaxHeight);
-                    element.style.height = elementMaxHeight;
-                    dropDownIndicator.textContent = ">";
-                }
+        let domain = document.location.hostname
+        if (document.location.toString().includes("htmlplay")) {
+            domain = "korumeow.dev"
+        }
 
-                dropDownClickable.addEventListener("click", function (event) {
-                    //console.log(dropDownMax);
-                    //console.log(getComputedStyle(dropDownMax))
-                    elementMaxHeight = parseInt(getComputedStyle(dropDownMax).height) + 35 +"px";
-                    //console.log(elementMaxHeight);
-                    if (!showingEl) {
-                        element.style.height = elementMaxHeight;
-                        dropDownIndicator.textContent = ">";
-                    }
-                    else {
-                        element.style.height = "23px";
-                        dropDownIndicator.textContent = "v";
-                    }
-                    showingEl = !showingEl;
-                });
-            });
-        });
+        let prevMonth = null;
+        let loadingSRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAC9AAAA/ABAMAAABSNQdxAAAAJ1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADdEvm1AAAADHRSTlMAECDP798wQK9Qv49FWAOEAAAf9ElEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGD24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhp46NAAICAAh+oAxtEetWoihjXhPObnzxAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAds0z5q1msaAD93TeeoMXoAowf4BaMHiDN6gDijB4gzeoA4oweIM3qAOKMHiDN6gDijB4gzeoA4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VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYU9OBAAAAAAAPJ/bQRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWEPDgQAAAAAgPxfG0FVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdiDAwEAAAAAIP/XRlBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVFfbgQAAAAAAAyP+1EVRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhT04EAAAAAAA8n9tBFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVYQ8OBAAAAACA/F8bQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV2IMDAQAAAAAg/9dGUFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUV9uBAAAAAAADI/7URVFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWFPTgQAAAAAADyf20EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVhDw4EAAAAAID8XxtBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXYgwMBAAAAACD/10ZQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVRX24EAAAAAAAMj/tRFUVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVaU9OCQAAAAAEPT/tSeMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAKvW6FIbcebuAAAAAASUVORK5CYII="
+
+        cameraPhotos.forEach(photoData => {
+            let nameSplit = photoData.name.split("-")
+            let dateSplit = nameSplit[0].split("_")
+            let timeSplit = nameSplit[1].split(".")
+
+            let pHour = timeSplit[0]
+            let pMins = timeSplit[1]
+            let pSecs = timeSplit[2]
+
+            let pYear = dateSplit[0]
+            let monthIndex = parseInt(dateSplit[1]) - 1;
+            let monthCodes = [
+                "January", "February", "March",
+                "April", "May", "June",
+                "July", "August", "September",
+                "October", "November", "December"
+            ]
+            let pMonth = (monthIndex >= 0 && monthIndex < monthCodes.length) ? monthCodes[monthIndex] : "Invalid Month";
+
+            let pDay = dateSplit[2]
+
+            if (pMonth != prevMonth) {
+                console.log("changed month")
+                let dateIndicator = document.createElement("p")
+                dateIndicator.textContent = `${pYear} ${pMonth}`
+                dateIndicator.classList.add("monthIndicator")
+                outerphotoCont.appendChild(dateIndicator)
+
+                photoContainer = document.createElement("div")
+                photoContainer.classList.add("photoContainer")
+                outerphotoCont.appendChild(photoContainer)
+            }
+
+            let thumbnailContainer = document.createElement("div")
+            thumbnailContainer.classList.add("thumbContainer")
+
+            let thisphoto = document.createElement("img")
+            thisphoto.src = `https://${domain}/camera/thumbs/${photoData.name}`
+            thisphoto.classList.add("photoThumb")
+
+            let photoDesc = document.createElement("p")
+            photoDesc.textContent = photoData.name
+            photoDesc.classList.add("photoDesc")
+
+            thumbnailContainer.appendChild(thisphoto)
+            thumbnailContainer.appendChild(photoDesc)
+
+            thumbnailContainer.addEventListener("click", function (event) {
+                document.getElementById("win95conTitle2").textContent = photoData.name
+                document.getElementById("IMGprevText").textContent = photoData.description
+                document.getElementById("IMGDate").textContent = `${pMonth} ${pDay} ${pYear} ${pHour}:${pMins}`
+                document.getElementById("shownIMG").src = loadingSRC;
+                setTimeout(function () {
+                    document.getElementById("shownImageWindow").style.display = "block"
+                    document.getElementById("shownImageWindow").style.animation = "showIMG 0.1s linear"
+                    document.getElementById("shownIMG").src = `https://${domain}/camera/${photoData.name}`
+                }, 100)
+            })
+
+            photoContainer.appendChild(thumbnailContainer)
+
+            prevMonth = pMonth
+        })
+
+        document.getElementById("shownIMG").src = loadingSRC
+
+        document.getElementById("shownIMG").addEventListener("click", function (event) {
+            document.location.href = document.getElementById("shownIMG").src
+        })
 
         function imageError(event) {
-            let elementBackup = event.target.getAttribute("backup");
+            let elementBackup = event.target.getAttribute("src");
+            if (!elementBackup.includes("http")) {
+                elementBackup = `https://koharuxenon.github.io/korusite/${elementBackup}`
+            }
             if (elementBackup) {
                 event.target.src = elementBackup
             }

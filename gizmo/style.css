@@ -1,0 +1,199 @@
+.indie-flower-regular {
+	font-family: "Indie Flower", cursive;
+	font-weight: 400;
+	font-style: normal;
+}
+
+.poetsen-one-regular {
+	font-family: "Poetsen One", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+body {
+	background-image: url("../assets/background.png");
+	background-repeat: repeat;
+	margin: 0;
+	font-family: "Poetsen One", sans-serif;
+}
+
+p {
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+
+h1 {
+	margin: 0;
+	text-align: center;
+}
+
+a {
+	color: #e9dccc;
+}
+
+a:hover {
+	color: #bfac95;
+}
+
+.sidebar {
+	background-color: #554433;
+	background-image: url("../assets/sidebar-background.png");
+	background-repeat: repeat;
+	height: 100%;
+	width: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.container {
+	color: #e9dccc;
+	margin: 30px 150px 0 150px;
+	max-width: 1200px;
+	display: flex;
+	flex-direction: row;
+	gap: 80px;
+}
+
+.container nav {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	align-items: center;
+	justify-content: center;
+}
+
+.container .espresso-sidebar {
+	flex-basis: 25%;
+	margin-top: 80px;
+	position: relative;
+}
+
+.container .espresso-sidebar img {
+	max-width: 300px;
+}
+
+.container .espresso-sidebar img.tape {
+	width: 50%;
+	position: absolute;
+	z-index: 10;
+	left: 45%;
+	top: -20px;
+	transform: translateX(-50%);
+}
+
+.container .espresso-sidebar img.taped-image {
+	transform: rotate(-10deg);
+}
+
+.container .espresso-sidebar .espresso-info {
+	margin-top: 40px;
+	border: dashed 5px #554433;
+	display: inline-block;
+	width: 100%;
+	border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+	padding: 1em;
+	line-height: 1.5em;
+	color: #554433;
+	background: hsla(67, 95%, 95%, 1);
+	font-family: "Indie Flower", cursive;
+	text-align: left;
+	font-size: 20px;
+}
+
+.container .espresso-sidebar .espresso-info table th {
+	vertical-align: baseline;
+	width: 25%;
+}
+
+.container .espresso-sidebar .espresso-info table td {
+	width: 75%;
+}
+
+.container .main {
+	background-color: #554433;
+	flex-basis: 75%;
+	border: 1px dashed white;
+	border-radius: 25px;
+	padding: 20px;
+	text-align: center;
+}
+
+.container .links-page a {
+	text-decoration: none;
+}
+
+.divider {
+	display: block;
+	margin: 10px auto;
+}
+
+.stamps {
+	text-align: center;
+}
+
+textarea {
+	background-color: #fcfee6;
+	border: 2px dashed #554433;
+	color: #554433;
+	resize: none;
+	width: 50%;
+	height: 50px;
+}
+
+.notfound img {
+	-webkit-animation: spin 4s linear infinite;
+	-moz-animation: spin 4s linear infinite;
+	animation: spin 4s linear infinite;
+}
+@-moz-keyframes spin {
+	100% {
+		-moz-transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@media screen and (max-width: 992px) {
+	.container {
+		margin: 0 20px;
+		flex-direction: column;
+		gap: 25px;
+	}
+
+	.sidebar {
+		width: 50px;
+		position: fixed;
+	}
+
+	.container .main {
+		z-index: 1;
+	}
+
+	.container .espresso-sidebar img.taped-image {
+		width: 100%;
+		max-width: unset;
+	}
+
+	.container .espresso-sidebar .espresso-info {
+		width: auto;
+	}
+
+	.divider {
+		width: 100%;
+	}
+
+	textarea {
+		width: 90%;
+		height: 50px;
+	}
+}

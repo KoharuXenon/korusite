@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="a site about my cat gizmo" />
+    <meta name="keywords" content="cats, gizmo, kitty, cute, pets, personal, gallery" />
+    <meta name="author" content="Koru" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="Gizmo" />
+    <meta property="og:description" content="a site about me and my girlfriend's cat gizmo" />
+    <meta property="og:image" content="https://korumeow.dev/gizmo/sitebox.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <style>
+        @font-face {
+            font-family: Flower;
+            src: url('../font/flower.ttf');
+        }
+
+        body {
+            background-image: url("./background.png");
+            background-repeat: repeat;
+            margin: 0;
+            font-family: "Poetsen One", sans-serif;
+            max-width: 100vw;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            max-width: 100vw;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        p {
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+        }
+
+        a {
+            color: #d4be98;
+        }
+
+        a:hover {
+            color: #e9dccc;
+        }
+
+        .container {
+            color: #d4be98;
+            margin: 30px 150px 0 150px;
+            display: flex;
+            flex-direction: row;
+            gap: 80px;
+        }
+
+        .container nav {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container .gizmo-sidebar {
+            flex-basis: 25%;
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .container .gizmo-sidebar img {
+            max-width: 400px;
+        }
+
+        .rotate img {
+            transform: rotate(-10deg);
+        }
+
+        .container .gizmo-sidebar .gizmo-info {
+            margin-top: 40px;
+            border: dashed 5px #d4be98;
+            display: inline-block;
+            width: 100%;
+            padding: 1em;
+            line-height: 1.5em;
+            color: #d4be98;
+            background: #151718;
+            font-family: Flower, cursive;
+            text-align: left;
+            font-size: 20px;
+            transform: rotate(2deg);
+        }
+
+        .container .gizmo-sidebar .gizmo-info table th {
+            vertical-align: baseline;
+            width: 25%;
+        }
+
+        .container .gizmo-sidebar .gizmo-info table td {
+            width: 75%;
+        }
+
+        .container .main {
+            background-color: #2b2726;
+            flex-basis: 75%;
+            border: 1px dashed #d4be98;
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .divider {
+            display: block;
+            margin: 10px auto;
+        }
+
+        @media screen and (max-width: 1092px) {
+            .container {
+                margin: 0 20px;
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            .container .main {
+                z-index: 1;
+            }
+
+            .container .gizmo-sidebar .rotate img {
+                width: 100%;
+                max-width: unset;
+            }
+
+            .container .gizmo-sidebar .gizmo-info {
+                width: calc(100% - 50px);
+            }
+
+            .divider {
+                width: 100%;
+            }
+        }
+
+        @keyframes fadein {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-container img {
+            width: 256px;
+            max-width: calc(100% - 20px);
+            height: auto;
+        }
+    </style>
+    <title>gizmo</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="gizmo-sidebar">
+            <div class="taped">
+                <div class="rotate" style="position: relative;">
+                    <img src="sitebox.jpg" />
+                    <img src="smol.jpg"
+                        style="transform: translateY(-50%) rotate(-5deg); position: absolute; top:10%; left: 10%; width: auto;"
+                        height="30%" />
+                    <img src="look.jpg"
+                        style="transform: translateY(-50%) rotate(5deg); position: absolute; top:80%; left: 70%; width: auto;"
+                        height="40%" />
+                </div>
+            </div>
+            <div class="gizmo-info">
+                <table>
+                    <tr>
+                        <th>name</th>
+                        <td>Gizmo</td>
+                    </tr>
+                    <tr>
+                        <th>age</th>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th>breed</th>
+                        <td>Little baby boy</td>
+                    </tr>
+                    <tr>
+                        <th>likes</th>
+                        <td>
+                            Food, Attacking Mums Feet, Going to Dad's house
+                            Climbing On Doors, Cuddles.
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>dislikes</th>
+                        <td>Travelling, Being Ignored When Demanding for Dinner (When it's not dinner time)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="main">
+            <nav>
+                <a href="/">home</a>
+                <p>🐈‍⬛</p>
+            </nav>
+            <div class="divider"></div>
+            <p style="text-align: center; margin-bottom: 14px;">
+                this is a website dedicated to me and my girlfriend's little man
+            </p>
+
+            <p>
+                epic paragraph
+            </p>
+            <br />
+            <p>
+                gizmo is very special babey, hims got hees big eyes when he happy
+                purr the car kitty he loves, gizmo very special, baby, cute boy, so handsome, distinguished lad
+            </p>
+
+            <div class="flex-container">
+                <img src="./gallery/IMG_20240902_005443_1.jpg" alt="Image 1">
+                <img src="./gallery/IMG_20240916_124411.jpg" alt="Image 2">
+                <img src="./gallery/IMG_20240920_231928.jpg" alt="Image 3">
+                <img src="./gallery/PicsArt_09-02-11.58.47.jpg" alt="Image 4">
+            </div>
+        </div>
+    </div>
+
+    <img src="./goober.jpg" style="animation: fadein 120s linear; pointer-events: none;" class="centered">
+</body>
+</html>

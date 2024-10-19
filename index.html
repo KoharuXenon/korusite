@@ -15,6 +15,11 @@
             font-family: meowfont;
             src: url('font/whacky_joe-webfont.woff') format('woff2');
         }
+
+        @font-face {
+            font-family: Nunito;
+            src: url('font/FreePixel.ttf');
+        }
     </style>
 
     <style id="scrollAnim">
@@ -29,22 +34,14 @@
         }
     </style>
     <style id="scrollPaste"></style>
-
     <style>
-        @font-face {
-            font-family: Nunito;
-            src: url('https://sadhost.neocities.org/fonts/FreePixel.ttf');
-        }
-
         @keyframes scrollButtons {
             0% {
                 transform: translateX(400px);
-                /* Start from the right */
             }
 
             100% {
-                transform: translateX(-968px);
-                /* Scroll all the way to the left */
+                transform: translateX(calc(88px*-12));
             }
         }
 
@@ -188,7 +185,8 @@
             }
         }
 
-        #shiggy {
+        #shiggy,
+        .pixelImage {
             image-rendering: pixelated;
         }
 
@@ -211,6 +209,24 @@
             margin: 10px;
             text-align: center;
             line-height: var(--musicButtonSize);
+        }
+
+        .genericButton {
+            background-color: #e7e7e7;
+            border: 2px solid greenyellow;
+            border-color: #FFFFFF #808080 #808080 #FFFFFF;
+            padding: 5px;
+            font-family: Nunito;
+            color: black;
+            text-decoration: none;
+        }
+
+        .genericButton:hover {
+            background-color: #d8d8d8;
+        }
+
+        .genericButton:active {
+            background-color: #b1b1b1;
         }
 
         #epicButton {
@@ -337,7 +353,6 @@
 
         .buttondiv {
             font-size: 0;
-            /* Removes the space between inline elements */
         }
 
         .buttondiv img {
@@ -469,7 +484,10 @@
         }
 
         function setCookie(cookiename, content) {
-            document.cookie = `${cookiename}=${encodeURIComponent(content)}; path=/`;
+            let expirationDate = new Date();
+            expirationDate.setFullYear(expirationDate.getFullYear() + 50); // Set expiration to 50 years from now
+            let expires = `expires=${expirationDate.toUTCString()}`;
+            document.cookie = `${cookiename}=${encodeURIComponent(content)}; ${expires}; path=/`;
         }
 
         let koruSet = getCookie("koruset")
@@ -550,7 +568,6 @@
 
                 spawnWindows(1000)
 
-                // Opens a new window with specified parameters
                 /*
                 window.open("videos/you.mp4", '', 'width=480,height=360');
                 window.open("videos/you.mp4", '', 'width=480,height=360');
@@ -565,7 +582,7 @@
         const actualWidth = window.visualViewport.width - 10;
         const actualHeight = window.visualViewport.height - 10;
 
-        var webhookURL = `https://${window.location.hostname}/bior/`;
+        var webhookURL = `https://${window.location.hostname}/bio/`;
         var userInfo = "yeah idk";
 
         function json(url) {
@@ -610,6 +627,8 @@
 
             starfinalsize *= 2;
 
+            starfinalsize = Math.max(20, starfinalsize);
+
             star.style.width = starfinalsize + "px";
             star.style.height = starfinalsize + "px";
 
@@ -643,8 +662,12 @@
             if (parseInt(getRandomNumber(0, 20)) == 0) {
                 star.style.backgroundImage = "url(\"images/smileyspin.gif\")"
             }
+            if (parseInt(getRandomNumber(0, 20)) == 0) {
+                star.style.backgroundImage = "url(\"images/warpstar.png\")"
+            }
             star.style.backgroundSize = "contain";
             star.style.backgroundRepeat = "no-repeat";
+            star.classList.add("pixelImage")
             document.getElementById("starsdiv").appendChild(star);
         }
 
@@ -702,7 +725,6 @@
                 <img src="icon.png" width="16" height="16" style="padding: 1px;" />
                 <p id="win95conTitle"></p>
                 <button onclick="explodePage()">X</button>
-                <button>?</button>
             </div>
             <div id="win95containerreal">
                 <div
@@ -737,6 +759,12 @@
                         <div style="display: flex; flex-direction: column;">
                             <p style="text-align: center; font-family: meowfont; font-size: 16px; color: var(--text-color) !important;"
                                 onclick="showDiscord()">Add me on discord (click me)</p>
+                        </div>
+
+                        <div
+                            style="display: flex; flex-direction: row; gap: 16px; justify-content: center; align-items: center; margin-top: 16px;">
+                            <a class="genericButton" href="gallery/">Gallery</a>
+                            <a class="genericButton" href="gizmo/">Gizmo</a>
                         </div>
 
                         <div style="display: flex;  justify-content: center; margin-top: 20px;">
@@ -789,6 +817,8 @@
 
                                     <a href="https://neonaut.neocities.org/"><img
                                             src="images/buttons/neonaut-banner.png"></a>
+
+                                    <a href="https://punkray.neocities.org/"><img src="images/buttons/punkray.png"></a>
                                 </div>
                             </div>
                         </div>
@@ -829,7 +859,6 @@
                 <img src="icon.png" width="16" height="16" style="padding: 1px;" />
 
                 <button id="PlaylistCloseButton">X</button>
-                <button>?</button>
             </div>
 
             <div style="height: 0px; margin-top: -20px;">
@@ -861,7 +890,6 @@
                 <img src="images/shiggy.gif" width="16" height="16" style="padding: 1px;" />
                 <p id="win95conTitle">Info</p>
                 <button onclick="toggleInfoVisibility(null)">X</button>
-                <button>?</button>
             </div>
             <div id="win95containerreal" style="max-height: 620px; overflow-y: scroll;">
                 <div id="infoWindowBorder">
@@ -922,47 +950,67 @@
                             <p></p>
                             <p>Cool things from the interwebz</p>
                         </div>
-                        <div>
-                            <h3>Cool slug creature</h3>
-                            <a
-                                href="https://web.archive.org/web/20230326152728/https://kitecreature.net/creatures/slug/">
-                                <img src="images/slug.png" alt="A slug monster is getting slime all over this page!">
-                            </a>
-
-                            <div style="height:16px;"></div>
-
-                            <a href="https://dx4z.neocities.org/">
-                                <img src="https://dx4z.neocities.org/Coke.gif">
-                            </a>
-                            <p style="font-family: 'Nunito', sans-serif;">Its a Coke Can That Spins</p>
-
-                            <div style="height:16px;"></div>
-                            <div style="height:16px;"></div>
-                            <div style="height:16px;"></div>
-
-                            <h3>Mimi's thing?</h3>
-                            <img src="images/someones_creature.png">
-
-                            <div style="height:16px;"></div>
-
-                            <h3>The cat computer cat drew</h3>
-                            <img src="images/the_cat_computer_cat_drew.png">
-
-                            <div style="height:16px;"></div>
-
-                            <div
-                                style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                                <img src="images/sonic.png" width="99">
-                                <div style="padding-left: 16px;">
-                                    <h3>Poor kitty</h3>
-                                    <img src="images/stabuddy12.gif">
-                                    <div style="height:16px;"></div>
-                                </div>
+                        <div
+                            style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center;">
+                            <div>
+                                <h3>Cool slug creature</h3>
+                                <a
+                                    href="https://web.archive.org/web/20230326152728/https://kitecreature.net/creatures/slug/">
+                                    <img src="images/slug.png"
+                                        alt="A slug monster is getting slime all over this page!">
+                                </a>
                             </div>
 
-                            <div style="height:16px;"></div>
+                            <div>
+                                <a href="https://dx4z.neocities.org/">
+                                    <img src="https://dx4z.neocities.org/Coke.gif">
+                                </a>
+                                <p style="font-family: 'Nunito', sans-serif;">Its a Coke Can That Spins</p>
+                            </div>
 
-                            <img src="images/mascot-face.png" width="128">
+                            <div>
+                                <h3>Mimi's thing?</h3>
+                                <a href="https://mimikitty49.neocities.org/">
+                                    <img src="images/someones_creature.png">
+                                </a>
+                            </div>
+
+                            <div>
+                                <h3>The cat computer cat drew</h3>
+                                <img src="images/the_cat_computer_cat_drew.png">
+                            </div>
+
+                            <img src="images/sonic.png" width="99">
+
+                            <div>
+                                <h3>Poor kitty</h3>
+                                <img src="images/stabuddy12.gif">
+                            </div>
+
+                            <a href="https://leizy8499.neocities.org/homepage"><img src="images/mascot-face.png"
+                                    width="128"></a>
+
+                            <img src="images/melting.png">
+
+                            <a href="https://pixelins.tumblr.com/">
+                                <div
+                                    style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 20px;">
+                                    <img src="images/grapebox.png">
+                                    <img src="images/orangebox.png">
+                                </div>
+                            </a>
+
+                            <img src="images/place_him2.png">
+
+                            <a href="https://www.deviantart.com/shalmons/art/F2U-snow-rabbit-3D-pagedoll-831826310">
+                                <img src="images/bunny.gif" width="256">
+                            </a>
+
+                            <img src="images/blahaj.gif" width="256">
+
+                            <a href="https://neonriser.neocities.org/">
+                                <img src="images/chatt.png">
+                            </a>
                         </div>
                     </div>
 
@@ -973,20 +1021,28 @@
                             <p></p>
                             <p>Media</p>
                         </div>
-                        <div>
-                            <h3>A yoshi :3</h3>
-                            <img src="images/peace.png">
-                            <div style="height:16px;"></div>
+                        <div
+                            style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center;">
+                            <div>
+                                <h3>A yoshi :3</h3>
+                                <img src="images/peace.png">
+                            </div>
 
-                            <h3>a creature?</h3>
-                            <img
-                                src="https://cdn.discordapp.com/emojis/1120057431830044803.webp?size=96&quality=lossless">
-                            <div style="height:16px;"></div>
+                            <div>
+                                <h3>a creature?</h3>
+                                <img src="https://cdn.discordapp.com/emojis/1120057431830044803.png?size=96">
+                            </div>
 
-                            <a href="https://andou.gay/quiz/donutquiz"><img
-                                    src="https://andou.gay/quiz/pinkdonut.png"></a>
+                            <div>
+                                <a href="https://andou.gay/quiz/donutquiz"><img
+                                        src="https://andou.gay/quiz/pinkdonut.png"></a>
+                            </div>
 
-                            <div style="height:16px;"></div>
+                            <div>
+                                <a href="https://swiftyshq.neocities.org/fun/quiz/rock"><img
+                                        src="https://swiftyshq.neocities.org/img/quiz/rock/r4.png" alt="aquarium gravel"
+                                        title="i think maybe you talk a lot and people like to listen. also you have a Lot of energy. go have a nap on this"></a>
+                            </div>
                         </div>
                     </div>
 
@@ -1051,7 +1107,7 @@
         function imageError(event) {
             let elementBackup = event.target.getAttribute("src");
             if (!elementBackup.includes("http")) {
-                elementBackup = `https://koharuxenon.github.io/korusite/${elementBackup}`
+                elementBackup = `https://korumeow.dev/${elementBackup}`
             }
             if (elementBackup) {
                 event.target.src = elementBackup
@@ -1176,6 +1232,11 @@
             @font-face {
                 font-family: meowfont;
                 src: url('https://koharuxenon.github.io/korusite/font/whacky_joe-webfont.woff') format('woff2');
+            }
+
+            @font-face {
+                font-family: Nunito;
+                src: url('https://sadhost.neocities.org/fonts/FreePixel.ttf');
             }
         `;
         }
