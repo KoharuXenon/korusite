@@ -151,17 +151,17 @@
         let centerX = window.innerWidth / 2;
         let centerY = window.innerHeight / 2;
 
-        let maxX = 40;
-        let maxY = 40;
+        let maxX = 30;
+        let maxY = 30;
 
-        let shakeMax = 3;
+        let shakeMax = 2.5;
 
         let startValueX = 0;
         let startValueY = 0;
         let endValueX = getRandomNumber(maxX * -1, maxX);
         let endValueY = getRandomNumber(maxY * -1, maxY);
-        let minTime = 350;
-        let maxTime = 500;
+        let minTime = 500;
+        let maxTime = 600;
         let durationX = getRandomNumber(minTime, maxTime);
         let durationY = getRandomNumber(minTime, maxTime);
         let circleXOffset = 0;
@@ -318,9 +318,11 @@
 
         let circle2Width = document.getElementById("circle2").getBoundingClientRect().width;
 
-        function lockPointer() {
-            if (document.pointerLockElement !== document.body) {
-                document.body.requestPointerLock();
+        function lockPointer(overrideEl = null, overrideForce=false) {
+            if (overrideEl == null)
+                overrideEl = document.body
+            if (document.pointerLockElement !== overrideEl && (animationId != null || overrideForce)) {
+                overrideEl.requestPointerLock();
             }
         }
 
@@ -373,7 +375,7 @@
             const velocityY = Math.sin(radians);
             //alert(ourScale)
 
-            let velSpeed = getRandomNumber(1500, 1900) * ourScale;
+            let velSpeed = getRandomNumber(1400, 1600) * ourScale;
 
             let slamVel = velocityX
             catVX = slamVel * velSpeed;
@@ -432,12 +434,25 @@
             centerX = Math.max(-25, Math.min(window.innerWidth - 25, centerX));
             centerY = Math.max(-25, Math.min(window.innerHeight - 25, centerY));
 
-            let toMoveCircleX = centerX - 25;
-            let toMoveCircleY = centerY - 25;
+            /*
+            let toMoveCircleX = (centerX - 25);
+            let toMoveCircleY = (centerY - 25);
+            */
+            let toMoveCircleX = (centerX - 25) + circleXOffset;
+            let toMoveCircleY = (centerY - 25) + circleYOffset;
 
             if (true) {
-                toMoveCircleX = Math.max(-15, Math.min(window.innerWidth - 15, toMoveCircleX)) + circleXOffset;
-                toMoveCircleY = Math.max(-15, Math.min(window.innerHeight - 15, toMoveCircleY)) + circleYOffset;
+                let tempMoveCircleX = Math.max(-15, Math.min(window.innerWidth - 15, toMoveCircleX));
+                if (tempMoveCircleX != toMoveCircleX) {
+                    catVX = 0;
+                }
+                toMoveCircleX = tempMoveCircleX;
+
+                let tempMoveCircleY = Math.max(-15, Math.min(window.innerHeight - 15, toMoveCircleY));
+                if (tempMoveCircleY != toMoveCircleY) {
+                    catVY = 0;
+                }
+                toMoveCircleY = tempMoveCircleY;
             }
 
             let centerDistance = calculateDistanceFromCenter(toMoveCircleX + 25, toMoveCircleY + 25)
@@ -488,9 +503,12 @@
             requestAnimationFrame(frameLoop);
         }
 
-        let animationId = requestAnimationFrame(frameLoop);
+        let animationId = null;
 
-        let movementMult = 40;
+
+        let mouseMoveMult = Math.max(1, ourScale/2);
+        //alert(mouseMoveMult)
+        let movementMult = 40*mouseMoveMult;
         let epicMovement = 1.2;
 
         const velocityThreshold = 10;
@@ -524,15 +542,18 @@
         document.addEventListener('touchstart', (e) => {
             lastTouch.x = e.touches[0].clientX;
             lastTouch.y = e.touches[0].clientY;
-            if (audio.paused) {
-                audio.play();
-            }
-            document.documentElement.requestFullscreen();
         });
 
         document.addEventListener('touchmove', (e) => {
-            const movementX = e.touches[0].clientX - lastTouch.x;
-            const movementY = e.touches[0].clientY - lastTouch.y;
+            let movementX = e.touches[0].clientX - lastTouch.x;
+            let movementY = e.touches[0].clientY - lastTouch.y;
+
+            /*
+            movementX = Math.min(400, Math.max(-400, movementX));
+            movementY = Math.min(400, Math.max(-400, movementY));
+            */
+
+            console.log(mouseVelX, mouseVelY);
 
             let mouseVelX = (movementX * movementMult);
             if (Math.abs(mouseVelX) > Math.abs(catMouseVX)) {
@@ -556,40 +577,92 @@
         });
 
         document.addEventListener('click', function () {
-            lockPointer()
-            if (audio.paused) {
-                audio.play();
-            }
+            lockPointer();
+            console.log("click")
         });
 
-        function startMINIGAME() {
-            console.log("hello bro")
-            document.getElementById("circlesContainer").style.visibility = "visible"
-            document.getElementById("clickMeContainer").style.display = "none"
-            document.getElementById("minigameLocker").style.visibility = "visible"
-            slamStartTime = Date.now()
-            requestAnimationFrame(doSlamRepeat);
+        document.body.addEventListener("keypress", event => {
+            lockPointer();
+            console.log("keypress")
+        })
+
+        let clickmeContainerYeah = document.querySelector("#clickMeContainer > p:nth-child(1)");
+
+        function exitFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+                console.log("Exited fullscreen");
+            } else {
+                console.log("Not in fullscreen mode");
+            }
         }
 
-        window.addEventListener('load', () => {
-            audio.addEventListener('play', () => {
-                startMINIGAME();
+
+        function startMINIGAME() {
+            console.log("hello bro");
+            document.documentElement.requestFullscreen();
+
+            document.addEventListener("fullscreenchange", function onFullscreenChange() {
+                if (document.fullscreenElement) {
+                    console.log("Fullscreen activated");
+                    document.removeEventListener("fullscreenchange", onFullscreenChange);
+
+                    document.getElementById("circlesContainer").style.visibility = "visible";
+                    document.getElementById("clickMeContainer").style.display = "none";
+                    document.getElementById("minigameLocker").style.visibility = "visible";
+                    lockPointer(null, true);
+                    animationId = requestAnimationFrame(frameLoop);
+                    let repeatTimes = 0;
+                    let ballsInterval = setInterval(function () {
+                        centerX = window.innerWidth / 2;
+                        centerY = window.innerHeight / 2;
+                        catVX = 0;
+                        catVY = 0;
+                        repeatTimes += 1;
+                        if (repeatTimes > 10) {
+                            clearInterval(ballsInterval)
+                            slamStartTime = Date.now();
+                            requestAnimationFrame(doSlamRepeat);
+                            if (audio.paused) {
+                                audio.play();
+                            }
+                        }
+                        lastTouch = { x: 0, y: 0 }
+                        console.log("balls")
+                    }, 50)
+                } else {
+                    console.log("Waiting for fullscreen...");
+                }
             });
+        }
+
+
+        window.addEventListener('load', () => {
             audio.addEventListener("ended", () => {
                 console.log("YAYYYYYYY")
                 document.getElementById("yippeeImage").style.visibility = "visible";
                 cancelAnimationFrame(animationId)
                 intentionalLost = true
                 document.exitPointerLock();
+                exitFullscreen()
             })
         });
 
-        document.addEventListener('pointerlockchange', () => {
-            if (document.pointerLockElement !== document.body && !intentionalLost) {
-                console.log('Pointer lock lost');
-                lockPointer()
+        clickmeContainerYeah.addEventListener('click', event => {
+            startMINIGAME();
+        })
+
+        /*
+        document.addEventListener('pointerlockchange', function () {
+            if (document.pointerLockElement === document.body) {
+                console.log("Pointer Lock Active");
+            } else if (!intentionalLost) {
+                console.log("Pointer Lock Lost");
+                // You can re-request pointer lock here if needed
+                document.body.requestPointerLock();
             }
         });
+        */
 
         document.addEventListener('pointerlockerror', () => {
             console.log('Pointer lock error');

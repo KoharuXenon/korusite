@@ -1,0 +1,17 @@
+
+
+                    <div style="height:16px;"></div>
+
+                    <div
+                        style="width: calc(100% - 4px); border-width: 2px; border-style: solid; border-color: #FFFFFF #808080 #808080 #FFFFFF; display: flex; flex-direction: column;">
+                        <div style="background-color: #1f2e34; width: 100%; padding-top: 5px; color: white">Leave a
+                            comment!
+                        </div>
+                        <iframe src="https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5" width="100%" height="250"
+                            allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0"
+                            scrolling="auto" id="commentBox"></iframe>
+
+                        <a href="https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5"
+                            style="background-color: #1f2e34; width: 100%; padding-top: 15px; display: none;"
+                            id="backupCommentBox">https://www5.cbox.ws/box/?boxid=952233&boxtag=2MaXU5</a>
+                    </div>
