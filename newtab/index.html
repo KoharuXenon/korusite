@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="icon.png">
     <title>Koru New Tab</title>
-    <link rel="stylesheet" href="./gh.css">
     <style>
         html,
         body {
@@ -156,7 +155,7 @@
         </div>
     </div>
 
-    <div id="gh" data-login="KoharuXenon" style="position: fixed; top: 10px; right: 10px"></div>
+    <div id="ghCalendarCard"></div>
 
     <div style="color: white; font-size: 20px; left: 10px; top: 10px; position: fixed;">
         <p id="cityName">City Name</p>
@@ -312,21 +311,89 @@
             doWeather(firstlat, firstlon);
 
         let githubname = getCookie("GitHubUsername");
-
-        if (!githubname && !window.location.href.includes("htmlplay")) {
-            document.getElementById("gh").remove();
+        if (window.location.href.includes("htmlplay")) {
+            githubname = "KoharuXenon"
         }
         else if (githubname) {
-            document.getElementById("gh").setAttribute('data-login', githubname);
+            colors = {
+                "0": "#21262d",
+                "1": "#440044",
+                "2": "#6d006d",
+                "3": "#a600a6",
+                "4": "#d300d3",
+            }
+
+            calenderEl = document.createElement("div")
+            calenderEl.classList.add("calender")
+            calenderEl.style.display = "flex"
+            calenderEl.style.flexDirection = "column"
+            calenderEl.style.backgroundColor = "#0d1117"
+            calenderEl.style.padding = "1rem"
+            calenderEl.style.paddingBottom = "0px"
+            calenderEl.style.borderRadius = "6px"
+            calenderEl.style.border = "max(1px, 0.0625rem) solid #30363d"
+            calenderEl.style.width = "fit-content"
+
+            fetch(`https://proxy.cors.sh/https://github.com/${githubname}?action=show&controller=profiles&tab=contributions&user_id=${githubname}`, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.text())
+            .then(function fetchThen(body) {
+                var wrapper = document.createElement('div');
+                wrapper.innerHTML = body;
+                console.log(wrapper.innerHTML.trim())
+                graph = wrapper.querySelector('.ContributionCalendar-grid > tbody:nth-child(3)');
+                tables = graph.querySelectorAll(':scope > tr');
+
+                tables.forEach(row => {
+                    let newRow = document.createElement("div")
+                    newRow.style.display = "flex";
+                    row.querySelectorAll("[role=\"gridcell\"]").forEach(cell => {
+                        let newCell = document.createElement("div")
+                        let dataLevel = cell.getAttribute("data-level")
+                        newCell.style.backgroundColor = colors[dataLevel]
+                        newCell.style.height = "10px"
+                        newCell.style.width = "10px"
+                        newCell.style.borderRadius = "2px"
+                        newCell.style.outline = "2px solid rgba(255, 255, 255, 0.03)"
+                        newCell.style.margin = "1.5px"
+                        newRow.appendChild(newCell)
+                    })
+                    calenderEl.appendChild(newRow)
+                });
+
+                let newRow = document.createElement("div")
+                newRow.style.paddingBottom = "0.5rem"
+                newRow.style.paddingTop = "0.5rem"
+
+                svgEl = document.createElement("svg")
+                svgEl.innerHTML = '<svg fill="#ffffff" height="16" width="16" aria-hidden="true" viewBox="0 0 24 24" version="1.1" data-view-component="true" class="octicon octicon-mark-github v-align-middle"><path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path></svg>'
+
+                let userName = document.createElement("a")
+                userName.textContent = githubname
+                userName.style.setProperty("color", "rgb(145, 152, 161)", "important")
+                userName.style.textDecoration = "none"
+                userName.style.paddingLeft = "0.5rem"
+                userName.style.fontFamily = 'BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"'
+                userName.href = `https://github.com/${githubname}`
+
+                newRow.appendChild(svgEl)
+                newRow.appendChild(userName)
+                calenderEl.appendChild(newRow)
+
+                document.body.querySelector("#ghCalendarCard").outerHTML = calenderEl.outerHTML
+            })
         }
-        
+
         let apiKey = getCookie("unsplashkey");
         if (apiKey == null) {
             setCookie("unsplashkey", prompt("API key for unsplash.com, Leave blank to disable"));
             apiKey = getCookie("unsplashkey");
         }
 
-        if (true) {
+        if (apiKey) {
             json(`https://api.unsplash.com/search/photos/?client_id=${apiKey}&query=animals&orientation=landscape&per_page=100&page=${getRandomNumber(1, 50)}`).then(data => {
                 let results = data.results;
                 let randomIndex = Math.floor(Math.random() * results.length);
@@ -346,7 +413,6 @@
 
     <script src="./oneko.js"></script>
     <script src="./catfrenimport.js"></script>
-    <script src="./gh.js"></script>
 
 </body>
 
