@@ -238,6 +238,11 @@
 
 <body>
     <script>
+        const params = new URLSearchParams(location.search);
+        const accent = params.get("accent") || "#ff6b6b";
+        console.log(accent)
+        document.documentElement.style.setProperty('--moz-theme-tab-line-color', accent);
+
         function getRandomNumber(min, max) {
             return Math.random() * (max - min) + min;
         }
