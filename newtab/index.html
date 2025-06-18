@@ -213,25 +213,25 @@
         }
 
         #formToggleButton {
-    background-color: rgba(0, 0, 0, 0.5);
-    margin: 20px 0 0 0 !important;
-    border: none;
-    color: white;
-    font-size: 64px;
-    cursor: pointer;
-    width: 64px;
-    height: 64px;
-    padding: 0;
-    border-radius: 8px;
-    outline: 2px solid var(--moz-theme-tab-line-color) !important;
+            background-color: rgba(0, 0, 0, 0.5);
+            margin: 20px 0 0 0 !important;
+            border: none;
+            color: white;
+            font-size: 64px;
+            cursor: pointer;
+            width: 64px;
+            height: 64px;
+            padding: 0;
+            border-radius: 8px;
+            outline: 2px solid var(--moz-theme-tab-line-color) !important;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: normal;
-    font-weight: normal;
-    text-align: center;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: normal;
+            font-weight: normal;
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -605,6 +605,7 @@
 
             bookmarkTitle.textContent = bookmark.title;
             bookmarkLink.href = bookmark.url;
+            bookmarkLink.setAttribute("target", "_blank");
             bookmarkImage.src = bookmark.icon;
             bookmarkDiv.setAttribute("bookmark-id", bookmark.id)
 
