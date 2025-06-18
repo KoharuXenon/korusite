@@ -213,20 +213,26 @@
         }
 
         #formToggleButton {
-            background-color: rgba(0, 0, 0, 0.5);
-            margin: 0px;
-            border: none;
-            color: white;
-            font-size: 64px;
-            cursor: pointer;
-            width: 64px;
-            height: 64px;
-            padding: 0px;
-            line-height: 64px;
-            margin-top: 20px !important;
-            border-radius: 8px;
-            outline: 2px solid var(--moz-theme-tab-line-color) !important;
-        }
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 20px 0 0 0 !important;
+    border: none;
+    color: white;
+    font-size: 64px;
+    cursor: pointer;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    border-radius: 8px;
+    outline: 2px solid var(--moz-theme-tab-line-color) !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+    font-weight: normal;
+    text-align: center;
+}
+
     </style>
 </head>
 
@@ -293,7 +299,12 @@
 
         <div id="bookmarkContainer"></div>
 
-        <button id="formToggleButton">+</button>
+        <button id="formToggleButton">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+        </button>
 
         <form id="bookmarkForm">
             <label>Title: <input id="bookmarkFormTitle" type="text" name="title" value="" required></label><br>
