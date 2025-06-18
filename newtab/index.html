@@ -27,6 +27,12 @@
             align-items: center;
         }
 
+        :root {
+            --moz-theme-tab-line-color: #ff6b6b;
+            --bookmarkImageSize: 64px;
+            --bookmarkButtonSize: 32px;
+        }
+
         .container {
             position: relative;
             width: 100%;
@@ -67,7 +73,7 @@
             margin: 0 0 0 0;
         }
 
-        .centerMiddleDiv {
+        #centerMiddleDiv {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -87,6 +93,139 @@
             height: 64px;
             background-size: cover;
             background-repeat: no-repeat;
+        }
+
+        #bookmarkContainer {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            flex-direction: row;
+            gap: 16px;
+            max-width: 100vw;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .bookmarkDiv {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .bookmarkTitle {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: calc(var(--bookmarkImageSize) + 32px);
+            min-width: calc(var(--bookmarkImageSize) + 32px);
+            text-align: center;
+        }
+
+        .bookmarkImage {
+            width: var(--bookmarkImageSize);
+            height: var(--bookmarkImageSize);
+            background-size: contain;
+        }
+
+        .buttonsContainer {
+            position: absolute;
+            width: calc(var(--bookmarkImageSize) + var(--bookmarkButtonSize));
+            height: calc(var(--bookmarkImageSize) + var(--bookmarkButtonSize));
+            top: calc((var(--bookmarkButtonSize)/2) * -1);
+            left: calc((32px / 2) - (var(--bookmarkButtonSize)/2));
+            pointer-events: none;
+        }
+
+        .editBtn:hover,
+        .deleteBtn:hover,
+        .buttonsContainer:hover .editBtn,
+        .buttonsContainer:hover .deleteBtn,
+        .bookmarkDiv:hover .editBtn,
+        .bookmarkDiv:hover .deleteBtn {
+            opacity: 1 !important;
+        }
+
+        .editBtn,
+        .deleteBtn {
+            opacity: 0;
+            pointer-events: auto;
+            position: absolute;
+            width: var(--bookmarkButtonSize);
+            height: var(--bookmarkButtonSize);
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            border: none;
+            top: 0px;
+            margin: 0px;
+            padding: 0px;
+            cursor: pointer;
+        }
+
+        .editBtn {
+            left: 0px;
+        }
+
+        .deleteBtn {
+            right: 0px;
+        }
+
+        #bookmarkForm {
+            font-size: 16px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1e1e2f;
+            padding: 20px;
+            border-radius: 8px;
+            outline: 2px solid var(--moz-theme-tab-line-color);
+            color: #eee;
+            box-shadow: 0 4px 10px var(--moz-theme-tab-line-color);
+            display: none;
+        }
+
+        #bookmarkForm input {
+            background-color: #2c2c44;
+            border: 1px solid #555;
+            color: #eee;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #bookmarkForm button {
+            background-color: var(--moz-theme-tab-line-color);
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        #bookmarkForm button:hover {
+            background-color: #ff4c4c;
+        }
+
+        #formToggleButton {
+            background-color: rgba(0, 0, 0, 0.5);
+            margin: 0px;
+            border: none;
+            color: white;
+            font-size: 64px;
+            cursor: pointer;
+            width: 64px;
+            height: 64px;
+            padding: 0px;
+            line-height: 64px;
+            margin-top: 20px !important;
+            border-radius: 8px;
+            outline: 2px solid var(--moz-theme-tab-line-color) !important;
         }
     </style>
 </head>
@@ -142,17 +281,27 @@
         }
     </script>
 
-    <div class="centerMiddleDiv">
-        <div style="color: white; font-size: 80px;" class="centerMiddleDiv">
-            <div class="container">
-                <div class="text1" id="currentTime">Time</div>
-                <div class="text2" id="colonText">:</div>
-            </div>
-
-            <p id="welcomeText" style="font-size: 60px; padding-top: 60px;">Welcome</p>
-
-            <input id="SearchInput" placeholder="Type to search" type="text" value="">
+    <div style="color: white; font-size: 80px;" id="centerMiddleDiv">
+        <div class="container">
+            <div class="text1" id="currentTime">Time</div>
+            <div class="text2" id="colonText">:</div>
         </div>
+
+        <p id="welcomeText" style="font-size: 60px; padding-top: 60px;">Welcome</p>
+
+        <input id="SearchInput" placeholder="Type to search" type="text" value="">
+
+        <div id="bookmarkContainer"></div>
+
+        <button id="formToggleButton">+</button>
+
+        <form id="bookmarkForm">
+            <label>Title: <input id="bookmarkFormTitle" type="text" name="title" value="" required></label><br>
+            <label>URL: <input id="bookmarkFormURL" type="url" name="url" value="" required></label><br>
+            <label>Icon URL: <input id="bookmarkFormIcon" type="url" name="icon" value=""></label><br>
+            <button type="submit">Submit</button>
+            <button id="formCancel">Cancel</button>
+        </form>
     </div>
 
     <div id="ghCalendarCard"></div>
@@ -270,6 +419,9 @@
                     console.log(error)
                 });
             }
+            else {
+                console.log("api key invalid")
+            }
         }
 
         function fallbacklocation() {
@@ -342,49 +494,50 @@
                     "X-Requested-With": "XMLHttpRequest"
                 }
             })
-            .then(response => response.text())
-            .then(function fetchThen(body) {
-                var wrapper = document.createElement('div');
-                wrapper.innerHTML = body;
-                console.log(wrapper.innerHTML.trim())
-                graph = wrapper.querySelector('.ContributionCalendar-grid > tbody:nth-child(3)');
-                tables = graph.querySelectorAll(':scope > tr');
+                .then(response => response.text())
+                .then(function fetchThen(body) {
+                    var wrapper = document.createElement('div');
+                    wrapper.innerHTML = body;
+                    console.log(wrapper.innerHTML.trim())
+                    graph = wrapper.querySelector('.ContributionCalendar-grid > tbody:nth-child(3)');
+                    tables = graph.querySelectorAll(':scope > tr');
 
-                tables.forEach(row => {
+                    tables.forEach(row => {
+                        let newRow = document.createElement("div")
+                        newRow.style.display = "flex";
+                        row.querySelectorAll("[role=\"gridcell\"]").forEach(cell => {
+                            let newCell = document.createElement("div")
+                            let dataLevel = cell.getAttribute("data-level")
+                            newCell.style.backgroundColor = colors[dataLevel]
+                            newCell.style.height = "10px"
+                            newCell.style.width = "10px"
+                            newCell.style.borderRadius = "2px"
+                            newCell.style.outline = "2px solid rgba(255, 255, 255, 0.03)"
+                            newCell.style.margin = "1.5px"
+                            newRow.appendChild(newCell)
+                        })
+                        calenderEl.appendChild(newRow)
+                    });
+
                     let newRow = document.createElement("div")
-                    newRow.style.display = "flex";
-                    row.querySelectorAll("[role=\"gridcell\"]").forEach(cell => {
-                        let newCell = document.createElement("div")
-                        let dataLevel = cell.getAttribute("data-level")
-                        newCell.style.backgroundColor = colors[dataLevel]
-                        newCell.style.height = "10px"
-                        newCell.style.width = "10px"
-                        newCell.style.borderRadius = "2px"
-                        newCell.style.outline = "2px solid rgba(255, 255, 255, 0.03)"
-                        newCell.style.margin = "1.5px"
-                        newRow.appendChild(newCell)
-                    })
+                    newRow.style.paddingBottom = "0.5rem"
+                    newRow.style.paddingTop = "0.5rem"
+
+                    newRow.innerHTML = '<svg fill="#ffffff" height="16" width="16" aria-hidden="true" viewBox="0 0 24 24" version="1.1" data-view-component="true" class="octicon octicon-mark-github v-align-middle"><path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path></svg>'
+
+                    let userName = document.createElement("a")
+                    userName.textContent = githubname
+                    userName.style.setProperty("color", "rgb(145, 152, 161)", "important")
+                    userName.style.textDecoration = "none"
+                    userName.style.paddingLeft = "0.5rem"
+                    userName.style.fontFamily = 'BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"'
+                    userName.href = `https://github.com/${githubname}`
+
+                    newRow.appendChild(userName)
                     calenderEl.appendChild(newRow)
-                });
 
-                let newRow = document.createElement("div")
-                newRow.style.paddingBottom = "0.5rem"
-                newRow.style.paddingTop = "0.5rem"
-                newRow.innerHTML = '<svg fill="#ffffff" height="16" width="16" aria-hidden="true" viewBox="0 0 24 24" version="1.1" data-view-component="true" class="octicon octicon-mark-github v-align-middle"><path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path></svg>'
-
-                let userName = document.createElement("a")
-                userName.textContent = githubname
-                userName.style.setProperty("color", "rgb(145, 152, 161)", "important")
-                userName.style.textDecoration = "none"
-                userName.style.paddingLeft = "0.5rem"
-                userName.style.fontFamily = 'BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"'
-                userName.href = `https://github.com/${githubname}`
-
-                newRow.appendChild(userName)
-                calenderEl.appendChild(newRow)
-
-                document.body.querySelector("#ghCalendarCard").outerHTML = calenderEl.outerHTML
-            })
+                    document.body.querySelector("#ghCalendarCard").outerHTML = calenderEl.outerHTML
+                })
         }
 
         let apiKey = getCookie("unsplashkey");
@@ -409,10 +562,133 @@
                 console.log(error)
             });
         }
-    </script>
 
-    <script src="./oneko.js"></script>
-    <script src="./catfrenimport.js"></script>
+        let bookmarkContainer = document.getElementById("bookmarkContainer")
+        let bookmarks = JSON.parse(getCookie("bookmarks") || "[]");
+
+        let editingBookmark = null;
+
+        function addBookmark(bookmark) {
+            let bookmarkDiv = document.createElement("div");
+            let bookmarkTitle = document.createElement("p");
+            let bookmarkLink = document.createElement("a");
+            let bookmarkImage = document.createElement("img");
+            let buttonsContainer = document.createElement("div");
+            let deleteBtn = document.createElement("button");
+            let editBtn = document.createElement("button");
+
+            bookmark.id ??= getRandomNumber(-1000, 1000);
+
+            bookmarkDiv.classList.add("bookmarkDiv");
+            bookmarkTitle.classList.add("bookmarkTitle");
+            bookmarkLink.classList.add("bookmarkLink");
+            bookmarkImage.classList.add("bookmarkImage");
+            buttonsContainer.classList.add("buttonsContainer");
+            deleteBtn.classList.add("deleteBtn");
+            editBtn.classList.add("editBtn");
+
+            bookmarkTitle.textContent = bookmark.title;
+            bookmarkLink.href = bookmark.url;
+            bookmarkImage.src = bookmark.icon;
+            bookmarkDiv.setAttribute("bookmark-id", bookmark.id)
+
+            deleteBtn.textContent = "🗑️";
+            editBtn.textContent = "✏️";
+
+            deleteBtn.onclick = () => {
+                const index = bookmarks.findIndex(b => b.id === bookmark.id);
+                if (index !== -1) bookmarks.splice(index, 1);
+                bookmarkDiv.remove();
+                setCookie("bookmarks", JSON.stringify(bookmarks));
+            };
+
+            editBtn.onclick = () => {
+                editingBookmark = bookmarkDiv;
+                bookmarkFormTitle.value = bookmark.title;
+                bookmarkFormURL.value = bookmark.url
+                bookmarkFormIcon.value = bookmark.icon;
+                formToggleButton.click();
+            };
+
+            bookmarkLink.appendChild(bookmarkImage);
+            bookmarkDiv.appendChild(bookmarkLink);
+            bookmarkDiv.appendChild(bookmarkTitle);
+
+            buttonsContainer.appendChild(editBtn);
+            buttonsContainer.appendChild(deleteBtn);
+            bookmarkDiv.appendChild(buttonsContainer);
+
+            bookmarkContainer.appendChild(bookmarkDiv);
+        }
+
+        bookmarks.forEach(addBookmark)
+
+        let bookmarkForm = document.getElementById('bookmarkForm');
+
+        let bookmarkFormTitle = document.getElementById("bookmarkFormTitle");
+        let bookmarkFormURL = document.getElementById("bookmarkFormURL");
+        let bookmarkFormIcon = document.getElementById("bookmarkFormIcon");
+
+        let formToggleButton = document.getElementById("formToggleButton");
+
+        document.getElementById("formCancel").addEventListener("click", e => {
+            e.preventDefault()
+            bookmarkForm.style.display = "none";
+            formToggleButton.style.visibility = "visible";
+            editingBookmark = null;
+        })
+
+        bookmarkForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const form = e.target;
+
+            let title = form.title.value;
+            let icon = form.icon.value.trim();
+            let url = form.url.value.trim();
+            if (!url.endsWith("/")) url += "/";
+
+            if (!icon) icon = `${new URL(url).origin}/favicon.ico`;
+
+            const data = {
+                title: title,
+                url: url,
+                icon: icon,
+                id: getRandomNumber(-1000, 1000)
+            };
+
+            if (editingBookmark != null) {
+                const id = Number(editingBookmark.getAttribute("bookmark-id"));
+                const bk = bookmarks.find(b => b.id === id);
+                if (bk) {
+                    bk.title = data.title;
+                    bk.url = data.url;
+                    bk.icon = data.icon;
+                }
+                editingBookmark.querySelector(".bookmarkTitle").textContent = data.title;
+                const link = editingBookmark.querySelector(".bookmarkLink");
+                link.href = data.url;
+                link.querySelector("img").src = data.icon;
+            }
+            else {
+                addBookmark(data);
+                bookmarks.push(data);
+            }
+
+            bookmarkFormTitle.value = "";
+            bookmarkFormURL.value = "";
+            bookmarkFormIcon.value = "";
+
+            setCookie("bookmarks", JSON.stringify(bookmarks));
+            bookmarkForm.style.display = "none";
+            formToggleButton.style.visibility = "visible";
+            editingBookmark = null;
+        });
+
+        formToggleButton.addEventListener("click", ev => {
+            bookmarkForm.style.display = "block";
+            formToggleButton.style.visibility = "hidden";
+        })
+    </script>
 
 </body>
 
