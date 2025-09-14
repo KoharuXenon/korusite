@@ -268,7 +268,10 @@
         }
 
         function setCookie(cookiename, content) {
-            document.cookie = `${cookiename}=${encodeURIComponent(content)}; path=/`;
+            let expirationDate = new Date();
+            expirationDate.setFullYear(expirationDate.getFullYear() + 50); // Set expiration to 50 years from now
+            let expires = `expires=${expirationDate.toUTCString()}`;
+            document.cookie = `${cookiename}=${encodeURIComponent(content)}; ${expires}; path=/; SameSite=Lax; Secure`;
         }
 
         let defBG = getCookie("defBG");
